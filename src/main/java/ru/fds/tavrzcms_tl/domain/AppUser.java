@@ -23,7 +23,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "user")
-public class User {
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +44,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "AppUser{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +

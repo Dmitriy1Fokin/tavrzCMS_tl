@@ -3,9 +3,11 @@ package ru.fds.tavrzcms_tl.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
+import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanAgreementService {
@@ -51,4 +53,10 @@ public class LoanAgreementService {
     public LoanAgreementDto getLoanAgreementById(Long loanAgreementId){
         return tavrzcmsAPIFeignService.getLoanAgreement(loanAgreementId);
     }
+
+    public List<LoanAgreementDto> getLoanAgreementByPledgeAgreements(List<PledgeAgreementDto> pledgeAgreements){
+        return tavrzcmsAPIFeignService.getAllLoanAgreementByPledgeAgreements(pledgeAgreements
+                .stream().map(PledgeAgreementDto::getPledgeAgreementId).collect(Collectors.toList()));
+    }
+
 }

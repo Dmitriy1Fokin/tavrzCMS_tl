@@ -18,4 +18,8 @@ public class PledgeSubjectService {
     public List<PledgeSubjectDto> getPledgeSubjectsByPledgeAgreement(Long pledgeAgreementId){
         return tavrzcmsAPIFeignService.getPledgeSubjectByPledgeAgreement(pledgeAgreementId);
     }
+
+    public PledgeSubjectDto getPledgeSubjectById(Long pledgeSubjectId){
+        return tavrzcmsAPIFeignService.getPledgeSubject(pledgeSubjectId);
+    }
 }

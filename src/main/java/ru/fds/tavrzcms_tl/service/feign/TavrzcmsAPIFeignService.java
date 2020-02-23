@@ -89,7 +89,7 @@ public interface TavrzcmsAPIFeignService {
 
     @GetMapping("/loan_agreement/current_la_for_employee")
     List<LoanAgreementDto> getCurrentLoanAgreementByEmployee(Pageable pageable,
-                                                                    @RequestParam("employeeId") Long employeeId);
+                                                             @RequestParam("employeeId") Long employeeId);
 
     @GetMapping("/loan_agreement/current_la_for_employee/count")
     Integer getCountOfCurrentLoanAgreementByEmployee(@RequestParam("employeeId") Long employeeId);
@@ -99,6 +99,9 @@ public interface TavrzcmsAPIFeignService {
 
     @GetMapping("/loan_agreement/closed_la_for_pledge_agreement")
     List<LoanAgreementDto> getClosedLoanAgreementByPledgeAgreement(@RequestParam("pledgeAgreementId") Long pledgeAgreementId);
+
+    @GetMapping("/loan_agreement/all_la_for_pledge_agreements")
+    List<LoanAgreementDto> getAllLoanAgreementByPledgeAgreements(@RequestParam("pledgeAgreementIds") List<Long> pledgeAgreementIds);
 
     @GetMapping("/loan_agreement/search")
     List<LoanAgreementDto> getLoanAgreementBySearchCriteria(@RequestParam Map<String, String> reqParam, Pageable pageable);

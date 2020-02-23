@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -192,7 +193,7 @@ public interface TavrzcmsAPIFeignService {
     @GetMapping("/pledge_agreement/current_pa_for_employee/count")
     Integer getCountOfCurrentPledgeAgreementByEmployee(@RequestParam("employeeId") Long employeeId);
 
-    @GetMapping("/current_pa_for_employee/perv")
+    @GetMapping("/pledge_agreement/current_pa_for_employee/perv")
     List<PledgeAgreementDto> getCurrentPervPledgeAgreementByEmployee(@RequestParam("employeeId") Long employeeId, Pageable pageable);
 
     @GetMapping("/pledge_agreement/current_pa_for_employee/count/perv")

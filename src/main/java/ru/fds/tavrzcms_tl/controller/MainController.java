@@ -12,7 +12,6 @@ import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
-import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -110,7 +109,6 @@ public class MainController {
             model.addAttribute("countOfPoslPledgeAgreements", pledgeAgreementService.countOfAllCurrentPledgeAgreements(TypeOfPledgeAgreement.POSL));
             model.addAttribute("countOfLoanAgreements", loanAgreementService.countOfAllCurrentLoanAgreements());
         }
-
 
         return "home";
     }

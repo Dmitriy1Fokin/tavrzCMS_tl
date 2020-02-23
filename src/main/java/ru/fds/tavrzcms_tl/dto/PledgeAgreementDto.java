@@ -1,5 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 public class PledgeAgreementDto{
 
     private Long pledgeAgreementId;

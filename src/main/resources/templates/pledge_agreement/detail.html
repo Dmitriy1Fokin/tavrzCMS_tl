@@ -77,8 +77,7 @@
     </div>
     <br>
     <br>
-    <label>Количество предметов залога:</label>
-    <span th:text="${pledgeAgreementDto.getPledgeSubjectsIds().size()}">н/д</span>
+    <label>Предметы залога:</label>
     <a th:href="@{/pledge_agreement/pledge_subjects(pledgeAgreementId=${pledgeAgreementDto.getPledgeAgreementId()})}"
        href="pledge_agreement/pledge_subjects.html"
        th:text="подробнее">подробнее</a>

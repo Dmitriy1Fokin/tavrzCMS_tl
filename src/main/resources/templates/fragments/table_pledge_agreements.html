@@ -15,7 +15,7 @@
             <th>Дата окончания ДЗ</th>
             <th>Залогодатель</th>
             <th>Описание предметов залога</th>
-            <th>Количество предметов залога</th>
+<!--            <th>Количество предметов залога</th>-->
             <th>Вид обеспечения</th>
             <th>РС ДЗ</th>
             <th>ЗС ДЗ</th>
@@ -47,8 +47,8 @@
 
             <td>
                 <ol>
-                    <div th:unless="${pa.getPledgeSubjectsIds()==null}">
-                        <div th:if="${pa.getPledgeSubjectsIds().size() &gt; 5}">
+                    <div th:unless="${pa.getBriefInfoAboutCollateral()==null}">
+                        <div th:if="${pa.getBriefInfoAboutCollateral().size() &gt; 5}">
                             <div th:each="briefInfoAboutCollateral, countStat: ${pa.getBriefInfoAboutCollateral()}">
                                 <div th:if="${countStat.index &lt; 5}" th:remove="tag">
                                     <li>
@@ -58,7 +58,7 @@
                             </div>
                             <span>...</span>
                         </div>
-                        <div th:unless="${pa.getPledgeSubjectsIds().size() &gt; 5}">
+                        <div th:unless="${pa.getBriefInfoAboutCollateral().size() &gt; 5}">
                             <div th:each="briefInfoAboutCollateral : ${pa.getBriefInfoAboutCollateral()}">
                                 <li>
                                     <span th:text="${briefInfoAboutCollateral}">наименование</span>
@@ -68,13 +68,13 @@
                     </div>
                 </ol>
                 <a th:href="@{/pledge_agreement/pledge_subjects(pledgeAgreementId=${pa.getPledgeAgreementId()})}"
-                   th:unless="${#lists.isEmpty(pa.getPledgeSubjectsIds())}"
+                   th:unless="${#lists.isEmpty(pa.getBriefInfoAboutCollateral())}"
                    href="..pledge_agreement/pledge_subjects.html">подробнее</a>
             </td>
 
-            <td>
-                <div th:unless="${pa.getPledgeSubjectsIds()== null}" th:text="${pa.getPledgeSubjectsIds().size()}"></div>
-            </td>
+<!--            <td>-->
+<!--                <div th:unless="${pa.getPledgeSubjectsIds()== null}" th:text="${pa.getPledgeSubjectsIds().size()}"></div>-->
+<!--            </td>-->
 
             <td>
                 <div th:each="typeOfCollateral : ${pa.getTypesOfCollateral()}" th:text="${typeOfCollateral}"></div>

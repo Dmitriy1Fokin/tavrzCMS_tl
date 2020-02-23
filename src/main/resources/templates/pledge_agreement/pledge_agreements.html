@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
         <div th:switch="${pervPosl}">
-            <div th:case="перв">
+            <div th:case="PERV">
                 <title>Договоры залога на сопровождении (первичные):</title>
             </div>
-            <div th:case="посл">
+            <div th:case="POSL">
                 <title>Договоры залога на сопровождении (последующие):</title>
             </div>
             <div th:case="*">
@@ -17,10 +17,10 @@
     </div>
     <div sec:authorize="hasAnyRole('GUEST', 'ADMIN')">
         <div th:switch="${pervPosl}">
-            <div th:case="перв">
+            <div th:case="PERV">
                 <title>Договоры залога (первичные):</title>
             </div>
-            <div th:case="посл">
+            <div th:case="POSL">
                 <title>Договоры залога (последующие):</title>
             </div>
             <div th:case="*">
@@ -60,10 +60,10 @@
 
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
     <div th:switch="${pervPosl}">
-        <div th:case="перв">
+        <div th:case="PERV">
             <h1>Договоры залога на сопровождении (первичные):</h1>
         </div>
-        <div th:case="посл">
+        <div th:case="POSL">
             <h1>Договоры залога на сопровождении (последующие):</h1>
         </div>
         <div th:case="*">
@@ -73,10 +73,10 @@
 </div>
 <div sec:authorize="hasAnyRole('GUEST', 'ADMIN')">
     <div th:switch="${pervPosl}">
-        <div th:case="перв">
+        <div th:case="PERV">
             <h1>Договоры залога (первичные):</h1>
         </div>
-        <div th:case="посл">
+        <div th:case="POSL">
             <h1>Договоры залога (последующие):</h1>
         </div>
         <div th:case="*">
@@ -90,43 +90,36 @@
     <div th:replace="fragments/table_pledge_agreements :: pledgeAgreementTable(${pledgeAgreementList})"></div>
 </div>
 
-<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-    <div th:if="${pledgeAgreementList.totalPages > 1}" >
-        <span th:text="'Страница: '"></span>
-        <div th:if="${pervPosl == 'PERV' || pervPosl == 'POSL'}">
-            <div th:each="pageNumber : ${pageNumbers}" style="display: inline">
-                <a th:href="@{/pledge_agreement/pledge_agreements(size=${pledgeAgreementList.size}, page=${pageNumber}-1, employeeId=${employeeId}, pervPosl=${pervPosl})}"
-                   th:text="${pageNumber}"
-                   th:class="${pageNumber==pledgeAgreementList.number + 1} ? active"></a>
+<div>
+    <div th:switch="${pervPosl}">
+        <div th:case="PERV">
+            <div th:if="${page > 0}">
+                <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl(page=${page}-1, employeeId=${employeeId}, pervPosl=${pervPosl})}">назад</a>
+            </div>
+            <div th:unless="${pledgeAgreementList.isEmpty()}">
+                <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl(page=${page}+1, employeeId=${employeeId}, pervPosl=${pervPosl})}">вперед</a>
             </div>
         </div>
-        <div th:unless="${pervPosl == 'PERV' || pervPosl == 'POSL'}">
-            <div th:each="pageNumber : ${pageNumbers}" style="display: inline">
-                <a th:href="@{/pledge_agreement/pledge_agreements(size=${pledgeAgreementList.size}, page=${pageNumber}-1, employeeId=${employeeId})}"
-                   th:text="${pageNumber}"
-                   th:class="${pageNumber==pledgeAgreementList.number + 1} ? active"></a>
+        <div th:case="POSL">
+            <div th:if="${page > 0}">
+                <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl(page=${page}-1, employeeId=${employeeId}, pervPosl=${pervPosl})}">назад</a>
+            </div>
+            <div th:unless="${pledgeAgreementList.isEmpty()}">
+                <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl(page=${page}+1, employeeId=${employeeId}, pervPosl=${pervPosl})}">вперед</a>
             </div>
         </div>
-    </div>
-</div>
-<div sec:authorize="hasAnyRole('GUEST', 'ADMIN')">
-    <div th:if="${pledgeAgreementList.totalPages > 1}" >
-        <span th:text="'Страница: '"></span>
-        <div th:if="${pervPosl == 'PERV' || pervPosl == 'POSL'}">
-            <div th:each="pageNumber : ${pageNumbers}" style="display: inline">
-                <a th:href="@{/pledge_agreement/pledge_agreements(size=${pledgeAgreementList.size}, page=${pageNumber}-1, pervPosl=${pervPosl})}"
-                   th:text="${pageNumber}"
-                   th:class="${pageNumber==pledgeAgreementList.number + 1} ? active"></a>
+        <div th:case="*">
+            <div th:if="${page > 0}">
+                <a th:href="@{/pledge_agreement/pledge_agreements_all(page=${page}-1, employeeId=${employeeId})}">назад</a>
             </div>
-        </div>
-        <div th:unless="${pervPosl == 'PERV' || pervPosl == 'POSL'}">
-            <div th:each="pageNumber : ${pageNumbers}" style="display: inline">
-                <a th:href="@{/pledge_agreement/pledge_agreements(size=${pledgeAgreementList.size}, page=${pageNumber}-1)}"
-                   th:text="${pageNumber}"
-                   th:class="${pageNumber==pledgeAgreementList.number + 1} ? active"></a>
+            <div th:unless="${pledgeAgreementList.isEmpty()}">
+                <a th:href="@{/pledge_agreement/pledge_agreements_all(page=${page}+1, employeeId=${employeeId})}">вперед</a>
             </div>
         </div>
     </div>
+
+
+
 </div>
 
 </body>

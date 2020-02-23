@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.AuditResultDto;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
+import ru.fds.tavrzcms_tl.dto.CostHistoryDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
@@ -22,6 +23,8 @@ import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectUpdateDtoWrapper;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -345,5 +348,22 @@ public interface TavrzcmsAPIFeignService {
 
     @PutMapping("/pledge_subject/update_from_file")
     List<PledgeSubjectDto> updatePledgeSubjectFromFile(@RequestParam("file") MultipartFile file);
+
+
+
+    @GetMapping("/cost_history/pledge_subject")
+    List<CostHistoryDto> getCostHistoryByPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId);
+
+    @PostMapping("/cost_history/insert")
+    CostHistoryDto insertCostHistory(@Valid @RequestBody CostHistoryDto costHistoryDto);
+
+    @PutMapping("/cost_history/update")
+    CostHistoryDto updateCostHistory(@Valid @RequestBody CostHistoryDto costHistoryDto);
+
+    @PostMapping("/cost_history/insert_from_file")
+    List<CostHistoryDto> insertCostHistoryFromFile(@RequestParam("file") MultipartFile file);
+
+    @PutMapping("/cost_history/update_from_file")
+    List<CostHistoryDto> updateCostHistoryFromFile(@RequestParam("file") MultipartFile file);
 
 }

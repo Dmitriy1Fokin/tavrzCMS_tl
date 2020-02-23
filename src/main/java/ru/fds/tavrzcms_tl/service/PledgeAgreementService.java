@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
@@ -118,8 +119,17 @@ public class PledgeAgreementService {
         return tavrzcmsAPIFeignService.getPledgeAgreement(pledgeAgreementId);
     }
 
+    @Transactional
     public PledgeAgreementDto updatePledgeAgreement(PledgeAgreementDtoWrapper pledgeAgreementDtoWrapper){
         return tavrzcmsAPIFeignService.updatePledgeAgreement(pledgeAgreementDtoWrapper);
+    }
+
+    public List<PledgeAgreementDto> getCurrentPledgeAgreementsByClient(Long clientId){
+        return tavrzcmsAPIFeignService.getCurrentPledgeAgreementsByClient(clientId);
+    }
+
+    public List<PledgeAgreementDto> getClosedPledgeAgreementsByClient(Long clientId){
+        return tavrzcmsAPIFeignService.getClosedPledgeAgreementsByClient(clientId);
     }
 
 

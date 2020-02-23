@@ -2,7 +2,6 @@ package ru.fds.tavrzcms_tl.service.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,14 +11,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.AuditResultDto;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
+import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
+import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
 import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
+import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectDtoNewWrapper;
+import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectUpdateDtoWrapper;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +49,7 @@ public interface TavrzcmsAPIFeignService {
 
 
 
-    @GetMapping(value = "/employee/{employeeId}")
+    @GetMapping("/employee/{employeeId}")
     EmployeeDto getEmployee(@PathVariable("employeeId") Long employeeId);
 
     @GetMapping("/employee/all")
@@ -223,7 +225,7 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/pledge_agreement/update/file")
     List<PledgeAgreementDto> updatePledgeAgreementFromFile(@RequestParam("file") MultipartFile file);
 
-    @PutMapping("/pledge_agreementupdate/withdraw_pledge_subject")
+    @PutMapping("/pledge_agreement/update/withdraw_pledge_subject")
     PledgeAgreementDto withdrawPledgeSubjectFromPledgeAgreement(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                                                        @RequestParam("pledgeAgreementId") Long pledgeAgreementId);
 
@@ -265,5 +267,80 @@ public interface TavrzcmsAPIFeignService {
 
     @PutMapping("/client/update_from_file/client_individual")
     List<ClientDto> updateClientIndividualFromFile(@RequestParam("file") MultipartFile file);
+
+
+
+    @GetMapping("/client_manager/{clientManagerId}")
+    ClientManagerDto getClientManager(@PathVariable("clientManagerId") Long clientManagerId);
+
+    @GetMapping("/client_manager/all")
+    List<ClientManagerDto> getAllClientManagers();
+
+    @GetMapping("/client_manager/client")
+    ClientManagerDto getClientManagerByClient(@RequestParam("clientId") Long clientId);
+
+    @PostMapping("/client_manager/insert")
+    ClientManagerDto insertClientManager(@Valid @RequestBody ClientManagerDto clientManagerDto);
+
+    @PutMapping("/client_manager/update")
+    ClientManagerDto updateClientManager(@Valid @RequestBody ClientManagerDto clientManagerDto);
+
+    @PostMapping("/client_manager/insert_from_file")
+    List<ClientManagerDto> insertClientManagerFromFile(@RequestParam("file") MultipartFile file);
+
+    @PutMapping("/client_manager/update_from_file")
+    List<ClientManagerDto> updateClientManagerFromFile(@RequestParam("file") MultipartFile file);
+
+
+
+    @GetMapping("/pledge_subject/{pledgeSubjectId}")
+    PledgeSubjectDto getPledgeSubject(@PathVariable("pledgeSubjectId") Long pledgeSubjectId);
+
+    @GetMapping("/pledge_subject/pledge_agreement")
+    List<PledgeSubjectDto> getPledgeSubjectByPledgeAgreement(@RequestParam("pledgeAgreementId") Long pledgeAgreementId);
+
+    @GetMapping("/pledge_subject/search_by_name")
+    List<PledgeSubjectDto> getPledgeSubjectsByName(@RequestParam("namePS") @NotBlank String namePS);
+
+    @GetMapping("/pledge_subject/search_by_cadastral_num")
+    List<PledgeSubjectDto> getPledgeSubjectsByCadastralNum(@RequestParam("cadastralNum") @NotBlank String cadastralNum);
+
+    @GetMapping("/pledge_subject/search")
+    List<PledgeSubjectDto> getPledgeSubjectBySearchCriteria(@RequestParam Map<String, String> reqParam);
+
+    @PostMapping("/pledge_subject/insert")
+    PledgeSubjectDto insertPledgeSubject(@Valid @RequestBody PledgeSubjectDtoNewWrapper pledgeSubjectDtoNewWrapper);
+
+    @PutMapping("/pledge_subject/update")
+    PledgeSubjectDto updatePledgeSubject(@Valid @RequestBody PledgeSubjectUpdateDtoWrapper pledgeSubjectUpdateDtoWrapper);
+    @PostMapping("/pledge_subject/insert_from_file/auto")
+    List<PledgeSubjectDto> insertPledgeSubjectAutoFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/equipment")
+    List<PledgeSubjectDto> insertPledgeSubjectEquipmentFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/building")
+    List<PledgeSubjectDto> insertPledgeSubjectBuildingFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/land_lease")
+    List<PledgeSubjectDto> insertPledgeSubjectLandLeaseFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/land_ownership")
+    List<PledgeSubjectDto> insertPledgeSubjectLandOwnershipFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/premise")
+    List<PledgeSubjectDto> insertPledgeSubjectPremiseFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/securities")
+    List<PledgeSubjectDto> insertPledgeSubjectSecuritiesFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/tbo")
+    List<PledgeSubjectDto> insertPledgeSubjectTboFromFile(@RequestParam("file") MultipartFile file);
+
+    @PostMapping("/pledge_subject/insert_from_file/vessel")
+    List<PledgeSubjectDto> insertPledgeSubjectVesselFromFile(@RequestParam("file") MultipartFile file);
+
+    @PutMapping("/pledge_subject/update_from_file")
+    List<PledgeSubjectDto> updatePledgeSubjectFromFile(@RequestParam("file") MultipartFile file);
 
 }

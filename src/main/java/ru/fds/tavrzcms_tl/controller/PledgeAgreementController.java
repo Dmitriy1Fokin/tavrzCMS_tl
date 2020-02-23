@@ -13,10 +13,12 @@ import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
+import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
 import ru.fds.tavrzcms_tl.exception.NotFoundException;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
+import ru.fds.tavrzcms_tl.service.PledgeSubjectService;
 import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
 
 import javax.validation.Valid;
@@ -31,6 +33,7 @@ public class PledgeAgreementController {
     private final PledgeAgreementService pledgeAgreementService;
     private final LoanAgreementService loanAgreementService;
     private final EmployeeService employeeService;
+    private final PledgeSubjectService pledgeSubjectService;
 
     private static final String ATTR_PLEDGE_AGREEMENT = "pledgeAgreementDto";
     private static final String ATTR_WHAT_DO = "whatDo";
@@ -38,17 +41,21 @@ public class PledgeAgreementController {
     private static final String ATTR_EMPLOYEE_ID = "employeeId";
     private static final String ATTR_PAGE = "page";
     private static final String ATTR_SIZE = "size";
+    private static final String ATTR_PLEDGE_SUBJECT_LIST = "pledgeSubjectDtoList";
     private static final String PAGE_CARD = "pledge_agreement/card";
     private static final String PAGE_PA = "pledge_agreement/pledge_agreements";
     private static final String PAGE_DETAIL = "pledge_agreement/detail";
+    private static final String PAGE_PLEDGE_SUBJECTS = "pledge_agreement/pledge_subjects";
     private static final String MSG_WRONG_LINK = "Неверная ссылка";
 
     public PledgeAgreementController(PledgeAgreementService pledgeAgreementService,
                                      LoanAgreementService loanAgreementService,
-                                     EmployeeService employeeService) {
+                                     EmployeeService employeeService,
+                                     PledgeSubjectService pledgeSubjectService) {
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
         this.employeeService = employeeService;
+        this.pledgeSubjectService = pledgeSubjectService;
     }
 
     @GetMapping("/pledge_agreements_all_emp")
@@ -189,6 +196,20 @@ public class PledgeAgreementController {
         pledgeAgreementDto = pledgeAgreementService.updatePledgeAgreement(pledgeAgreementDtoWrapper);
 
         return pledgeAgreementDetailPage(pledgeAgreementDto.getPledgeAgreementId(), model);
+    }
+
+    @GetMapping("/pledge_subjects")
+    public String pledgeSubjectsPage(@RequestParam("pledgeAgreementId") long pledgeAgreementId,
+                                     Model model){
+
+        PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
+
+        List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.getPledgeSubjectsByPledgeAgreement(pledgeAgreementId);
+
+        model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
+        model.addAttribute(ATTR_PLEDGE_SUBJECT_LIST, pledgeSubjectDtoList);
+
+        return PAGE_PLEDGE_SUBJECTS;
     }
 
 }

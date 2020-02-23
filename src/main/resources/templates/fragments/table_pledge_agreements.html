@@ -15,7 +15,6 @@
             <th>Дата окончания ДЗ</th>
             <th>Залогодатель</th>
             <th>Описание предметов залога</th>
-<!--            <th>Количество предметов залога</th>-->
             <th>Вид обеспечения</th>
             <th>РС ДЗ</th>
             <th>ЗС ДЗ</th>
@@ -71,10 +70,6 @@
                    th:unless="${#lists.isEmpty(pa.getBriefInfoAboutCollateral())}"
                    href="..pledge_agreement/pledge_subjects.html">подробнее</a>
             </td>
-
-<!--            <td>-->
-<!--                <div th:unless="${pa.getPledgeSubjectsIds()== null}" th:text="${pa.getPledgeSubjectsIds().size()}"></div>-->
-<!--            </td>-->
 
             <td>
                 <div th:each="typeOfCollateral : ${pa.getTypesOfCollateral()}" th:text="${typeOfCollateral}"></div>

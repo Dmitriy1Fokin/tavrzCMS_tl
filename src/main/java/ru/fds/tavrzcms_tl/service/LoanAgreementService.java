@@ -39,4 +39,12 @@ public class LoanAgreementService {
     public List<LoanAgreementDto> getClosedLoanAgreementsByPledgeAgreement(Long pledgeAgreementId){
         return tavrzcmsAPIFeignService.getClosedLoanAgreementByPledgeAgreement(pledgeAgreementId);
     }
+
+    public List<LoanAgreementDto> getCurrentLoanAgreementsByClient(Long clientId){
+        return tavrzcmsAPIFeignService.getCurrentLoanAgreementsByClient(clientId);
+    }
+
+    public List<LoanAgreementDto> getClosedLoanAgreementsByClient(Long clientId){
+        return tavrzcmsAPIFeignService.getClosedLoanAgreementsByClient(clientId);
+    }
 }

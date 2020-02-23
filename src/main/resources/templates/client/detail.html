@@ -33,13 +33,17 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<h1 th:text="'Клиент: ' + ${clientDto.getFullName()}">Клиент ЮЛ</h1>
+
 <div th:switch="${clientDto.getTypeOfClient().name()}">
     <div th:case="LEGAL_ENTITY">
+        <h1 th:text="'Клиент: ' + ${clientDto.getClientLegalEntityDto().getOrganizationalForm()} + ' ' + ${clientDto.getClientLegalEntityDto().getName()}">Клиент ЮЛ</h1>
         <label>ИНН:</label>
         <span th:text="${clientDto.getClientLegalEntityDto().getInn()}"></span>
     </div>
     <div th:case="INDIVIDUAL">
+        <h1 th:text="'Клиент: ' + ${clientDto.getClientIndividualDto().getSurname()}
+        + ' ' + ${clientDto.getClientIndividualDto().getName()}
+        + ' ' + ${clientDto.getClientIndividualDto().getPatronymic()}">Клиент ЮЛ</h1>
         <label>Паспорт:</label>
         <span th:text="${clientDto.getClientIndividualDto().getPasportNum()}"></span>
     </div>

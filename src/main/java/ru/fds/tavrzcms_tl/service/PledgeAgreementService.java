@@ -132,5 +132,12 @@ public class PledgeAgreementService {
         return tavrzcmsAPIFeignService.getClosedPledgeAgreementsByClient(clientId);
     }
 
+    public List<PledgeAgreementDto> getCurrentPledgeAgreementsByLoanAgreement(Long loanAgreementId){
+        return tavrzcmsAPIFeignService.getCurrentPledgeAgreementsByLoanAgreement(loanAgreementId);
+    }
+
+    public List<PledgeAgreementDto> getClosedPledgeAgreementsByLoanAgreement(Long loanAgreementId){
+        return tavrzcmsAPIFeignService.getClosedPledgeAgreementsByLoanAgreement(loanAgreementId);
+    }
 
 }

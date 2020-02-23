@@ -39,4 +39,7 @@ public class EmployeeService {
         return tavrzcmsAPIFeignService.getEmployee(employeeId);
     }
 
+    public EmployeeDto getEmployeeByLoanAgreement(Long loanAgreementId){
+        return tavrzcmsAPIFeignService.getEmployeeByLoanAgreement(loanAgreementId);
+    }
 }

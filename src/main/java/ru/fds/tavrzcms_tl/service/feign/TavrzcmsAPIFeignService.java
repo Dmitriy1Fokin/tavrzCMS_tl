@@ -14,7 +14,10 @@ import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
 import ru.fds.tavrzcms_tl.dto.CostHistoryDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
+import ru.fds.tavrzcms_tl.dto.EncumbranceDto;
+import ru.fds.tavrzcms_tl.dto.InsuranceDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
+import ru.fds.tavrzcms_tl.dto.MonitoringDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
 import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
@@ -23,8 +26,6 @@ import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectUpdateDtoWrapper;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -365,5 +366,71 @@ public interface TavrzcmsAPIFeignService {
 
     @PutMapping("/cost_history/update_from_file")
     List<CostHistoryDto> updateCostHistoryFromFile(@RequestParam("file") MultipartFile file);
+
+
+
+    @GetMapping("/monitoring/pledge_subject")
+    List<MonitoringDto> getMonitoringsByPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId);
+
+    @PostMapping("/monitoring/insert")
+    MonitoringDto insertMonitoring(@Valid @RequestBody MonitoringDto monitoringDto,
+                                          @RequestParam("pledgeSubjectId") Long pledgeSubjectId);
+
+    @PostMapping("/monitoring/insert/pledge_agreement")
+    List<MonitoringDto> insertMonitoringByPledgeAgreement(@Valid @RequestBody MonitoringDto monitoringDto,
+                                                                 @RequestParam("pledgeAgreementId") Long pledgeAgreementId);
+
+    @PostMapping("/monitoring/insert/client")
+    List<MonitoringDto> insertMonitoringByClient(@Valid @RequestBody MonitoringDto monitoringDto,
+                                                        @RequestParam("clientId") Long clienttId);
+
+    @PostMapping("/monitoring/insert_from_file")
+    List<MonitoringDto> insertMonitoringFromFile(@RequestParam("file") MultipartFile file);
+
+    @PutMapping("/monitoring/update")
+    MonitoringDto updateMonitoring(@Valid @RequestBody MonitoringDto monitoringDto);
+
+    @PutMapping("/monitoring/update_from_file")
+    List<MonitoringDto> updateMonitoringFromFile(@RequestParam("file") MultipartFile file);
+
+
+
+    @GetMapping("/insurance/{insuranceId}")
+    InsuranceDto getInsurance(@PathVariable("insuranceId") Long insuranceId);
+
+    @GetMapping("/insurance/pledge_subject")
+    List<InsuranceDto> getInsurancesByPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId);
+
+    @PostMapping("/insurance/insert")
+    InsuranceDto insertInsurance(@Valid @RequestBody InsuranceDto insuranceDto);
+
+    @PutMapping("/insurance/update")
+    InsuranceDto updateInsurance(@Valid @RequestBody InsuranceDto insuranceDto);
+
+    @PostMapping("/insurance/insert_from_file")
+    List<InsuranceDto> insertInsuranceFromFile(@RequestParam("file") MultipartFile file);
+
+    @PutMapping("/insurance/update_from_file")
+    List<InsuranceDto> updateInsuranceFromFile(@RequestParam("file") MultipartFile file);
+
+
+
+    @GetMapping("/encumbrance/{encumbranceId}")
+    EncumbranceDto getEncumbrance(@PathVariable("encumbranceId") Long encumbranceId);
+
+    @GetMapping("/encumbrance/pledge_subject")
+    List<EncumbranceDto> getEncumbrancesByPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId);
+
+    @PostMapping("/encumbrance/insert")
+    EncumbranceDto insertEncumbrance(@Valid @RequestBody EncumbranceDto encumbranceDto);
+
+    @PutMapping("/encumbrance/update")
+    EncumbranceDto updateEncumbrance(@Valid @RequestBody EncumbranceDto encumbranceDto);
+
+    @PostMapping("/encumbrance/insert_from_file")
+    List<EncumbranceDto> insertEncumbranceFromFile(@RequestParam("file") MultipartFile file);
+
+    @PutMapping("/encumbrance/update_from_file")
+    List<EncumbranceDto> updateEncumbranceFromFile(@RequestParam("file") MultipartFile file);
 
 }

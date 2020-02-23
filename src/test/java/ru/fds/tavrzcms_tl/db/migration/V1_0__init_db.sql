@@ -27,6 +27,7 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+
 --
 -- Name: role; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -61,17 +62,18 @@ ALTER SEQUENCE public.role_role_id_seq OWNED BY public.role.role_id;
 
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: postgres
+-- Name: app_user; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public."user" (
+CREATE TABLE public.app_user (
     user_id bigint NOT NULL,
     name character varying NOT NULL,
-    password character varying NOT NULL
+    password character varying NOT NULL,
+    employee_id bigint
 );
 
 
-ALTER TABLE public."user" OWNER TO postgres;
+ALTER TABLE public.app_user OWNER TO postgres;
 
 --
 -- Name: user_role; Type: TABLE; Schema: public; Owner: postgres
@@ -103,7 +105,7 @@ ALTER TABLE public.user_user_id_seq OWNER TO postgres;
 -- Name: user_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.user_user_id_seq OWNED BY public."user".user_id;
+ALTER SEQUENCE public.user_user_id_seq OWNED BY public.app_user.user_id;
 
 
 --
@@ -114,10 +116,11 @@ ALTER TABLE ONLY public.role ALTER COLUMN role_id SET DEFAULT nextval('public.ro
 
 
 --
--- Name: user user_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: app_user user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.user_user_id_seq'::regclass);
+ALTER TABLE ONLY public.app_user ALTER COLUMN user_id SET DEFAULT nextval('public.user_user_id_seq'::regclass);
+
 
 
 --
@@ -133,22 +136,22 @@ COPY public.role (role_id, name) FROM stdin;
 
 
 --
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: app_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."user" (user_id, name, password) FROM stdin;
-1	user1	$2a$10$WuyxiyeivMPIKSplGCQ9Le/Wx/E3nL/1mJN2n24cso8dbGZtFlVli
-2	user2	$2a$10$KhUxgB54yEfIUPO0qjPUUe9vqVy6MoqpnkR74Zk1SF3HWSo0KoP9m
-3	user3	$2a$10$FWqTJN7/B0/CWYrbgk47ce6yvxsPyTMkj0SLeVJC.yhj4PUtjVqJy
-4	user4	$2a$10$n8VeVKmWKrSn6JQ/EBBlOujiOiUFGUZINkv7kNSfV..Fc1GOztMaq
-5	user5	$2a$10$mY2n2rpywv.Ik7sonLf3YOymK7rsrcIgnohJuRfjCPBzmAqQp548i
-6	user6	$2a$10$mfOCDh4Y6KlDktg4LbHXC.E34mXWIwQTIm.1aQjvCKtvhIJhG871q
-7	user7	$2a$10$d.MtvSC6pjH0pTH8B6ygq.j0JRIN31Eg5jouaIBGnZyTsuIy276QG
-8	user8	$2a$10$VA7ahxk.0FEuoK50.heh8un6FyzMXDvJhLWqpSyD08Z3o.J1ZDwZy
-9	user9	$2a$10$y1rTClbu8RdbOXSokKYlHuPBXQWhzbIrWau/7BbH1S7Ss2U8uHjp6
-10	user10	$2a$10$m07RAesNkAqSsT7aG6v8CesUoIx6UgQcL1kfN3dTwMCTFIxppfW.C
-11	user11	$2a$10$GFnKozAzNgL9wOXzRhshOeNjvFZrFU2y7i9oBfVZvRoqSzikDL64u
-12	user12	$2a$10$75TuyFx7qaVt0YaIuyenSuafyQNFjXiHxxR.ImFWuXZYw9kOqQm2i
+COPY public.app_user (user_id, name, password, employee_id) FROM stdin;
+11	user11	$2a$10$GFnKozAzNgL9wOXzRhshOeNjvFZrFU2y7i9oBfVZvRoqSzikDL64u	\N
+12	user12	$2a$10$75TuyFx7qaVt0YaIuyenSuafyQNFjXiHxxR.ImFWuXZYw9kOqQm2i	\N
+1	user1	$2a$10$WuyxiyeivMPIKSplGCQ9Le/Wx/E3nL/1mJN2n24cso8dbGZtFlVli	1
+2	user2	$2a$10$KhUxgB54yEfIUPO0qjPUUe9vqVy6MoqpnkR74Zk1SF3HWSo0KoP9m	2
+3	user3	$2a$10$FWqTJN7/B0/CWYrbgk47ce6yvxsPyTMkj0SLeVJC.yhj4PUtjVqJy	3
+4	user4	$2a$10$n8VeVKmWKrSn6JQ/EBBlOujiOiUFGUZINkv7kNSfV..Fc1GOztMaq	4
+5	user5	$2a$10$mY2n2rpywv.Ik7sonLf3YOymK7rsrcIgnohJuRfjCPBzmAqQp548i	5
+6	user6	$2a$10$mfOCDh4Y6KlDktg4LbHXC.E34mXWIwQTIm.1aQjvCKtvhIJhG871q	6
+7	user7	$2a$10$d.MtvSC6pjH0pTH8B6ygq.j0JRIN31Eg5jouaIBGnZyTsuIy276QG	7
+8	user8	$2a$10$VA7ahxk.0FEuoK50.heh8un6FyzMXDvJhLWqpSyD08Z3o.J1ZDwZy	8
+9	user9	$2a$10$y1rTClbu8RdbOXSokKYlHuPBXQWhzbIrWau/7BbH1S7Ss2U8uHjp6	9
+10	user10	$2a$10$m07RAesNkAqSsT7aG6v8CesUoIx6UgQcL1kfN3dTwMCTFIxppfW.C	10
 \.
 
 
@@ -203,10 +206,10 @@ ALTER TABLE ONLY public.role
 
 
 --
--- Name: user user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: app_user user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."user"
+ALTER TABLE ONLY public.app_user
     ADD CONSTRAINT user_pk PRIMARY KEY (user_id);
 
 
@@ -219,11 +222,12 @@ ALTER TABLE ONLY public.user_role
 
 
 --
--- Name: user user_un; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: app_user user_un; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."user"
+ALTER TABLE ONLY public.app_user
     ADD CONSTRAINT user_un UNIQUE (name);
+
 
 
 --
@@ -239,4 +243,6 @@ ALTER TABLE ONLY public.user_role
 --
 
 ALTER TABLE ONLY public.user_role
-    ADD CONSTRAINT user_role_user_fk FOREIGN KEY (user_id) REFERENCES public."user"(user_id);
+    ADD CONSTRAINT user_role_user_fk FOREIGN KEY (user_id) REFERENCES public.app_user(user_id);
+
+

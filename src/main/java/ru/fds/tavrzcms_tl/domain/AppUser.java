@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 public class AppUser {
 
     @Id
@@ -38,6 +38,9 @@ public class AppUser {
     @Column(name ="password")
     private String password;
 
+    @Column(name = "employee_id")
+    private Long employeeId;
+
     @ManyToMany()
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name ="user_id"), inverseJoinColumns = @JoinColumn(name ="role_id"))
     private List<Role> appRoles;
@@ -48,6 +51,7 @@ public class AppUser {
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
+                ", employeeId=" + employeeId +
                 '}';
     }
 }

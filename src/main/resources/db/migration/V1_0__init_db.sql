@@ -27,6 +27,7 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+
 --
 -- Name: role; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -61,17 +62,18 @@ ALTER SEQUENCE public.role_role_id_seq OWNED BY public.role.role_id;
 
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: postgres
+-- Name: app_user; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public."user" (
+CREATE TABLE public.app_user (
     user_id bigint NOT NULL,
     name character varying NOT NULL,
-    password character varying NOT NULL
+    password character varying NOT NULL,
+    employee_id bigint
 );
 
 
-ALTER TABLE public."user" OWNER TO postgres;
+ALTER TABLE public.app_user OWNER TO postgres;
 
 --
 -- Name: user_role; Type: TABLE; Schema: public; Owner: postgres
@@ -103,7 +105,7 @@ ALTER TABLE public.user_user_id_seq OWNER TO postgres;
 -- Name: user_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.user_user_id_seq OWNED BY public."user".user_id;
+ALTER SEQUENCE public.user_user_id_seq OWNED BY public.app_user.user_id;
 
 
 --
@@ -114,10 +116,11 @@ ALTER TABLE ONLY public.role ALTER COLUMN role_id SET DEFAULT nextval('public.ro
 
 
 --
--- Name: user user_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: app_user user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.user_user_id_seq'::regclass);
+ALTER TABLE ONLY public.app_user ALTER COLUMN user_id SET DEFAULT nextval('public.user_user_id_seq'::regclass);
+
 
 
 --
@@ -133,10 +136,10 @@ COPY public.role (role_id, name) FROM stdin;
 
 
 --
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: app_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."user" (user_id, name, password) FROM stdin;
+COPY public.app_user (user_id, name, password, employee_id) FROM stdin;
 \.
 
 
@@ -159,7 +162,7 @@ SELECT pg_catalog.setval('public.role_role_id_seq', 4, true);
 -- Name: user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_user_id_seq', 1, false);
+SELECT pg_catalog.setval('public.user_user_id_seq', 12, false);
 
 
 --
@@ -179,10 +182,10 @@ ALTER TABLE ONLY public.role
 
 
 --
--- Name: user user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: app_user user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."user"
+ALTER TABLE ONLY public.app_user
     ADD CONSTRAINT user_pk PRIMARY KEY (user_id);
 
 
@@ -195,11 +198,12 @@ ALTER TABLE ONLY public.user_role
 
 
 --
--- Name: user user_un; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: app_user user_un; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."user"
+ALTER TABLE ONLY public.app_user
     ADD CONSTRAINT user_un UNIQUE (name);
+
 
 
 --
@@ -215,4 +219,6 @@ ALTER TABLE ONLY public.user_role
 --
 
 ALTER TABLE ONLY public.user_role
-    ADD CONSTRAINT user_role_user_fk FOREIGN KEY (user_id) REFERENCES public."user"(user_id);
+    ADD CONSTRAINT user_role_user_fk FOREIGN KEY (user_id) REFERENCES public.app_user(user_id);
+
+

@@ -1,6 +1,9 @@
 package ru.fds.tavrzcms_tl.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfClient;
 
@@ -8,7 +11,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClientDto{
 
     private Long clientId;
@@ -28,3 +34,4 @@ public class ClientDto{
     @Valid
     private ClientIndividualDto clientIndividualDto;
 }
+

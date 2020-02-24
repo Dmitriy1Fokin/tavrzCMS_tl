@@ -42,4 +42,8 @@ public class EmployeeService {
     public EmployeeDto getEmployeeByLoanAgreement(Long loanAgreementId){
         return tavrzcmsAPIFeignService.getEmployeeByLoanAgreement(loanAgreementId);
     }
+
+    public List<EmployeeDto> getAllEmployees(){
+        return tavrzcmsAPIFeignService.getAllEmployees();
+    }
 }

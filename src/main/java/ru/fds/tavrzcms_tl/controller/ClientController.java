@@ -2,21 +2,29 @@ package ru.fds.tavrzcms_tl.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.fds.tavrzcms_tl.dictionary.TypeOfClient;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
+import ru.fds.tavrzcms_tl.dto.ClientIndividualDto;
+import ru.fds.tavrzcms_tl.dto.ClientLegalEntityDto;
 import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
+import ru.fds.tavrzcms_tl.exception.NotFoundException;
 import ru.fds.tavrzcms_tl.service.ClientManagerService;
 import ru.fds.tavrzcms_tl.service.ClientService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/client")
@@ -75,5 +83,75 @@ public class ClientController {
         model.addAttribute(ATTR_LOAN_AGREEMENT_CLOSED_LIST, loanAgreementClosedDtoList);
 
         return PAGE_DETAIL;
+    }
+
+    @GetMapping("/card")
+    public String clientCardPage(@RequestParam("clientId") Optional<Long> clientId,
+                                 @RequestParam("typeOfClient") Optional<String> typeOfClient,
+                                 @RequestParam("whatDo") String whatDo,
+                                 Model model){
+
+        List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
+        List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
+
+        model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
+        model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
+        model.addAttribute(ATTR_WHAT_DO, whatDo);
+
+        if(whatDo.equals("updateClient")){
+
+            ClientDto clientDto = clientService.getClientById(clientId
+                    .orElseThrow(() -> new NotFoundException("Client not found")));
+
+
+            model.addAttribute(ATTR_CLIENT, clientDto);
+
+            return PAGE_CARD;
+
+        }else if(whatDo.equals("insertClient")){
+
+            ClientDto clientDto = new ClientDto();
+            if(typeOfClient.isPresent()){
+                if(typeOfClient.get().equals(TypeOfClient.LEGAL_ENTITY.name())){
+                    clientDto.setTypeOfClient(TypeOfClient.LEGAL_ENTITY);
+                    clientDto.setClientLegalEntityDto(new ClientLegalEntityDto());
+
+                }else if(typeOfClient.get().equals(TypeOfClient.INDIVIDUAL.name())){
+                    clientDto.setTypeOfClient(TypeOfClient.INDIVIDUAL);
+                    clientDto.setClientIndividualDto(new ClientIndividualDto());
+
+                }
+            }else {
+                throw new IllegalArgumentException(MSG_WRONG_LINK);
+            }
+
+
+            model.addAttribute(ATTR_CLIENT, clientDto);
+
+            return PAGE_CARD;
+
+        }else
+            throw new IllegalArgumentException(MSG_WRONG_LINK);
+    }
+
+    @PostMapping("/update_insert")
+    public String updateInsertClient(@Valid ClientDto clientDto,
+                                     BindingResult bindingResult,
+                                     @RequestParam("whatDo") String whatDo,
+                                     Model model){
+        if(bindingResult.hasErrors()){
+            List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
+            List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
+            model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
+            model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
+            model.addAttribute(ATTR_WHAT_DO, whatDo);
+            return PAGE_CARD;
+        }
+
+
+
+        clientDto = clientService.updateInsertClient(clientDto);
+
+        return clientDetailPage(clientDto.getClientId(), model);
     }
 }

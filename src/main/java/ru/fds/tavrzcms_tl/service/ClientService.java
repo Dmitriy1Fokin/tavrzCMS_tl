@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
@@ -22,6 +23,11 @@ public class ClientService {
 
     public List<ClientDto> getClientBySearchCriteria(Map<String, String> searchParam){
         return tavrzcmsAPIFeignService.getClientBySearchCriteria(searchParam);
+    }
+
+    @Transactional
+    public ClientDto updateInsertClient(ClientDto clientDto){
+        return tavrzcmsAPIFeignService.insertClient(clientDto);
     }
 
 }

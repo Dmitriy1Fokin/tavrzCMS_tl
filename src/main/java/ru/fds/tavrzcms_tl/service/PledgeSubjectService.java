@@ -26,7 +26,7 @@ public class PledgeSubjectService {
         return tavrzcmsAPIFeignService.getPledgeSubject(pledgeSubjectId);
     }
 
-    public List<PledgeSubjectDto> getPledgeSubjectBySearchCriteria(Map<String, String> searchParam){
-        return tavrzcmsAPIFeignService.getPledgeSubjectBySearchCriteria(searchParam);
+    public List<PledgeSubjectDto> getPledgeSubjectBySearchCriteria(Map<String, String> searchParam, Pageable pageable){
+        return tavrzcmsAPIFeignService.getPledgeSubjectBySearchCriteria(searchParam, pageable);
     }
 }

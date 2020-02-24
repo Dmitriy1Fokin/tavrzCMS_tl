@@ -316,7 +316,7 @@ public interface TavrzcmsAPIFeignService {
     List<PledgeSubjectDto> getPledgeSubjectsByCadastralNum(@RequestParam("cadastralNum") @NotBlank String cadastralNum);
 
     @GetMapping("/pledge_subject/search")
-    List<PledgeSubjectDto> getPledgeSubjectBySearchCriteria(@RequestParam Map<String, String> reqParam);
+    List<PledgeSubjectDto> getPledgeSubjectBySearchCriteria(@RequestParam Map<String, String> reqParam, Pageable pageable);
 
     @PostMapping("/pledge_subject/insert")
     PledgeSubjectDto insertPledgeSubject(@Valid @RequestBody PledgeSubjectDtoNewWrapper pledgeSubjectDtoNewWrapper);

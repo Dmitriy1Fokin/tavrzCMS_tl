@@ -52,7 +52,7 @@ public class SearchController {
     public String searchResultsPage(@RequestParam Map<String, String> reqParam,
                                     Model model){
 
-        Pageable pageable = PageRequest.of(0, 100);
+        Pageable pageable = PageRequest.of(0, 200);
 
         if(reqParam.get("typeOfSearch").equals("searchLA")){
             List<LoanAgreementDto> loanAgreementDtoList = loanAgreementService.getLoanAgreementBySearchCriteria(reqParam, pageable);
@@ -61,7 +61,7 @@ public class SearchController {
             List<PledgeAgreementDto> pledgeAgreementDtoList = pledgeAgreementService.getPledgeAgreementBySearchCriteria(reqParam, pageable);
             model.addAttribute(ATTR_RESULT_LIST, pledgeAgreementDtoList);
         }else if(reqParam.get("typeOfSearch").equals("searchPS")){
-            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.getPledgeSubjectBySearchCriteria(reqParam);
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.getPledgeSubjectBySearchCriteria(reqParam, pageable);
             model.addAttribute(ATTR_RESULT_LIST, pledgeSubjectDtoList);
         }else if(reqParam.get("typeOfSearch").equals("searchClient")){
             List<ClientDto> clientDtoList = clientService.getClientBySearchCriteria(reqParam);

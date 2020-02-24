@@ -4,19 +4,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
+import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
+import ru.fds.tavrzcms_tl.utils.Utils;
 import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class PledgeAgreementService {
 
     private final TavrzcmsAPIFeignService tavrzcmsAPIFeignService;
+    private final Utils utils;
 
-    public PledgeAgreementService(TavrzcmsAPIFeignService tavrzcmsAPIFeignService) {
+    public PledgeAgreementService(TavrzcmsAPIFeignService tavrzcmsAPIFeignService,
+                                  Utils utils) {
         this.tavrzcmsAPIFeignService = tavrzcmsAPIFeignService;
+        this.utils = utils;
     }
 
     public Integer countOfCurrentPledgeAgreementForEmployee(Long employeeId){
@@ -142,6 +149,13 @@ public class PledgeAgreementService {
 
     public List<PledgeAgreementDto> getPledgeAgreementByPledgeSubject(Long pledgeSubjectId){
         return tavrzcmsAPIFeignService.getPledgeAgreementsByPledgeSubjects(pledgeSubjectId);
+    }
+
+    public List<PledgeAgreementDto> getPledgeAgreementBySearchCriteria(Map<String, String> searchParam, Pageable pageable){
+        if(Objects.nonNull(searchParam.get("pledgorName"))){
+            searchParam.putAll(utils.ExtractClientName(Map.of("typeOfClient", searchParam.get("typeOfClient"), "clientName", searchParam.get("pledgorName"))));
+        }
+        return tavrzcmsAPIFeignService.getPledgeAgreementBySearchCriteria(searchParam, pageable);
     }
 
 }

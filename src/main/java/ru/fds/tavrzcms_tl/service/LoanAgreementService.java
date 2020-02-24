@@ -5,17 +5,23 @@ import org.springframework.stereotype.Service;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
+import ru.fds.tavrzcms_tl.utils.Utils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class LoanAgreementService {
 
     private final TavrzcmsAPIFeignService tavrzcmsAPIFeignService;
+    private final Utils utils;
 
-    public LoanAgreementService(TavrzcmsAPIFeignService tavrzcmsAPIFeignService) {
+    public LoanAgreementService(TavrzcmsAPIFeignService tavrzcmsAPIFeignService,
+                                Utils utils) {
         this.tavrzcmsAPIFeignService = tavrzcmsAPIFeignService;
+        this.utils = utils;
     }
 
     public Integer countOfCurrentLoanAgreementsByEmployee(Long employeeId){
@@ -58,5 +64,13 @@ public class LoanAgreementService {
         return tavrzcmsAPIFeignService.getAllLoanAgreementByPledgeAgreements(pledgeAgreements
                 .stream().map(PledgeAgreementDto::getPledgeAgreementId).collect(Collectors.toList()));
     }
+
+    public List<LoanAgreementDto> getLoanAgreementBySearchCriteria(Map<String, String> searchParam, Pageable pageable){
+        if(Objects.nonNull(searchParam.get("loanerName"))){
+            searchParam.putAll(utils.ExtractClientName(Map.of("typeOfClient", searchParam.get("typeOfClient"), "clientName", searchParam.get("loanerName"))));
+        }
+        return tavrzcmsAPIFeignService.getLoanAgreementBySearchCriteria(searchParam, pageable);
+    }
+
 
 }

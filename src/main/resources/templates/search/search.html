@@ -24,8 +24,6 @@
 <h2>Поиск кредитного договора</h2>
 <form th:action="@{/search/search_results}" th:method="get" action="search_results.html">
     <input type="hidden", name="typeOfSearch" value="searchLA">
-    <input type="hidden", name="size" value='50'>
-    <input type="hidden", name="page" value='0'>
 
     <div class="row">
         <label>№ КД</label>
@@ -35,7 +33,7 @@
     <br>
     <div class="row">
         <label>Заемщик</label>
-        <input name="client" type="text"/>
+        <input name="loanerName" type="text"/>
         <select name="typeOfClient">
             <option selected value="LEGAL_ENTITY">ЮЛ</option>
             <option value="INDIVIDUAL">ФЛ</option>
@@ -141,8 +139,6 @@
 <h2>Поиск договора залога</h2>
 <form th:action="@{/search/search_results}" th:method="get" action="search_results.html">
     <input type="hidden", name="typeOfSearch" value="searchPA">
-    <input type="hidden", name="size" value='50'>
-    <input type="hidden", name="page" value='0'>
 
     <div class="row">
         <label>№ ДЗ</label>
@@ -152,7 +148,7 @@
     <br>
     <div class="row">
         <label>Залогодатель</label>
-        <input name="client" type="text"/>
+        <input name="pledgorName" type="text"/>
         <select name="typeOfClient">
             <option selected value="LEGAL_ENTITY">ЮЛ</option>
             <option value="INDIVIDUAL">ФЛ</option>
@@ -269,15 +265,12 @@
 <h2>Поиск клиента</h2>
 <form th:action="@{/search/search_results}" th:method="get" action="search_results.html">
     <input type="hidden", name="typeOfSearch" value="searchClient">
-    <input type="hidden", name="size" value='50'>
-    <input type="hidden", name="page" value='0'>
 
     <div class="row">
         <label>Клиент</label>
-        <input name="clientName" type="text"/>
         <select id="whatSearchClient" onchange="choiseClient()" name="typeOfClient">
-            <option selected value="LEGAL_ENTITY">ЮЛ</option>
-            <option value="INDIVIDUAL">ФЛ</option>
+            <option selected value="LEGAL_ENTITY">Юридическое лицо</option>
+            <option value="INDIVIDUAL">Физическое лицо</option>
         </select>
     </div>
     <br>
@@ -291,8 +284,6 @@
 
 <form th:action="@{/search/search_results}" th:method="get" action="search_results.html">
     <input type="hidden" name="typeOfSearch" value="searchPS">
-    <input type="hidden" name="size" value='50'>
-    <input type="hidden" name="page" value='0'>
 
     <div class="row">
         <label>Наименование</label>
@@ -492,16 +483,43 @@
         var choise = document.getElementById("whatSearchClient").options[n].value;
         if(choise == 'LEGAL_ENTITY'){
             var codeInner = '<div class="row">\n' +
+                '        <label>Орг.Форма</label>\n' +
+                '        <input name="organizationalForm" type="text"/>\n' +
+                '        <input name="organizationalFormOption" type="hidden" value="EQUAL_IGNORE_CASE"/>\n' +
+                '        <br>\n' +
+                '        <br>\n' +
+                '        <label>Наименование</label>\n' +
+                '        <input name="name" type="text"/>\n' +
+                '        <input name="nameOption" type="hidden" value="EQUAL_IGNORE_CASE"/>\n' +
+                '        <br>\n' +
+                '        <br>\n' +
                 '        <label>ИНН</label>\n' +
                 '        <input name="inn" type="text"/>\n' +
+                '        <input name="innOption" type="hidden" value="EQUAL_IGNORE_CASE""/>\n' +
                 '    </div>\n' +
                 '    <br>';
             elementClient.innerHTML = '';
             elementClient.insertAdjacentHTML('afterbegin', codeInner);
         }else if(choise == 'INDIVIDUAL'){
             var codeInner = '<div class="row">\n' +
+                '        <label>Фамилия</label>\n' +
+                '        <input name="surname" type="text"/>\n' +
+                '        <input name="surnameOption" type="hidden" value="EQUAL_IGNORE_CASE"/>\n' +
+                '        <br>\n' +
+                '        <br>\n' +
+                '        <label>Имя</label>\n' +
+                '        <input name="name" type="text"/>\n' +
+                '        <input name="nameOption" type="hidden" value="EQUAL_IGNORE_CASE"/>\n' +
+                '        <br>\n' +
+                '        <br>\n' +
+                '        <label>Отчество</label>\n' +
+                '        <input name="patronymic" type="text"/>\n' +
+                '        <input name="patronymicOption" type="hidden" value="EQUAL_IGNORE_CASE"/>\n' +
+                '        <br>\n' +
+                '        <br>\n' +
                 '        <label>№ паспорта</label>\n' +
                 '        <input name="pasportNum" type="text"/>\n' +
+                '        <input name="pasportNumOption" type="hidden" value="EQUAL_IGNORE_CASE"/>\n' +
                 '    </div>\n' +
                 '    <br>';
             elementClient.innerHTML = '';
@@ -625,7 +643,7 @@
                 '<br>\n' +
                 '<div class="row">\n' +
                 '    <label>Вид оборудования</label>\n' +
-                '    <select name="typeOfEquip">\n' +
+                '    <select name="typeOfEquipment">\n' +
                 '        <option selected value="">не выбрано</option>\n' +
                 '        <option value="METALWORKING">металлообработка</option>\n' +
                 '        <option value="FOREST_PROCCESSING">лесообработка</option>\n' +
@@ -1038,7 +1056,7 @@
                 '<br>\n' +
                 '<div class="row">\n' +
                 '    <label>Вид судна</label>\n' +
-                '    <select name="typeOfVessel">\n' +
+                '    <select name="vesselType">\n' +
                 '        <option selected value="">не выбрано</option>\n' +
                 '        <option value="GDC">general cargo (gcd)</option>\n' +
                 '        <option value="CON">container ship (con)</option>\n' +

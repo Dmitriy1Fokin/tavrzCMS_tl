@@ -39,8 +39,8 @@ public class MainController {
     private static final String ATTR_COUNT_CONCLUSION_IS_DONE = "countOfConclusionIsDone";
     private static final String ATTR_COUNT_CONCLUSION_OVERDUE = "countOfConclusionOverdue";
     private static final String ATTR_EMPLOYEE_EXCLUDE_CHIEF = "employeeDtoMapExcludeChief";
-    private static final String PAGE_LOGIN = "/login";
-    private static final String PAGE_HOME = "/home";
+    private static final String PAGE_LOGIN = "login";
+    private static final String PAGE_HOME = "home";
 
     public MainController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,

@@ -45,6 +45,9 @@ public interface TavrzcmsAPIFeignService {
     @GetMapping("/audit")
     Collection<AuditResultDto> getAuditResult(Pageable pageable);
 
+    @GetMapping("/audit/executeAudit")
+    void executeAudit();
+
     @GetMapping("/audit/ignore")
     AuditResultDto setIgnore(@RequestParam("auditResultId") String auditResultId);
 

@@ -21,8 +21,18 @@
                 <td th:text="${clientStat.count}"></td>
 
                 <td>
-                    <a th:href="@{/client/detail(clientId=${client.getClientId()})}" href="../client/detail.html"
-                       th:text="${client.getFullName()}">Клиент</a>
+                    <div th:switch="${client.getTypeOfClient().name()}">
+                        <div th:case="LEGAL_ENTITY">
+                            <a th:href="@{/client/detail(clientId=${client.getClientId()})}" href="../client/detail.html"
+                               th:text="${client.getClientLegalEntityDto().getOrganizationalForm()} + ' ' + ${client.getClientLegalEntityDto().getName()}">Клиент</a>
+                        </div>
+                        <div th:case="INDIVIDUAL">
+                            <a th:href="@{/client/detail(clientId=${client.getClientId()})}" href="../client/detail.html"
+                               th:text="${client.getClientIndividualDto().getSurname()}
+                                + ' ' + ${client.getClientIndividualDto().getName()}
+                                + ' ' + ${client.getClientIndividualDto().getPatronymic()}">Клиент</a>
+                        </div>
+                    </div>
                 </td>
 
                 <td th:text="${client.getTypeOfClient().getTranslate()}"></td>

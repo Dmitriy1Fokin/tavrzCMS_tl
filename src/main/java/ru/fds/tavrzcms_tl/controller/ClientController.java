@@ -15,7 +15,6 @@ import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
-import ru.fds.tavrzcms_tl.exception.NotFoundException;
 import ru.fds.tavrzcms_tl.service.ClientManagerService;
 import ru.fds.tavrzcms_tl.service.ClientService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
@@ -24,7 +23,6 @@ import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/client")
@@ -48,7 +46,6 @@ public class ClientController {
     private static final String ATTR_WHAT_DO = "whatDo";
     private static final String PAGE_CARD = "client/card";
     private static final String PAGE_DETAIL = "client/detail";
-    private static final String MSG_WRONG_LINK = "Неверная ссылка";
 
     public ClientController(ClientService clientService,
                             ClientManagerService clientManagerService,
@@ -85,53 +82,47 @@ public class ClientController {
         return PAGE_DETAIL;
     }
 
-    @GetMapping("/card")
-    public String clientCardPage(@RequestParam("clientId") Optional<Long> clientId,
-                                 @RequestParam("typeOfClient") Optional<String> typeOfClient,
-                                 @RequestParam("whatDo") String whatDo,
-                                 Model model){
-
+    @GetMapping("/card/update")
+    public String clientCardUpdatePage(@RequestParam("clientId") Long clientId,
+                                       @RequestParam("whatDo") String whatDo,
+                                       Model model){
+        ClientDto clientDto = clientService.getClientById(clientId);
         List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
         List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
 
+        model.addAttribute(ATTR_CLIENT, clientDto);
         model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
         model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
         model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-        if(whatDo.equals("updateClient")){
+        return PAGE_CARD;
+    }
 
-            ClientDto clientDto = clientService.getClientById(clientId
-                    .orElseThrow(() -> new NotFoundException("Client not found")));
+    @GetMapping("/card/insert")
+    public String clientCardInsertPage(@RequestParam("typeOfClient") String typeOfClient,
+                                       @RequestParam("whatDo") String whatDo,
+                                       Model model){
 
+        List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
+        List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
 
-            model.addAttribute(ATTR_CLIENT, clientDto);
+        ClientDto clientDto = new ClientDto();
+        if(typeOfClient.equals(TypeOfClient.LEGAL_ENTITY.name())){
+            clientDto.setTypeOfClient(TypeOfClient.LEGAL_ENTITY);
+            clientDto.setClientLegalEntityDto(new ClientLegalEntityDto());
 
-            return PAGE_CARD;
+        }else {
+            clientDto.setTypeOfClient(TypeOfClient.INDIVIDUAL);
+            clientDto.setClientIndividualDto(new ClientIndividualDto());
 
-        }else if(whatDo.equals("insertClient")){
+        }
 
-            ClientDto clientDto = new ClientDto();
-            if(typeOfClient.isPresent()){
-                if(typeOfClient.get().equals(TypeOfClient.LEGAL_ENTITY.name())){
-                    clientDto.setTypeOfClient(TypeOfClient.LEGAL_ENTITY);
-                    clientDto.setClientLegalEntityDto(new ClientLegalEntityDto());
+        model.addAttribute(ATTR_CLIENT, clientDto);
+        model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
+        model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
+        model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-                }else if(typeOfClient.get().equals(TypeOfClient.INDIVIDUAL.name())){
-                    clientDto.setTypeOfClient(TypeOfClient.INDIVIDUAL);
-                    clientDto.setClientIndividualDto(new ClientIndividualDto());
-
-                }
-            }else {
-                throw new IllegalArgumentException(MSG_WRONG_LINK);
-            }
-
-
-            model.addAttribute(ATTR_CLIENT, clientDto);
-
-            return PAGE_CARD;
-
-        }else
-            throw new IllegalArgumentException(MSG_WRONG_LINK);
+        return PAGE_CARD;
     }
 
     @PostMapping("/update_insert")
@@ -147,8 +138,6 @@ public class ClientController {
             model.addAttribute(ATTR_WHAT_DO, whatDo);
             return PAGE_CARD;
         }
-
-
 
         clientDto = clientService.updateInsertClient(clientDto);
 

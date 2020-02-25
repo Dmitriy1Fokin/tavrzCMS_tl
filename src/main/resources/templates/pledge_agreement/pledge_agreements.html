@@ -123,10 +123,10 @@
         <div th:switch="${pervPosl}">
             <div th:case="PERV">
                 <div th:if="${page > 0}">
-                    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_emp(page=${page}-1, employeeId=${employeeId}, pervPosl=${pervPosl})}">назад</a>
+                    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_guest(page=${page}-1, employeeId=${employeeId}, pervPosl=${pervPosl})}">назад</a>
                 </div>
                 <div th:unless="${pledgeAgreementList.isEmpty()}">
-                    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_emp(page=${page}+1, employeeId=${employeeId}, pervPosl=${pervPosl})}">вперед</a>
+                    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_guest(page=${page}+1, employeeId=${employeeId}, pervPosl=${pervPosl})}">вперед</a>
                 </div>
             </div>
             <div th:case="POSL">
@@ -134,7 +134,7 @@
                     <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_guest(page=${page}-1, pervPosl=${pervPosl})}">назад</a>
                 </div>
                 <div th:unless="${pledgeAgreementList.isEmpty()}">
-                    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_emp(page=${page}+1, pervPosl=${pervPosl})}">вперед</a>
+                    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_guest(page=${page}+1, pervPosl=${pervPosl})}">вперед</a>
                 </div>
             </div>
             <div th:case="*">

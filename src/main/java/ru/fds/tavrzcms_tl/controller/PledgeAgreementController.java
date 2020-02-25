@@ -1,5 +1,6 @@
 package ru.fds.tavrzcms_tl.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,6 @@ import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
-import ru.fds.tavrzcms_tl.exception.NotFoundException;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
@@ -23,7 +23,6 @@ import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -35,18 +34,19 @@ public class PledgeAgreementController {
     private final EmployeeService employeeService;
     private final PledgeSubjectService pledgeSubjectService;
 
+    @Value("${page_size}")
+    private Integer pageSize;
     private static final String ATTR_PLEDGE_AGREEMENT = "pledgeAgreementDto";
     private static final String ATTR_WHAT_DO = "whatDo";
     private static final String ATTR_PLEDGE_AGREEMENT_LIST = "pledgeAgreementList";
     private static final String ATTR_EMPLOYEE_ID = "employeeId";
     private static final String ATTR_PAGE = "page";
-    private static final String ATTR_SIZE = "size";
     private static final String ATTR_PLEDGE_SUBJECT_LIST = "pledgeSubjectDtoList";
+    private static final String ATTR_PERV_POSL = "pervPosl";
     private static final String PAGE_CARD = "pledge_agreement/card";
     private static final String PAGE_PA = "pledge_agreement/pledge_agreements";
     private static final String PAGE_DETAIL = "pledge_agreement/detail";
     private static final String PAGE_PLEDGE_SUBJECTS = "pledge_agreement/pledge_subjects";
-    private static final String MSG_WRONG_LINK = "Неверная ссылка";
 
     public PledgeAgreementController(PledgeAgreementService pledgeAgreementService,
                                      LoanAgreementService loanAgreementService,
@@ -60,43 +60,38 @@ public class PledgeAgreementController {
 
     @GetMapping("/pledge_agreements_all_emp")
     public String allPledgeAgreementsPageFoeEmployee(@RequestParam("employeeId") Long employeeId,
-                                                     @RequestParam("page") Optional<Integer> page,
-                                                     @RequestParam("size") Optional<Integer> size,
+                                                     @RequestParam("page") Integer page,
                                                      Model model) {
-        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(50));
+        Pageable pageable = PageRequest.of(page, pageSize);
 
         List<PledgeAgreementDto> pledgeAgreementDtoList = pledgeAgreementService.getCurrentPledgeAgreementByEmployee(employeeId, pageable);
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT_LIST, pledgeAgreementDtoList);
         model.addAttribute(ATTR_EMPLOYEE_ID, employeeId);
-        model.addAttribute(ATTR_PAGE, page.orElse(0));
-        model.addAttribute(ATTR_SIZE, size.orElse(50));
+        model.addAttribute(ATTR_PAGE, page);
 
         return PAGE_PA;
     }
 
     @GetMapping("/pledge_agreements_all_guest")
-    public String allPledgeAgreementsPageForGuest(@RequestParam(ATTR_PAGE) Optional<Integer> page,
-                                                  @RequestParam(ATTR_SIZE) Optional<Integer> size,
+    public String allPledgeAgreementsPageForGuest(@RequestParam(ATTR_PAGE) Integer page,
                                                   Model model) {
-        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(50));
+        Pageable pageable = PageRequest.of(page, pageSize);
 
         List<PledgeAgreementDto> pledgeAgreementDtoList = pledgeAgreementService.getCurrentPledgeAgreements(pageable);
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT_LIST, pledgeAgreementDtoList);
-        model.addAttribute(ATTR_PAGE, page.orElse(0));
-        model.addAttribute(ATTR_SIZE, size.orElse(50));
+        model.addAttribute(ATTR_PAGE, page);
 
         return PAGE_PA;
     }
 
     @GetMapping("/pledge_agreements_perv_posl_emp")
     public String pervPoslPledgeAgreementsPageForEmployee(@RequestParam(ATTR_EMPLOYEE_ID) Long employeeId,
-                                                          @RequestParam(ATTR_PAGE) Optional<Integer> page,
-                                                          @RequestParam(ATTR_SIZE) Optional<Integer> size,
+                                                          @RequestParam(ATTR_PAGE) Integer page,
                                                           @RequestParam("pervPosl") TypeOfPledgeAgreement typeOfPledgeAgreement,
                                                           Model model) {
-        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(50));
+        Pageable pageable = PageRequest.of(page, pageSize);
 
         List<PledgeAgreementDto> pledgeAgreementDtoList = pledgeAgreementService.getCurrentPledgeAgreementByEmployee(employeeId,
                 typeOfPledgeAgreement,
@@ -104,26 +99,23 @@ public class PledgeAgreementController {
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT_LIST, pledgeAgreementDtoList);
         model.addAttribute(ATTR_EMPLOYEE_ID, employeeId);
-        model.addAttribute(ATTR_PAGE, page.orElse(0));
-        model.addAttribute(ATTR_SIZE, size.orElse(50));
-        model.addAttribute("pervPosl", typeOfPledgeAgreement.toString());
+        model.addAttribute(ATTR_PAGE, page);
+        model.addAttribute(ATTR_PERV_POSL, typeOfPledgeAgreement.toString());
 
         return PAGE_PA;
     }
 
     @GetMapping("/pledge_agreements_perv_posl_guest")
-    public String pervPoslPledgeAgreementsPageForGuest(@RequestParam(ATTR_PAGE) Optional<Integer> page,
-                                                       @RequestParam(ATTR_SIZE) Optional<Integer> size,
+    public String pervPoslPledgeAgreementsPageForGuest(@RequestParam(ATTR_PAGE) Integer page,
                                                        @RequestParam("pervPosl") TypeOfPledgeAgreement typeOfPledgeAgreement,
                                                        Model model) {
-        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(50));
+        Pageable pageable = PageRequest.of(page, pageSize);
 
         List<PledgeAgreementDto> pledgeAgreementDtoList = pledgeAgreementService.getCurrentPledgeAgreements(typeOfPledgeAgreement, pageable);
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT_LIST, pledgeAgreementDtoList);
-        model.addAttribute(ATTR_PAGE, page.orElse(0));
-        model.addAttribute(ATTR_SIZE, size.orElse(50));
-        model.addAttribute("pervPosl", typeOfPledgeAgreement.toString());
+        model.addAttribute(ATTR_PAGE, page);
+        model.addAttribute(ATTR_PERV_POSL, typeOfPledgeAgreement.toString());
 
         return PAGE_PA;
     }
@@ -145,34 +137,30 @@ public class PledgeAgreementController {
         return PAGE_DETAIL;
     }
 
-    @GetMapping("/card")
-    public String pledgeAgreementCard(@RequestParam("pledgeAgreementId") Optional<Long> pledgeAgreementId,
-                                      @RequestParam("clientId") Optional<Long> clientId,
-                                      @RequestParam("whatDo") String whatDo,
-                                      Model model){
-        if(whatDo.equals("changePA")){
+    @GetMapping("/card/update")
+    public String pledgeAgreementCardUpdatePage(@RequestParam("pledgeAgreementId") Long pledgeAgreementId,
+                                                @RequestParam("whatDo") String whatDo,
+                                                Model model){
+        PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
 
-            PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId
-                    .orElseThrow(() -> new NotFoundException("Pledge Agreement not found")));
+        model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
+        model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-            model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
-            model.addAttribute(ATTR_WHAT_DO, whatDo);
+        return PAGE_CARD;
+    }
 
-            return PAGE_CARD;
+    @GetMapping("/card/insert")
+    public String pledgeAgreementCardInsertPage(@RequestParam("clientId") Long clientId,
+                                                @RequestParam("whatDo") String whatDo,
+                                                Model model){
+        PledgeAgreementDto pledgeAgreementDto = PledgeAgreementDto.builder()
+                .clientId(clientId)
+                .build();
 
-        }else if(whatDo.equals("newPA")){
+        model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
+        model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-            PledgeAgreementDto pledgeAgreementDto = PledgeAgreementDto.builder()
-                    .clientId(clientId.orElseThrow(() -> new NotFoundException("Client not found")))
-                    .build();
-
-            model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
-            model.addAttribute(ATTR_WHAT_DO, whatDo);
-
-            return PAGE_CARD;
-
-        }else
-            throw new IllegalArgumentException(MSG_WRONG_LINK);
+        return PAGE_CARD;
     }
 
     @PostMapping("/update_insert")

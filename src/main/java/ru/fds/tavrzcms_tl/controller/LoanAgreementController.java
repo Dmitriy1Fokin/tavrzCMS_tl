@@ -1,5 +1,6 @@
 package ru.fds.tavrzcms_tl.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,6 @@ import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/loan_agreement")
@@ -25,6 +25,8 @@ public class LoanAgreementController {
     private final EmployeeService employeeService;
     private final PledgeAgreementService pledgeAgreementService;
 
+    @Value("${page_size}")
+    private Integer pageSize;
     private static final String ATTR_LOAN_AGREEMENT_LIST = "loanAgreementList";
     private static final String ATTR_PAGE = "page";
     private static final String ATTR_EMPLOYEE_ID = "employeeId";
@@ -45,30 +47,28 @@ public class LoanAgreementController {
 
     @GetMapping("/loan_agreements_emp")
     public String loanAgreementsPageForEmployee(@RequestParam("employeeId")Long employeeId,
-                                                @RequestParam("page") Optional<Integer> page,
-                                                @RequestParam("size") Optional<Integer> size,
+                                                @RequestParam("page") Integer page,
                                                 Model model) {
-        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(50));
+        Pageable pageable = PageRequest.of(page, pageSize);
 
         List<LoanAgreementDto> loanAgreementDtoList = loanAgreementService.getCurrentLoanAgreementByEmployee(employeeId, pageable);
 
         model.addAttribute(ATTR_LOAN_AGREEMENT_LIST, loanAgreementDtoList);
         model.addAttribute(ATTR_EMPLOYEE_ID, employeeId);
-        model.addAttribute(ATTR_PAGE, page.orElse(0));
+        model.addAttribute(ATTR_PAGE, page);
 
         return PAGE_LOAN_AGREEMENTS;
     }
 
     @GetMapping("/loan_agreements_guest")
-    public String loanAgreementsPageFoeGuest(@RequestParam("page") Optional<Integer> page,
-                                             @RequestParam("size") Optional<Integer> size,
+    public String loanAgreementsPageFoeGuest(@RequestParam("page") Integer page,
                                              Model model) {
-        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(50));
+        Pageable pageable = PageRequest.of(page, pageSize);
 
         List<LoanAgreementDto> loanAgreementDtoList = loanAgreementService.getLoanAgreements(pageable);
 
         model.addAttribute(ATTR_LOAN_AGREEMENT_LIST, loanAgreementDtoList);
-        model.addAttribute(ATTR_PAGE, page.orElse(0));
+        model.addAttribute(ATTR_PAGE, page);
 
         return PAGE_LOAN_AGREEMENTS;
     }

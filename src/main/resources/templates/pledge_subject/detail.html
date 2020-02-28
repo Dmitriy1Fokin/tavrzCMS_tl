@@ -424,6 +424,17 @@
 
     </ol>
 
+    <div th:unless="${auditResultList.isEmpty()}">
+        <h3>Результаты аудита предмета залога:</h3>
+        <div th:each="auditRresult : ${auditResultList}">
+            <li>
+                <label th:text="${auditRresult.getDescriptionResult()}"></label>
+                <a th:href="@{/pledge_subject/audit/set_ignore(auditResultId=${auditRresult.getId()}, pledgeSubjectId=${pledgeSubjectDto.getPledgeSubjectId()})}"
+                    th:text="Игнорировать"></a>
+            </li>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

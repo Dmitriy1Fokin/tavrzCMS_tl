@@ -38,11 +38,6 @@
     <input type="hidden", th:field="*{dateConclusion}" th:value="${pledgeSubjectDto.getDateConclusion()}">
     <input type="hidden", th:field="*{statusMonitoring}" th:value="${pledgeSubjectDto.getStatusMonitoring()}">
     <input type="hidden", th:field="*{typeOfMonitoring}" th:value="${pledgeSubjectDto.getTypeOfMonitoring()}">
-    <input type="hidden", th:field="*{pledgeAgreementsIds}" th:value="${pledgeSubjectDto.getPledgeAgreementsIds()}">
-    <input type="hidden", th:field="*{costHistoriesIds}" th:value="${pledgeSubjectDto.getCostHistoriesIds()}">
-    <input type="hidden", th:field="*{monitoringIds}" th:value="${pledgeSubjectDto.getMonitoringIds()}">
-    <input type="hidden", th:field="*{encumbrancesIds}" th:value="${pledgeSubjectDto.getEncumbrancesIds()}">
-    <input type="hidden", th:field="*{insurancesIds}" th:value="${pledgeSubjectDto.getInsurancesIds()}">
     <input type="hidden", th:field="*{typeOfCollateral}" th:value="${pledgeSubjectDto.getTypeOfCollateral()}">
 
     <div th:replace="fragments/pledge_subject_forms :: generalProperty(${pledgeSubjectDto})"></div>

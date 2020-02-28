@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfSecurities;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 @Getter
+@Setter
 @ToString
 public class PledgeSubjectSecuritiesDto{
 

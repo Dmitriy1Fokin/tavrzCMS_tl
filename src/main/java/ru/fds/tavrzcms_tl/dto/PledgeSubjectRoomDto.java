@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import ru.fds.tavrzcms_tl.dictionary.MarketSegment;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
 
 @Getter
+@Setter
 @ToString
 public class PledgeSubjectRoomDto{
 

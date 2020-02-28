@@ -2,9 +2,10 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
-import ru.fds.tavrzcms_tl.utils.Utils;
+import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectUpdateDtoWrapper;
 
 import java.util.List;
 import java.util.Map;
@@ -28,5 +29,10 @@ public class PledgeSubjectService {
 
     public List<PledgeSubjectDto> getPledgeSubjectBySearchCriteria(Map<String, String> searchParam, Pageable pageable){
         return tavrzcmsAPIFeignService.getPledgeSubjectBySearchCriteria(searchParam, pageable);
+    }
+
+    @Transactional
+    public PledgeSubjectDto updatePledgeSubject(PledgeSubjectUpdateDtoWrapper pledgeSubjectUpdateDtoWrapper){
+        return tavrzcmsAPIFeignService.updatePledgeSubject(pledgeSubjectUpdateDtoWrapper);
     }
 }

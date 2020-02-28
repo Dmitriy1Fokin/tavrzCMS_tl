@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfVessel;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
 @Getter
+@Setter
 @ToString
 public class PledgeSubjectVesselDto{
 

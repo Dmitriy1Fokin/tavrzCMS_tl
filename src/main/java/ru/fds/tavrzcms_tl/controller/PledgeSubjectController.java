@@ -1,8 +1,12 @@
 package ru.fds.tavrzcms_tl.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
@@ -11,8 +15,14 @@ import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeSubjectService;
+import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectUpdateDtoWrapper;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/pledge_subject")
@@ -54,5 +64,33 @@ public class PledgeSubjectController {
         model.addAttribute(ATTR_LOAN_AGREEMENT_LIST, loanAgreementDtoList);
 
         return PAGE_DETAIL;
+    }
+
+    @GetMapping("/card_update")
+    public String pledgeSubjectCardUpdate(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
+                                          Model model){
+
+        PledgeSubjectDto pledgeSubjectDto = pledgeSubjectService.getPledgeSubjectById(pledgeSubjectId);
+
+        model.addAttribute(ATTR_PLEDGE_SUBJECT, pledgeSubjectDto);
+
+        return PAGE_CARD_UPDATE;
+    }
+
+    @PostMapping("/update_pledge_subject")
+    public String updatePledgeSubject(@Valid PledgeSubjectDto pledgeSubjectDto,
+                                      BindingResult bindingResult,
+                                      Model model){
+
+        if(bindingResult.hasErrors()) {
+            return PAGE_CARD_UPDATE;
+        }
+
+        List<Long> pledgeAgreementIds = pledgeAgreementService.getPledgeAgreementByPledgeSubject(pledgeSubjectDto.getPledgeSubjectId())
+                .stream().map(PledgeAgreementDto::getPledgeAgreementId).collect(Collectors.toList());
+
+        pledgeSubjectDto = pledgeSubjectService.updatePledgeSubject(new PledgeSubjectUpdateDtoWrapper(pledgeSubjectDto, pledgeAgreementIds));
+
+        return pledgeSubjectDetailPage(pledgeSubjectDto.getPledgeSubjectId(), model);
     }
 }

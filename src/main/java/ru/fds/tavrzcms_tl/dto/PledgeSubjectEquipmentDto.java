@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfEquipment;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 @Getter
+@Setter
 @ToString
 public class PledgeSubjectEquipmentDto{
 

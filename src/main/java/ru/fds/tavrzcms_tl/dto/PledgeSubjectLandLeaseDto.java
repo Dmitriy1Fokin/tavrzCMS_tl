@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.fds.tavrzcms_tl.dictionary.LandCategory;
@@ -12,6 +13,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @ToString
 public class PledgeSubjectLandLeaseDto{
 

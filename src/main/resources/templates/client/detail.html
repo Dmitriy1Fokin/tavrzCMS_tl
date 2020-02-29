@@ -63,13 +63,13 @@
 <br>
 <br>
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-    <a th:href="@{/client/card/update(clientId=${clientDto.getClientId()}, whatDo='updateClient')}"
+    <a th:href="@{/client/update/card(clientId=${clientDto.getClientId()})}"
        href="client/card.html"
        th:text="'Изменить данные клиента'">Изменить данные клиента</a>
     <br>
     <br>
     <a th:href="@{/pledge_agreement/card(whatDo='newPA', clientId=${clientDto.getClientId()})}"
-       href="../pledge_agreement/card.html"
+       href="../pledge_agreement/card_insert.html"
        th:text="'Добавить новый договор залога'">Добавить новый договор залога</a>
     <br>
     <br>

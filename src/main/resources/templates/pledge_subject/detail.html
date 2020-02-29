@@ -387,7 +387,7 @@
     <br>
     <br>
     <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-        <a th:href="@{/pledge_subject/card_update(pledgeSubjectId=${pledgeSubjectDto.getPledgeSubjectId()})}"
+        <a th:href="@{/pledge_subject/update/card(pledgeSubjectId=${pledgeSubjectDto.getPledgeSubjectId()})}"
            href="card_update.html"
            th:text="'Изменить данные'">Изменить данные</a>
         <br>

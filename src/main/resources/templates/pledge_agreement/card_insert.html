@@ -34,7 +34,7 @@
 
 <div th:switch="${whatDo}">
     <div th:case="changePA">
-        <form th:action="@{/pledge_agreement/update_insert}" th:method="post" th:object="${pledgeAgreementDto}" action="card.html">
+        <form th:action="@{/pledge_agreement/update_insert}" th:method="post" th:object="${pledgeAgreementDto}" action="card_insert.html">
             <input type="hidden", name="whatDo" th:value="${whatDo}">
             <input type="hidden", th:field="*{pledgeAgreementId}" th:value="${pledgeAgreementDto.getPledgeAgreementId()}">
             <input type="hidden", th:field="*{clientId}" th:value="${pledgeAgreementDto.getClientId()}">
@@ -90,7 +90,7 @@
         </form>
     </div>
     <div th:case="newPA">
-        <form th:action="@{/pledge_agreement/update_insert}" th:method="post" th:object="${pledgeAgreementDto}" action="card.html">
+        <form th:action="@{/pledge_agreement/update_insert}" th:method="post" th:object="${pledgeAgreementDto}" action="card_insert.html">
             <input type="hidden", name="whatDo" th:value="${whatDo}">
             <input type="hidden" , th:field="*{clientId}" th:value="${pledgeAgreementDto.getClientId()}">
 

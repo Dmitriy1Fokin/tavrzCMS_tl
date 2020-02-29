@@ -37,13 +37,13 @@ public class PledgeAgreementController {
     @Value("${page_size}")
     private Integer pageSize;
     private static final String ATTR_PLEDGE_AGREEMENT = "pledgeAgreementDto";
-    private static final String ATTR_WHAT_DO = "whatDo";
     private static final String ATTR_PLEDGE_AGREEMENT_LIST = "pledgeAgreementList";
     private static final String ATTR_EMPLOYEE_ID = "employeeId";
     private static final String ATTR_PAGE = "page";
     private static final String ATTR_PLEDGE_SUBJECT_LIST = "pledgeSubjectDtoList";
     private static final String ATTR_PERV_POSL = "pervPosl";
-    private static final String PAGE_CARD = "pledge_agreement/card";
+    private static final String PAGE_CARD_UPDATE = "pledge_agreement/card_update";
+    private static final String PAGE_CARD_INSERT = "pledge_agreement/card_insert";
     private static final String PAGE_PA = "pledge_agreement/pledge_agreements";
     private static final String PAGE_DETAIL = "pledge_agreement/detail";
     private static final String PAGE_PLEDGE_SUBJECTS = "pledge_agreement/pledge_subjects";
@@ -137,41 +137,35 @@ public class PledgeAgreementController {
         return PAGE_DETAIL;
     }
 
-    @GetMapping("/card/update")
+    @GetMapping("/update/card")
     public String pledgeAgreementCardUpdatePage(@RequestParam("pledgeAgreementId") Long pledgeAgreementId,
-                                                @RequestParam("whatDo") String whatDo,
                                                 Model model){
         PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
-        model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-        return PAGE_CARD;
+        return PAGE_CARD_UPDATE;
     }
 
-    @GetMapping("/card/insert")
+    @GetMapping("/insert/card")
     public String pledgeAgreementCardInsertPage(@RequestParam("clientId") Long clientId,
-                                                @RequestParam("whatDo") String whatDo,
                                                 Model model){
         PledgeAgreementDto pledgeAgreementDto = PledgeAgreementDto.builder()
                 .clientId(clientId)
                 .build();
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
-        model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-        return PAGE_CARD;
+        return PAGE_CARD_INSERT;
     }
 
-    @PostMapping("/update_insert")
-    public String updateInsertPledgeAgreement(@Valid PledgeAgreementDto pledgeAgreementDto,
+    @PostMapping("/update")
+    public String updatePledgeAgreement(@Valid PledgeAgreementDto pledgeAgreementDto,
                                               BindingResult bindingResult,
-                                              @RequestParam("whatDo") String whatDo,
                                               Model model){
 
         if(bindingResult.hasErrors()){
-            model.addAttribute(ATTR_WHAT_DO, whatDo);
-            return PAGE_CARD;
+            return PAGE_CARD_UPDATE;
         }
 
         List<Long> loanAgreementIds = loanAgreementService.getCurrentLoanAgreementsByPledgeAgreement(pledgeAgreementDto.getPledgeAgreementId())

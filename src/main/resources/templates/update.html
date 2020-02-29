@@ -25,12 +25,12 @@
 <div th:replace="fragments/nav :: user_nav_bar"></div>
 
 <a th:href="@{/client/card(typeOfClient='LEGAL_ENTITY', whatDo='insertClient')}"
-   href="client/card.html"
+   href="client/card_insert.html"
    th:text="'Добавить нового клиента (ЮЛ)'">Добавить нового клиента (ЮЛ)</a>
 <br>
 <br>
 <a th:href="@{/client/card(typeOfClient='INDIVIDUAL', whatDo='insertClient')}"
-   href="client/card.html"
+   href="client/card_insert.html"
    th:text="'Добавить нового клиента (ФЛ)'">Добавить нового клиента (ФЛ)</a>
 <br>
 <br>

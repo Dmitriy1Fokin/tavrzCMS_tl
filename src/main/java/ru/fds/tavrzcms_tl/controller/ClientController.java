@@ -44,7 +44,8 @@ public class ClientController {
     private static final String ATTR_CLIENT_MANAGER_LIST = "clientManagerDtoList";
     private static final String ATTR_EMPLOYEE_LIST = "employeeDtoList";
     private static final String ATTR_WHAT_DO = "whatDo";
-    private static final String PAGE_CARD = "client/card";
+    private static final String PAGE_CARD_UPDATE = "client/card_update";
+    private static final String PAGE_CARD_INSERT = "client/card_insert";
     private static final String PAGE_DETAIL = "client/detail";
 
     public ClientController(ClientService clientService,
@@ -82,9 +83,8 @@ public class ClientController {
         return PAGE_DETAIL;
     }
 
-    @GetMapping("/card/update")
+    @GetMapping("/update/card")
     public String clientCardUpdatePage(@RequestParam("clientId") Long clientId,
-                                       @RequestParam("whatDo") String whatDo,
                                        Model model){
         ClientDto clientDto = clientService.getClientById(clientId);
         List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
@@ -93,12 +93,11 @@ public class ClientController {
         model.addAttribute(ATTR_CLIENT, clientDto);
         model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
         model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
-        model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-        return PAGE_CARD;
+        return PAGE_CARD_UPDATE;
     }
 
-    @GetMapping("/card/insert")
+    @GetMapping("/insert/card")
     public String clientCardInsertPage(@RequestParam("typeOfClient") String typeOfClient,
                                        @RequestParam("whatDo") String whatDo,
                                        Model model){
@@ -122,21 +121,19 @@ public class ClientController {
         model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
         model.addAttribute(ATTR_WHAT_DO, whatDo);
 
-        return PAGE_CARD;
+        return PAGE_CARD_INSERT;
     }
 
-    @PostMapping("/update_insert")
+    @PostMapping("/update")
     public String updateInsertClient(@Valid ClientDto clientDto,
                                      BindingResult bindingResult,
-                                     @RequestParam("whatDo") String whatDo,
                                      Model model){
         if(bindingResult.hasErrors()){
             List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
             List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
             model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
             model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
-            model.addAttribute(ATTR_WHAT_DO, whatDo);
-            return PAGE_CARD;
+            return PAGE_CARD_UPDATE;
         }
 
         clientDto = clientService.updateInsertClient(clientDto);

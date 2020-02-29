@@ -69,7 +69,7 @@ public class PledgeSubjectController {
         return PAGE_DETAIL;
     }
 
-    @GetMapping("/card_update")
+    @GetMapping("/update/card")
     public String pledgeSubjectCardUpdate(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                           Model model){
 
@@ -80,7 +80,7 @@ public class PledgeSubjectController {
         return PAGE_CARD_UPDATE;
     }
 
-    @PostMapping("/update_pledge_subject")
+    @PostMapping("/update")
     public String updatePledgeSubject(@Valid PledgeSubjectDto pledgeSubjectDto,
                                       BindingResult bindingResult,
                                       Model model){

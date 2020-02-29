@@ -87,7 +87,7 @@
 <br>
 <br>
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-    <a th:href="@{/loan_agreement/card(whatDo='changeLA', loanAgreementId=${loanAgreementDto.getLoanAgreementId()})}"
+    <a th:href="@{/loan_agreement/update/card(loanAgreementId=${loanAgreementDto.getLoanAgreementId()})}"
              href="card.html"
              th:text="'Изменить данные'">Изменить данные</a>
     <br>

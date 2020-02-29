@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
@@ -72,5 +73,8 @@ public class LoanAgreementService {
         return tavrzcmsAPIFeignService.getLoanAgreementBySearchCriteria(searchParam, pageable);
     }
 
-
+    @Transactional
+    public LoanAgreementDto updateLoanAgreement(LoanAgreementDto loanAgreementDto){
+        return tavrzcmsAPIFeignService.updateLoanAgreement(loanAgreementDto);
+    }
 }

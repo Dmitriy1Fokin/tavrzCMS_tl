@@ -58,7 +58,7 @@ public class PledgeAgreementController {
         this.pledgeSubjectService = pledgeSubjectService;
     }
 
-    @GetMapping("/pledge_agreements_all_emp")
+    @GetMapping("/pledge_agreements/all/emp")
     public String allPledgeAgreementsPageFoeEmployee(@RequestParam("employeeId") Long employeeId,
                                                      @RequestParam("page") Integer page,
                                                      Model model) {
@@ -73,7 +73,7 @@ public class PledgeAgreementController {
         return PAGE_PA;
     }
 
-    @GetMapping("/pledge_agreements_all_guest")
+    @GetMapping("/pledge_agreements/all/guest")
     public String allPledgeAgreementsPageForGuest(@RequestParam(ATTR_PAGE) Integer page,
                                                   Model model) {
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -86,7 +86,7 @@ public class PledgeAgreementController {
         return PAGE_PA;
     }
 
-    @GetMapping("/pledge_agreements_perv_posl_emp")
+    @GetMapping("/pledge_agreements/perv_posl/emp")
     public String pervPoslPledgeAgreementsPageForEmployee(@RequestParam(ATTR_EMPLOYEE_ID) Long employeeId,
                                                           @RequestParam(ATTR_PAGE) Integer page,
                                                           @RequestParam("pervPosl") TypeOfPledgeAgreement typeOfPledgeAgreement,
@@ -105,7 +105,7 @@ public class PledgeAgreementController {
         return PAGE_PA;
     }
 
-    @GetMapping("/pledge_agreements_perv_posl_guest")
+    @GetMapping("/pledge_agreements/perv_posl/guest")
     public String pervPoslPledgeAgreementsPageForGuest(@RequestParam(ATTR_PAGE) Integer page,
                                                        @RequestParam("pervPosl") TypeOfPledgeAgreement typeOfPledgeAgreement,
                                                        Model model) {

@@ -5,7 +5,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
@@ -15,6 +17,7 @@ import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -36,6 +39,7 @@ public class LoanAgreementController {
     private static final String ATTR_CLOSED_PLEDGE_AGREEMENT_LIST = "closedPledgeAgreementDtoList";
     private static final String PAGE_LOAN_AGREEMENTS = "loan_agreement/loan_agreements";
     private static final String PAGE_DETAIL = "loan_agreement/detail";
+    private static final String PAGE_CARD_UPDATE = "loan_agreement/card_update";
 
     public LoanAgreementController(LoanAgreementService loanAgreementService,
                                    EmployeeService employeeService,
@@ -45,7 +49,7 @@ public class LoanAgreementController {
         this.pledgeAgreementService = pledgeAgreementService;
     }
 
-    @GetMapping("/loan_agreements_emp")
+    @GetMapping("/loan_agreements/emp")
     public String loanAgreementsPageForEmployee(@RequestParam("employeeId")Long employeeId,
                                                 @RequestParam("page") Integer page,
                                                 Model model) {
@@ -60,7 +64,7 @@ public class LoanAgreementController {
         return PAGE_LOAN_AGREEMENTS;
     }
 
-    @GetMapping("/loan_agreements_guest")
+    @GetMapping("/loan_agreements/guest")
     public String loanAgreementsPageFoeGuest(@RequestParam("page") Integer page,
                                              Model model) {
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -90,6 +94,32 @@ public class LoanAgreementController {
         model.addAttribute(ATTR_CLOSED_PLEDGE_AGREEMENT_LIST, closedPledgeAgreementDtoList);
 
         return PAGE_DETAIL;
+    }
+
+    @GetMapping("/update/card")
+    public String loanAgreementCardUpdatePage(@RequestParam("loanAgreementId") Long loanAgreementId,
+                                              Model model){
+
+        LoanAgreementDto loanAgreementDto = loanAgreementService.getLoanAgreementById(loanAgreementId);
+
+        model.addAttribute(ATTR_LOAN_AGREEMENT, loanAgreementDto);
+
+        return PAGE_CARD_UPDATE;
+
+    }
+
+    @PostMapping("/update")
+    public String updateLoanAgreement(@Valid LoanAgreementDto loanAgreementDto,
+                                      BindingResult bindingResult,
+                                      Model model){
+
+        if(bindingResult.hasErrors()){
+            return PAGE_CARD_UPDATE;
+        }
+
+        loanAgreementDto = loanAgreementService.updateLoanAgreement(loanAgreementDto);
+
+        return loanAgreementDetailPage(loanAgreementDto.getLoanAgreementId(), model);
     }
 
 }

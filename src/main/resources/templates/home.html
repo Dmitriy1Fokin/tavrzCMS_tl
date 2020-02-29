@@ -41,17 +41,17 @@
 
     <p>Договоров залога на сопровождении:</p>
     <label>Всего:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements_all_emp(page=0, employeeId=${employeeDto.employeeId})}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfAllPledgeAgreement}">0</a>
+    <a th:href="@{/pledge_agreement/pledge_agreements/all/emp(page=0, employeeId=${employeeDto.employeeId})}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfAllPledgeAgreement}">0</a>
     <label>Первичных:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_emp(page=0, employeeId=${employeeDto.employeeId}, pervPosl='PERV')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPervPledgeAgreements}">0</a>
+    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/emp(page=0, employeeId=${employeeDto.employeeId}, pervPosl='PERV')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPervPledgeAgreements}">0</a>
     <label>Последующих:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_emp(page=0, employeeId=${employeeDto.employeeId}, pervPosl='POSL')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPoslPledgeAgreements}">0</a>
+    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/emp(page=0, employeeId=${employeeDto.employeeId}, pervPosl='POSL')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPoslPledgeAgreements}">0</a>
 
     <br>
     <br>
 
     <label>Кредитных договоров на сопровождении:</label>
-    <a th:href="@{/loan_agreement/loan_agreements_emp(page=0, employeeId=${employeeDto.employeeId})}" href="loan_agreement/loan_agreements.html" th:text="${countOfLoanAgreements}">0</a>
+    <a th:href="@{/loan_agreement/loan_agreements/emp(page=0, employeeId=${employeeDto.employeeId})}" href="loan_agreement/loan_agreements.html" th:text="${countOfLoanAgreements}">0</a>
 
     <p th:text="'Мониторинги (' + ${#dates.monthName(#dates.createNow())} + ')'">Мониторинги</p>
     <ul>
@@ -122,18 +122,18 @@
 <div sec:authorize="hasAnyRole('GUEST', 'ADMIN')">
     <p>Договоры залога:</p>
     <label>Всего:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements_all_guest(page=0)}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfAllPledgeAgreement}">0</a>
+    <a th:href="@{/pledge_agreement/pledge_agreements/all/guest(page=0)}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfAllPledgeAgreement}">0</a>
     <label>Первичных:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_guest(page=0, pervPosl='PERV')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPervPledgeAgreements}">0</a>
+    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/guest(page=0, pervPosl='PERV')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPervPledgeAgreements}">0</a>
     <label>Последующих:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements_perv_posl_guest(page=0, pervPosl='POSL')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPoslPledgeAgreements}">0</a>
+    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/guest(page=0, pervPosl='POSL')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPoslPledgeAgreements}">0</a>
 
     <br>
     <br>
 
     <p>Кредитные договоры:</p>
     <label>Всего:</label>
-    <a th:href="@{/loan_agreement/loan_agreements_guest(page=0)}" href="loan_agreement/loan_agreements.html" th:text="${countOfLoanAgreements}">0</a>
+    <a th:href="@{/loan_agreement/loan_agreements/guest(page=0)}" href="loan_agreement/loan_agreements.html" th:text="${countOfLoanAgreements}">0</a>
 
 </div>
 </body>

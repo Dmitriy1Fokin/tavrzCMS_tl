@@ -19,4 +19,8 @@ public class MonitoringService {
         return tavrzcmsAPIFeignService.getMonitoringsByPledgeSubject(pledgeSubjectId);
     }
 
+    public void insertMonitoringInClient(MonitoringDto monitoringDto, Long clientId){
+        tavrzcmsAPIFeignService.insertMonitoringByClient(monitoringDto, clientId);
+    }
+
 }

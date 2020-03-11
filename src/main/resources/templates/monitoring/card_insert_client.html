@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Обновление мониторинга предмета залога по залогодателю'">Обновление мониторинга предмета залога по залогодателю</title>
+    <style type="text/css">
+        .nav-item{
+            display: inline;
+        }
+        .row{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <div th:replace="fragments/nav :: user_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+    <div th:replace="fragments/nav :: admin_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('GUEST')">
+    <div th:replace="fragments/nav :: guest_nav_bar"></div>
+</div>
+
+
+<div th:switch="${clientDto.getTypeOfClient().name()}">
+    <div th:case="LEGAL_ENTITY">
+        <h1 th:text="'Обновление мониторинга предмета залога по залогодателю: '
+        + ${clientDto.getClientLegalEntityDto().getOrganizationalForm()} + ' '
+        + ${clientDto.getClientLegalEntityDto().getName()}">Клиент ЮЛ</h1>
+    </div>
+    <div th:case="INDIVIDUAL">
+        <h1 th:text="'Обновление мониторинга предмета залога по залогодателю: '
+        + ${clientDto.getClientIndividualDto().getSurname()}
+        + ' ' + ${clientDto.getClientIndividualDto().getName()}
+        + ' ' + ${clientDto.getClientIndividualDto().getPatronymic()}">Клиент ЮЛ</h1>
+    </div>
+</div>
+
+
+
+<form th:action="@{/client/monitoring/insert}" th:method="POST" th:object="${monitoringDto}" action="card_insert_client.html">
+    <input type="hidden", name="clientId" th:value="${clientDto.getClientId()}" value="0">
+
+    <div class="row">
+        <label>Дата мониторинга</label>
+        <input required th:field="*{dateMonitoring}" type="date"/>
+        <div th:if="${#fields.hasErrors('dateMonitoring')}" th:errors="*{dateMonitoring}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Вид мониторинга</label>
+        <select required th:field="*{typeOfMonitoring}">
+            <option value="DOCUMENTARY">документарный</option>
+            <option value="VISUAL">визуальный</option>
+        </select>
+        <div th:if="${#fields.hasErrors('typeOfMonitoring')}" th:errors="*{typeOfMonitoring}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Результат мониторинга</label>
+        <select required th:field="*{statusMonitoring}">
+            <option value="IN_STOCK">в наличии</option>
+            <option value="LOSING">утрата</option>
+            <option value="PARTIAL_LOSS">частичная утрата</option>
+        </select>
+        <div th:if="${#fields.hasErrors('statusMonitoring')}" th:errors="*{statusMonitoring}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Ответственный сотрудник</label>
+        <input required th:field="*{employee}" type="text"/>
+        <div th:if="${#fields.hasErrors('employee')}" th:errors="*{employee}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Залоговая стоимость (в случаи утраты)</label>
+        <input type="number" min="0" step="0.01" th:field="*{collateralValue}"/>
+        <div th:if="${#fields.hasErrors('collateralValue')}" th:errors="*{collateralValue}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Комментарии</label>
+        <input th:field="*{notice}" type="text"/>
+        <div th:if="${#fields.hasErrors('notice')}" th:errors="*{notice}">Name Error</div>
+    </div>
+    <br>
+    <button type="submit">Обновить</button>
+</form>
+
+</body>
+</html>

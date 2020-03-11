@@ -82,8 +82,8 @@
 
 <div th:if="${pledgeAgreementCurrentList.size() &gt; 0}">
     <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-        <a th:href="@{/monitoring/card(whereUpdateMonitoring='pledgor', pledgorId=${clientDto.getClientId()})}"
-           href="../monitoring/card.html"
+        <a th:href="@{/client/monitoring/insert/card(clientId=${clientDto.getClientId()})}"
+           href="../monitoring/card_insert_client.html"
            th:text="'Обновить мониторинг предметов залога по всем договорам залога залогодателя'">Обновить мониторинг предметов залога по всем договорам залога залогодателя</a>
         <br>
         <br>

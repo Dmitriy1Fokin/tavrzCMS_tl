@@ -14,11 +14,13 @@ import ru.fds.tavrzcms_tl.dto.ClientLegalEntityDto;
 import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
+import ru.fds.tavrzcms_tl.dto.MonitoringDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.ClientManagerService;
 import ru.fds.tavrzcms_tl.service.ClientService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
+import ru.fds.tavrzcms_tl.service.MonitoringService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 
 import javax.validation.Valid;
@@ -33,6 +35,7 @@ public class ClientController {
     private final EmployeeService employeeService;
     private final PledgeAgreementService pledgeAgreementService;
     private final LoanAgreementService loanAgreementService;
+    private final MonitoringService monitoringService;
 
     private static final String ATTR_CLIENT = "clientDto";
     private static final String ATTR_CLIENT_MANAGER = "clientManagerDto";
@@ -44,20 +47,25 @@ public class ClientController {
     private static final String ATTR_CLIENT_MANAGER_LIST = "clientManagerDtoList";
     private static final String ATTR_EMPLOYEE_LIST = "employeeDtoList";
     private static final String ATTR_WHAT_DO = "whatDo";
+    private static final String ATTR_MONITORING = "monitoringDto";
     private static final String PAGE_CARD_UPDATE = "client/card_update";
     private static final String PAGE_CARD_INSERT = "client/card_insert";
     private static final String PAGE_DETAIL = "client/detail";
+    private static final String PAGE_MONITORING_CARD = "monitoring/card_insert_client";
+
 
     public ClientController(ClientService clientService,
                             ClientManagerService clientManagerService,
                             EmployeeService employeeService,
                             PledgeAgreementService pledgeAgreementService,
-                            LoanAgreementService loanAgreementService) {
+                            LoanAgreementService loanAgreementService,
+                            MonitoringService monitoringService) {
         this.clientService = clientService;
         this.clientManagerService = clientManagerService;
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
+        this.monitoringService = monitoringService;
     }
 
     @GetMapping("/detail")
@@ -139,5 +147,33 @@ public class ClientController {
         clientDto = clientService.updateInsertClient(clientDto);
 
         return clientDetailPage(clientDto.getClientId(), model);
+    }
+
+    @GetMapping("/monitoring/insert/card")
+    public String monitoringByClientCardPage(@RequestParam("clientId") Long clientId,
+                                             Model model){
+
+        ClientDto clientDto = clientService.getClientById(clientId);
+        MonitoringDto monitoringDto = new MonitoringDto();
+
+        model.addAttribute(ATTR_CLIENT, clientDto);
+        model.addAttribute(ATTR_MONITORING, monitoringDto);
+
+
+        return PAGE_MONITORING_CARD;
+    }
+
+    @PostMapping("/monitoring/insert")
+    public String insertMonitoringByClient(@Valid MonitoringDto monitoringDto,
+                                           BindingResult bindingResult,
+                                           @RequestParam("clientId") Long clientId,
+                                           Model model){
+        if(bindingResult.hasErrors()){
+            return PAGE_MONITORING_CARD;
+        }
+
+        monitoringService.insertMonitoringInClient(monitoringDto, clientId);
+
+        return clientDetailPage(clientId, model);
     }
 }

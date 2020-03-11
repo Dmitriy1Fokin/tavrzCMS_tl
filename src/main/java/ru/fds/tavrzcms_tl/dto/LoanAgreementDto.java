@@ -1,5 +1,7 @@
 package ru.fds.tavrzcms_tl.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +19,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 @ToString
 public class LoanAgreementDto{
 

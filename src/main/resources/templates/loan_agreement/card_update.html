@@ -24,7 +24,7 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<form th:action="@{/loan_agreement/update}" th:method="post" th:object="${loanAgreementDto}" action="card.html">
+<form th:action="@{/loan_agreement/update}" th:method="PUT" th:object="${loanAgreementDto}" action="card_insert.html">
     <input type="hidden", th:field="*{loanAgreementId}" th:value="${loanAgreementDto.getLoanAgreementId()}">
     <input type="hidden" , th:field="*{clientId}" th:value="${loanAgreementDto.getClientId()}">
 

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
@@ -16,8 +17,10 @@ import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
+import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -40,6 +43,7 @@ public class LoanAgreementController {
     private static final String PAGE_LOAN_AGREEMENTS = "loan_agreement/loan_agreements";
     private static final String PAGE_DETAIL = "loan_agreement/detail";
     private static final String PAGE_CARD_UPDATE = "loan_agreement/card_update";
+    private static final String PAGE_CARD_INSERT = "loan_agreement/card_insert";
 
     public LoanAgreementController(LoanAgreementService loanAgreementService,
                                    EmployeeService employeeService,
@@ -108,7 +112,21 @@ public class LoanAgreementController {
 
     }
 
-    @PostMapping("/update")
+    @GetMapping("/insert/card")
+    public String loanAgreementCardInsertPage(@RequestParam("clientId") Long clientId,
+                                              Model model){
+
+        LoanAgreementDto loanAgreementDto = LoanAgreementDto.builder()
+                .clientId(clientId)
+                .build();
+
+        model.addAttribute(ATTR_LOAN_AGREEMENT, loanAgreementDto);
+
+        return PAGE_CARD_INSERT;
+
+    }
+
+    @PutMapping("/update")
     public String updateLoanAgreement(@Valid LoanAgreementDto loanAgreementDto,
                                       BindingResult bindingResult,
                                       Model model){
@@ -118,6 +136,20 @@ public class LoanAgreementController {
         }
 
         loanAgreementDto = loanAgreementService.updateLoanAgreement(loanAgreementDto);
+
+        return loanAgreementDetailPage(loanAgreementDto.getLoanAgreementId(), model);
+    }
+
+    @PostMapping("/insert")
+    public String insertLoanAgreement(@Valid LoanAgreementDto loanAgreementDto,
+                                        BindingResult bindingResult,
+                                        Model model){
+
+        if(bindingResult.hasErrors()){
+            return PAGE_CARD_INSERT;
+        }
+
+        loanAgreementDto = loanAgreementService.inseertLoanAgreement(loanAgreementDto);
 
         return loanAgreementDetailPage(loanAgreementDto.getLoanAgreementId(), model);
     }

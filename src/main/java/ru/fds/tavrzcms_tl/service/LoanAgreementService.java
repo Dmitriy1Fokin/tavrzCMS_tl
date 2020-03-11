@@ -77,4 +77,9 @@ public class LoanAgreementService {
     public LoanAgreementDto updateLoanAgreement(LoanAgreementDto loanAgreementDto){
         return tavrzcmsAPIFeignService.updateLoanAgreement(loanAgreementDto);
     }
+
+    @Transactional
+    public LoanAgreementDto inseertLoanAgreement(LoanAgreementDto loanAgreementDto){
+        return tavrzcmsAPIFeignService.insertLoanAgreement(loanAgreementDto);
+    }
 }

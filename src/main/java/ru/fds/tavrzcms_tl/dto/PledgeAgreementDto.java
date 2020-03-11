@@ -3,6 +3,7 @@ package ru.fds.tavrzcms_tl.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.fds.tavrzcms_tl.dictionary.StatusOfAgreement;
@@ -16,9 +17,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
+@Setter
+@AllArgsConstructor
 @ToString
 @Builder
-@AllArgsConstructor
 public class PledgeAgreementDto{
 
     private Long pledgeAgreementId;

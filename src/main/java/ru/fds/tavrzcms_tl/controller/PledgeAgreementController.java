@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
@@ -22,6 +23,8 @@ import ru.fds.tavrzcms_tl.service.PledgeSubjectService;
 import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -152,6 +155,11 @@ public class PledgeAgreementController {
                                                 Model model){
         PledgeAgreementDto pledgeAgreementDto = PledgeAgreementDto.builder()
                 .clientId(clientId)
+                .zsDz(BigDecimal.ZERO)
+                .zsZz(BigDecimal.ZERO)
+                .rsDz(BigDecimal.ZERO)
+                .rsZz(BigDecimal.ZERO)
+                .ss(BigDecimal.ZERO)
                 .build();
 
         model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
@@ -159,7 +167,7 @@ public class PledgeAgreementController {
         return PAGE_CARD_INSERT;
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public String updatePledgeAgreement(@Valid PledgeAgreementDto pledgeAgreementDto,
                                               BindingResult bindingResult,
                                               Model model){
@@ -176,6 +184,21 @@ public class PledgeAgreementController {
 
         PledgeAgreementDtoWrapper pledgeAgreementDtoWrapper = new PledgeAgreementDtoWrapper(pledgeAgreementDto, loanAgreementIds);
         pledgeAgreementDto = pledgeAgreementService.updatePledgeAgreement(pledgeAgreementDtoWrapper);
+
+        return pledgeAgreementDetailPage(pledgeAgreementDto.getPledgeAgreementId(), model);
+    }
+
+    @PostMapping("/insert")
+    public String insertPledgeAgreement(@Valid PledgeAgreementDto pledgeAgreementDto,
+                                        BindingResult bindingResult,
+                                        Model model){
+
+        if(bindingResult.hasErrors()){
+            return PAGE_CARD_INSERT;
+        }
+
+        PledgeAgreementDtoWrapper pledgeAgreementDtoWrapper = new PledgeAgreementDtoWrapper(pledgeAgreementDto, Collections.emptyList());
+        pledgeAgreementDto = pledgeAgreementService.insertPledgeAgreement(pledgeAgreementDtoWrapper);
 
         return pledgeAgreementDetailPage(pledgeAgreementDto.getPledgeAgreementId(), model);
     }

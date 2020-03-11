@@ -25,7 +25,7 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<form th:action="@{/pledge_agreement/update}" th:method="post" th:object="${pledgeAgreementDto}" action="card_insert.html">
+<form th:action="@{/pledge_agreement/update}" th:method="put" th:object="${pledgeAgreementDto}" action="card_insert.html">
     <input type="hidden", th:field="*{pledgeAgreementId}" th:value="${pledgeAgreementDto.getPledgeAgreementId()}">
     <input type="hidden", th:field="*{clientId}" th:value="${pledgeAgreementDto.getClientId()}">
     <input type="hidden", th:field="*{zsDz}" th:value="${pledgeAgreementDto.getZsDz()}">

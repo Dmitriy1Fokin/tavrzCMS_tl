@@ -169,6 +169,8 @@ public class ClientController {
                                            @RequestParam("clientId") Long clientId,
                                            Model model){
         if(bindingResult.hasErrors()){
+            ClientDto clientDto = clientService.getClientById(clientId);
+            model.addAttribute(ATTR_CLIENT, clientDto);
             return PAGE_MONITORING_CARD;
         }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
+import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectDtoNewWrapper;
 import ru.fds.tavrzcms_tl.wrapper.PledgeSubjectUpdateDtoWrapper;
 
 import java.util.List;
@@ -34,5 +35,10 @@ public class PledgeSubjectService {
     @Transactional
     public PledgeSubjectDto updatePledgeSubject(PledgeSubjectUpdateDtoWrapper pledgeSubjectUpdateDtoWrapper){
         return tavrzcmsAPIFeignService.updatePledgeSubject(pledgeSubjectUpdateDtoWrapper);
+    }
+
+    @Transactional
+    public PledgeSubjectDto insertPledgeSubject(PledgeSubjectDtoNewWrapper pledgeSubjectDtoNewWrapper){
+        return tavrzcmsAPIFeignService.insertPledgeSubject(pledgeSubjectDtoNewWrapper);
     }
 }

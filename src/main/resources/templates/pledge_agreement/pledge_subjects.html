@@ -46,7 +46,7 @@
     <a href="javascript:setVisible('searchBarNewPS');">Добавить новый предмет залога</a>
     <div id="searchBarNewPS" style="display:none">
         <br>
-        <form th:action="@{/pledge_subject/insert/card}" th:method="get" action="../pledge_subject/card_new.html">
+        <form th:action="@{/pledge_agreement/pledge_subject/insert/card}" th:method="get" action="../pledge_subject/card_new.html">
             <input type="hidden" name="pledgeAgreementId" th:value="${pledgeAgreementDto.getPledgeAgreementId()}">
             <select required name="typeOfCollateral">
                 <option value="AUTO">Авто/спецтехника</option>

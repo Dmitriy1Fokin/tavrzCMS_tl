@@ -147,7 +147,7 @@ public class LoanAgreementController {
             return PAGE_CARD_INSERT;
         }
 
-        loanAgreementDto = loanAgreementService.inseertLoanAgreement(loanAgreementDto);
+        loanAgreementDto = loanAgreementService.insertLoanAgreement(loanAgreementDto);
 
         return loanAgreementDetailPage(loanAgreementDto.getLoanAgreementId(), model);
     }

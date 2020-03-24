@@ -112,6 +112,9 @@ public interface TavrzcmsAPIFeignService {
     @GetMapping("/loan_agreement/closed_la_for_client")
     List<LoanAgreementDto> getClosedLoanAgreementsByClient(@RequestParam("clientId") Long clientId);
 
+    @GetMapping("/loan_agreement/num")
+    List<LoanAgreementDto> getLoanAgreementsByNumLA(@RequestParam("numLA") String numLA);
+
     @GetMapping("/loan_agreement/current_la_for_employee")
     List<LoanAgreementDto> getCurrentLoanAgreementByEmployee(Pageable pageable,
                                                              @RequestParam("employeeId") Long employeeId);

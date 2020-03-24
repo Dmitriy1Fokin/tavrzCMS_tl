@@ -79,7 +79,11 @@ public class LoanAgreementService {
     }
 
     @Transactional
-    public LoanAgreementDto inseertLoanAgreement(LoanAgreementDto loanAgreementDto){
+    public LoanAgreementDto insertLoanAgreement(LoanAgreementDto loanAgreementDto){
         return tavrzcmsAPIFeignService.insertLoanAgreement(loanAgreementDto);
+    }
+
+    public List<LoanAgreementDto> getLoanAgreementByNum(String numLA){
+        return tavrzcmsAPIFeignService.getLoanAgreementsByNumLA(numLA);
     }
 }

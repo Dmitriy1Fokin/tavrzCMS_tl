@@ -1,7 +1,7 @@
 
 function setVisible(data) {
-    el=document.getElementById(data);
-    if(el.style.display=="none"){
+    let el = document.getElementById(data);
+    if(el.style.display==="none"){
         el.style.display="block";
     }else {
         el.style.display="none";
@@ -9,25 +9,28 @@ function setVisible(data) {
 }
 
 $(document).ready(function () {
-    $("#inputSearchNumPA").submit(function (e) {
+    $("#inputSearchNumLA").submit(function (e) {
         e.preventDefault();
-        var num = $("#numPA").val();
-        $('#tBodyPA').html('');
+        const num = $("#numLA").val();
+        $('#tBodyLA').html('');
 
         $.ajax({
-            url : 'searchPA',
-            type: 'POST',
+            url : '/pledge_agreement/searchLA',
+            type: 'GET',
             dataType: 'json',
             data : ({
-                numPA: num
+                numLA: num
             }),
-            success: function (pledgeAgreementList) {
-                el=document.getElementById("searchResultPA");
+            success: function (loanAgreementList) {
+                let el = document.getElementById("searchResultLA");
                 el.style.display="block";
-                for (var index in pledgeAgreementList) {
-                    var pa = pledgeAgreementList[index];
-                    $('#tBodyPA').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ pa['pledgeAgreementId']+ "'></td><td>" + pa['numPA'] + "</td><td>" + pa['dateBeginPA'] + "</td></tr>");
+                for (const index in loanAgreementList) {
+                    const pa = loanAgreementList[index];
+                    $('#tBodyLA').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkLA\" value='"+ pa['loanAgreementId']+ "'></td><td>" + pa['numLA'] + "</td><td>" + pa['dateBeginLA'] + "</td></tr>");
                 }
+            },
+            error: function () {
+                alert("Уппс!");
             }
         });
     });
@@ -35,7 +38,7 @@ $(document).ready(function () {
 
 
 function choise() {
-    var checkBoxArray = document.getElementsByName('checkPA'),
+    var checkBoxArray = document.getElementsByName('checkLA'),
         count = checkBoxArray.length-1,
         isDisabled=true;
     for(;count>=0;count--){
@@ -49,26 +52,27 @@ function choise() {
 }
 
 
-function insertPA() {
-    var pledgeAgreementIdArray = [];
-    $('#tBodyPA input:checkbox:checked').each(function () {
-        pledgeAgreementIdArray.push($(this).val());
+function insertLA() {
+    var loanAgreementIdArray = [];
+    $('#tBodyLA input:checkbox:checked').each(function () {
+        loanAgreementIdArray.push($(this).val());
     });
-    var loanAgreementId = $("#loanAgreementId").text();
+    const pledgeAgreementId = $("#pledgeAgreementId").text();
 
     $.ajax({
-        url: 'insertPA',
+        url: '/pledge_agreement/insertLA',
         type: 'POST',
         dataType: 'json',
-        data: {
-            pledgeAgreementIdArray: pledgeAgreementIdArray,
-            loanAgreementId: loanAgreementId
-        },
+        data: ({
+            loanAgreementIdArray: loanAgreementIdArray,
+            pledgeAgreementId: pledgeAgreementId
+        }),
         success: function () {
             location.reload();
         },
         error: function () {
-            alert("Ошибка при добавлении ДЗ!");
+            // alert("Ошибка при добавлении КД!");
+            location.reload();
         }
     });
 }

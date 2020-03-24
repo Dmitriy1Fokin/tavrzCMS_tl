@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <script th:src="@{/js/jquery-3.4.1.min.js}" src="/js/jquery-3.4.1.min.js"></script>
-    <script th:src="@{/js/scripts.js}" src="/js/testScript.js"></script>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/scripts.js"></script>
     <meta charset="UTF-8">
     <title th:text="'Договор залога: №' + ${pledgeAgreementDto.getNumPA()}">Договор залога</title>
     <style type="text/css">
@@ -41,7 +41,7 @@
     <br>
     <br>
     <label>Id договора залога:</label>
-    <span th:text="${pledgeAgreementDto.getPledgeAgreementId()}"></span>
+    <span th:text="${pledgeAgreementDto.getPledgeAgreementId()}" id="pledgeAgreementId"></span>
     <br>
     <br>
     <label>Номер договора залога:</label>
@@ -115,9 +115,41 @@
         <a th:href="@{/pledge_agreement/update/card(pledgeAgreementId=${pledgeAgreementDto.getPledgeAgreementId()})}"
            href="card_insert.html"
            th:text="'Изменить данные'">Изменить данные</a>
+
+        <br>
+        <br>
+
+        <a href="javascript:setVisible('searchBar');">Добавить кредитный договор</a>
+        <div id="searchBar" style="display:none">
+            <br>
+            <form action="" id="inputSearchNumLA" role="form">
+                <div class="form-group">
+                    <label>№ кредитного договора</label>
+                    <input required id="numLA" type="text"/>
+                    <button type="submit">Найти</button>
+                </div>
+            </form>
+            <div id="searchResultLA" style="display:none">
+                <br>
+                <table class="customTable">
+                    <thead>
+                    <tr>
+                        <th>check</th>
+                        <th>№ КД</th>
+                        <th>дата</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tBodyLA">
+                    </tbody>
+                </table>
+                <br>
+                <input type="button" id="buttonInsert" value="добавить" onclick="insertLA()" disabled="disabled">
+            </div>
+        </div>
         <br>
         <br>
     </div>
+
     <div th:if="${currentLoanAgreementDtoList.size() &gt; 0}">
         <label>Действующие кредитные договоры:</label>
         <div class="containerTable">

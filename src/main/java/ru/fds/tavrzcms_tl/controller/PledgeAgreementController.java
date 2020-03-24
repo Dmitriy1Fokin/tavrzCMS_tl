@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
@@ -24,6 +25,7 @@ import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -215,6 +217,30 @@ public class PledgeAgreementController {
         model.addAttribute(ATTR_PLEDGE_SUBJECT_LIST, pledgeSubjectDtoList);
 
         return PAGE_PLEDGE_SUBJECTS;
+    }
+
+    @GetMapping("/searchLA")
+    public @ResponseBody List<LoanAgreementDto> searchLA(@RequestParam("numLA") String numLA){
+        return loanAgreementService.getLoanAgreementByNum(numLA);
+    }
+
+    @PostMapping("/insertLA")
+    public String insertLA(@RequestParam("pledgeAgreementId") long pledgeAgreementId,
+                           @RequestParam("loanAgreementIdArray[]") long[] loanAgreementIdArray,
+                           Model model){
+
+        PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
+
+        List<Long> loanAgreementIds = loanAgreementService.getCurrentLoanAgreementsByPledgeAgreement(pledgeAgreementDto.getPledgeAgreementId())
+                .stream().map(LoanAgreementDto::getLoanAgreementId).collect(Collectors.toList());
+        loanAgreementIds.addAll(loanAgreementService.getClosedLoanAgreementsByPledgeAgreement(pledgeAgreementDto.getPledgeAgreementId())
+                .stream().map(LoanAgreementDto::getLoanAgreementId).collect(Collectors.toList()));
+        loanAgreementIds.addAll(Arrays.stream(loanAgreementIdArray).boxed().collect(Collectors.toList()));
+
+        PledgeAgreementDtoWrapper pledgeAgreementDtoWrapper = new PledgeAgreementDtoWrapper(pledgeAgreementDto, loanAgreementIds);
+        pledgeAgreementDto = pledgeAgreementService.updatePledgeAgreement(pledgeAgreementDtoWrapper);
+
+        return pledgeAgreementDetailPage(pledgeAgreementDto.getPledgeAgreementId(), model);
     }
 
 }

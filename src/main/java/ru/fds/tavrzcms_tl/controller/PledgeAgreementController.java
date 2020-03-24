@@ -31,6 +31,7 @@ import ru.fds.tavrzcms_tl.dto.PledgeSubjectTboDto;
 import ru.fds.tavrzcms_tl.dto.PledgeSubjectVesselDto;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
+import ru.fds.tavrzcms_tl.service.MonitoringService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeSubjectService;
 import ru.fds.tavrzcms_tl.wrapper.PledgeAgreementDtoWrapper;
@@ -51,6 +52,7 @@ public class PledgeAgreementController {
     private final LoanAgreementService loanAgreementService;
     private final EmployeeService employeeService;
     private final PledgeSubjectService pledgeSubjectService;
+    private final MonitoringService monitoringService;
 
     @Value("${page_size}")
     private Integer pageSize;
@@ -70,15 +72,18 @@ public class PledgeAgreementController {
     private static final String PAGE_DETAIL = "pledge_agreement/detail";
     private static final String PAGE_PLEDGE_SUBJECTS = "pledge_agreement/pledge_subjects";
     private static final String PAGE_PLEDGE_SUBJECT_CARD_NEW = "pledge_subject/card_new";
+    private static final String PAGE_MONITORING_CARD = "monitoring/card_insert_pledge_agreement";
 
     public PledgeAgreementController(PledgeAgreementService pledgeAgreementService,
                                      LoanAgreementService loanAgreementService,
                                      EmployeeService employeeService,
-                                     PledgeSubjectService pledgeSubjectService) {
+                                     PledgeSubjectService pledgeSubjectService,
+                                     MonitoringService monitoringService) {
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
         this.employeeService = employeeService;
         this.pledgeSubjectService = pledgeSubjectService;
+        this.monitoringService = monitoringService;
     }
 
     @GetMapping("/pledge_agreements/all/emp")
@@ -360,6 +365,35 @@ public class PledgeAgreementController {
                 Arrays.stream(pledgeSubjectsIdArray).boxed().collect(Collectors.toList()), pledgeAgreementId);
 
         return pledgeSubjectsPage(pledgeAgreementDto.getPledgeAgreementId(), model);
+    }
+
+    @GetMapping("/monitoring/insert/card")
+    public String monitoringByClientCardPage(@RequestParam("pledgeAgreementId") Long pledgeAgreementId,
+                                             Model model){
+
+        PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
+        MonitoringDto monitoringDto = new MonitoringDto();
+
+        model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
+        model.addAttribute(ATTR_MONITORING, monitoringDto);
+
+        return PAGE_MONITORING_CARD;
+    }
+
+    @PostMapping("/monitoring/insert")
+    public String insertMonitoringByClient(@Valid MonitoringDto monitoringDto,
+                                           BindingResult bindingResult,
+                                           @RequestParam("pledgeAgreementId") Long pledgeAgreementId,
+                                           Model model){
+        if(bindingResult.hasErrors()){
+            PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
+            model.addAttribute(ATTR_PLEDGE_AGREEMENT, pledgeAgreementDto);
+            return PAGE_MONITORING_CARD;
+        }
+
+        monitoringService.insertMonitoringInPledgeAgreement(monitoringDto, pledgeAgreementId);
+
+        return pledgeSubjectsPage(pledgeAgreementId, model);
     }
 
 

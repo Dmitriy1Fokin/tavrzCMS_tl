@@ -105,8 +105,8 @@
     <br>
 
 
-    <a th:href="@{../monitoring/card(whereUpdateMonitoring='pa', pledgeAgreementId=${pledgeAgreementDto.getPledgeAgreementId()})}"
-       href="../monitoring/card.html"
+    <a th:href="@{/pledge_agreement/monitoring/insert/card(pledgeAgreementId=${pledgeAgreementDto.getPledgeAgreementId()})}"
+       href="../monitoring/card_insert_pledge_agreement.html"
        th:text="'Обновить мониторинг по всем предметам договора залога №' + ${pledgeAgreementDto.getNumPA()}">Обновить мониторинг по всем предметам договора залога</a>
     <br>
     <br>

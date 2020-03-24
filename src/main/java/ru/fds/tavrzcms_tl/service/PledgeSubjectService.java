@@ -32,6 +32,14 @@ public class PledgeSubjectService {
         return tavrzcmsAPIFeignService.getPledgeSubjectBySearchCriteria(searchParam, pageable);
     }
 
+    public List<PledgeSubjectDto> getPledgeSubjectByCadastralNum(String cadastralNum){
+        return tavrzcmsAPIFeignService.getPledgeSubjectsByCadastralNum(cadastralNum);
+    }
+
+    public List<PledgeSubjectDto> getPledgeSubjectsByName(String name){
+        return tavrzcmsAPIFeignService.getPledgeSubjectsByName(name);
+    }
+
     @Transactional
     public PledgeSubjectDto updatePledgeSubject(PledgeSubjectUpdateDtoWrapper pledgeSubjectUpdateDtoWrapper){
         return tavrzcmsAPIFeignService.updatePledgeSubject(pledgeSubjectUpdateDtoWrapper);

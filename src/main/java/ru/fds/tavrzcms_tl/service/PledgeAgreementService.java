@@ -162,4 +162,9 @@ public class PledgeAgreementService {
         return tavrzcmsAPIFeignService.getPledgeAgreementBySearchCriteria(searchParam, pageable);
     }
 
+    @Transactional
+    public PledgeAgreementDto insertCurrentPledgeSubjectInPledgeAgreement(List<Long> pledgeSubjectsIdArray, Long pledgeAgreementId){
+        return tavrzcmsAPIFeignService.insertCurrentPledgeSubjectInPledgeAgreement(pledgeSubjectsIdArray, pledgeAgreementId);
+    }
+
 }

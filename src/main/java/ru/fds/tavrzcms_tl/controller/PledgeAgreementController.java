@@ -341,4 +341,27 @@ public class PledgeAgreementController {
         return pledgeSubjectsPage(pledgeAgreementId, model);
     }
 
+    @GetMapping("/searchPS/realty")
+    public @ResponseBody List<PledgeSubjectDto> searchPledgeSubjectRealty(@RequestParam("cadastralNum") String cadastralNum){
+        return pledgeSubjectService.getPledgeSubjectByCadastralNum(cadastralNum);
+    }
+
+    @GetMapping("/searchPS/movables")
+    public @ResponseBody List<PledgeSubjectDto> searchPledgeSubjectMovables(@RequestParam("namePS") String namePS){
+        return pledgeSubjectService.getPledgeSubjectsByName(namePS);
+    }
+
+    @PostMapping("/pledge_subject/insert/exist")
+    public String insertExistPledgeSubject( @RequestParam("pledgeSubjectsIdArray[]") long[] pledgeSubjectsIdArray,
+                                            @RequestParam("pledgeAgreementId") long pledgeAgreementId,
+                                            Model model){
+
+        PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.insertCurrentPledgeSubjectInPledgeAgreement(
+                Arrays.stream(pledgeSubjectsIdArray).boxed().collect(Collectors.toList()), pledgeAgreementId);
+
+        return pledgeSubjectsPage(pledgeAgreementDto.getPledgeAgreementId(), model);
+    }
+
+
+
 }

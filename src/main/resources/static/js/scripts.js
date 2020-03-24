@@ -26,7 +26,7 @@ $(document).ready(function () {
                 el.style.display="block";
                 for (const index in loanAgreementList) {
                     const pa = loanAgreementList[index];
-                    $('#tBodyLA').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkLA\" value='"+ pa['loanAgreementId']+ "'></td><td>" + pa['numLA'] + "</td><td>" + pa['dateBeginLA'] + "</td></tr>");
+                    $('#tBodyLA').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ pa['loanAgreementId']+ "'></td><td>" + pa['numLA'] + "</td><td>" + pa['dateBeginLA'] + "</td></tr>");
                 }
             },
             error: function () {
@@ -38,11 +38,11 @@ $(document).ready(function () {
 
 
 function choise() {
-    var checkBoxArray = document.getElementsByName('checkLA'),
-        count = checkBoxArray.length-1,
-        isDisabled=true;
+    let checkBoxArray = document.getElementsByName('checkElement'),
+        count = checkBoxArray.length - 1,
+        isDisabled = true;
     for(;count>=0;count--){
-        if (checkBoxArray[count]['checked']==true){
+        if (checkBoxArray[count]['checked']===true){
             isDisabled=!isDisabled;
             break;
         }
@@ -81,34 +81,34 @@ function insertLA() {
 $(document).ready(function () {
     $("#inputSearchCadastralNum").submit(function (e) {
         e.preventDefault();
-        var num = $("#cadastralNum").val();
+        const num = $("#cadastralNum").val();
         $('#tBodyPS').html('');
 
         $.ajax({
-            url : 'searchPS',
-            type: 'POST',
+            url : '/pledge_agreement/searchPS/realty',
+            type: 'GET',
             dataType: 'json',
             data : ({
                 cadastralNum: num
             }),
             success: function (pledgeSubjectList) {
-                // console.log(pledgeSubjectList);
-                el=document.getElementById("searchResultPS");
+                let realty;
+                let el = document.getElementById("searchResultPS");
                 el.style.display="block";
                 for (var index in pledgeSubjectList) {
-                    var ps = pledgeSubjectList[index];
-                    if(ps['typeOfCollateral'] == 'BUILDING'){
-                        var realty = ps['pledgeSubjectBuildingDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
-                    }else if(ps['typeOfCollateral'] == 'LAND_LEASE'){
-                        var realty = ps['pledgeSubjectLandLeaseDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
-                    }else if(ps['typeOfCollateral'] == 'LAND_OWNERSHIP'){
-                        var realty = ps['pledgeSubjectLandOwnershipDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
-                    }else if(ps['typeOfCollateral'] == 'PREMISE'){
-                        var realty = ps['pledgeSubjectRoomDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
+                    const ps = pledgeSubjectList[index];
+                    if(ps['typeOfCollateral'] === 'BUILDING'){
+                        realty = ps['pledgeSubjectBuildingDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
+                    }else if(ps['typeOfCollateral'] === 'LAND_LEASE'){
+                        realty = ps['pledgeSubjectLandLeaseDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
+                    }else if(ps['typeOfCollateral'] === 'LAND_OWNERSHIP'){
+                        realty = ps['pledgeSubjectLandOwnershipDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
+                    }else if(ps['typeOfCollateral'] === 'PREMISE'){
+                        realty = ps['pledgeSubjectRoomDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + realty['cadastralNum'] + "</td></tr>");
                     }
                 }
             }
@@ -118,49 +118,49 @@ $(document).ready(function () {
 
     $("#inputSearchNamePS").submit(function (e) {
         e.preventDefault();
-        var num = $("#namePS").val();
+        const num = $("#namePS").val();
         $('#tBodyPS').html('');
 
         $.ajax({
-            url : 'searchPS',
-            type: 'POST',
+            url : '/pledge_agreement/searchPS/movables',
+            type: 'GET',
             dataType: 'json',
             data : ({
                 namePS: num
             }),
             success: function (pledgeSubjectList) {
-                // console.log(pledgeSubjectList);
-                el=document.getElementById("searchResultPS");
+                let psIn;
+                let el = document.getElementById("searchResultPS");
                 el.style.display="block";
                 for (var index in pledgeSubjectList) {
                     var ps = pledgeSubjectList[index];
-                    if(ps["typeOfCollateral"] == "AUTO"){
-                        var psIn = ps['pledgeSubjectAutoDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['vin'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "EQUIPMENT"){
-                        var psIn = ps['pledgeSubjectEquipmentDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['serialNum'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "SECURITIES"){
-                        var psIn = ps['pledgeSubjectSecuritiesDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['nominalValue'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "VESSEL"){
-                        var psIn = ps['pledgeSubjectVesselDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['imo'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "TBO"){
-                        var psIn = ps['pledgeSubjectTboDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['carryingAmount'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "BUILDING"){
-                        var psIn = ps['pledgeSubjectBuildingDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "LAND_LEASE"){
-                        var psIn = ps['pledgeSubjectLandLeaseDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "LAND_OWNERSHIP"){
-                        var psIn = ps['pledgeSubjectLandOwnershipDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
-                    }else if(ps["typeOfCollateral"] == "PREMISE"){
-                        var psIn = ps['pledgeSubjectRoomDto'];
-                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkPA\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
+                    if(ps["typeOfCollateral"] === "AUTO"){
+                        psIn = ps['pledgeSubjectAutoDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['vin'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "EQUIPMENT"){
+                        psIn = ps['pledgeSubjectEquipmentDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['serialNum'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "SECURITIES"){
+                        psIn = ps['pledgeSubjectSecuritiesDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['nominalValue'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "VESSEL"){
+                        psIn = ps['pledgeSubjectVesselDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['imo'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "TBO"){
+                        psIn = ps['pledgeSubjectTboDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['carryingAmount'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "BUILDING"){
+                        psIn = ps['pledgeSubjectBuildingDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "LAND_LEASE"){
+                        psIn = ps['pledgeSubjectLandLeaseDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "LAND_OWNERSHIP"){
+                        psIn = ps['pledgeSubjectLandOwnershipDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
+                    }else if(ps["typeOfCollateral"] === "PREMISE"){
+                        psIn = ps['pledgeSubjectRoomDto'];
+                        $('#tBodyPS').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ ps['pledgeSubjectId']+ "'></td><td>" + ps['name'] + "</td><td>" + psIn['cadastralNum'] + "</td></tr>");
                     }
                 }
             }
@@ -175,10 +175,10 @@ function insertPS() {
     $('#tBodyPS input:checkbox:checked').each(function () {
         pledgeSubjectsIdArray.push($(this).val());
     });
-    var pledgeAgreementId = $("#pledgeAgreementId").text();
+    const pledgeAgreementId = $("#pledgeAgreementId").text();
 
     $.ajax({
-        url: 'insertPS',
+        url: '/pledge_agreement/pledge_subject/insert/exist',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -189,7 +189,7 @@ function insertPS() {
             location.reload();
         },
         error: function () {
-            alert("!!!!!!!!!!!!!!!!!");
+            location.reload();
         }
     });
 }

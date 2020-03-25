@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dto.CostHistoryDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
@@ -17,5 +18,10 @@ public class CostHistoryService {
 
     public List<CostHistoryDto> getCostHistoryByPledgeSubject(Long pledgeSubjectId){
         return tavrzcmsAPIFeignService.getCostHistoryByPledgeSubject(pledgeSubjectId);
+    }
+
+    @Transactional
+    public CostHistoryDto insertCostHistory(CostHistoryDto costHistoryDto){
+        return tavrzcmsAPIFeignService.insertCostHistory(costHistoryDto);
     }
 }

@@ -30,7 +30,7 @@ public class EncumbranceController {
     }
 
     @GetMapping("/encumbrances")
-    public  String encumbrancePage(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+    public  String encumbrancePage(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                    Model model){
 
         PledgeSubjectDto pledgeSubjectDto = pledgeSubjectService.getPledgeSubjectById(pledgeSubjectId);

@@ -69,7 +69,7 @@ public class ClientController {
     }
 
     @GetMapping("/detail")
-    public String clientDetailPage(@RequestParam("clientId") long clientId,
+    public String clientDetailPage(@RequestParam("clientId") Long clientId,
                                    Model model){
 
         ClientDto clientDto = clientService.getClientById(clientId);

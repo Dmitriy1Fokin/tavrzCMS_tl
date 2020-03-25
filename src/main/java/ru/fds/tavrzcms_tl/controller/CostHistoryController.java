@@ -46,7 +46,7 @@ public class CostHistoryController {
     }
 
     @GetMapping("/pledge_agreements")
-    public String conclusionsPage(@RequestParam("employeeId") long employeeId,
+    public String conclusionsPage(@RequestParam("employeeId") Long employeeId,
                                   Model model){
 
         List<PledgeAgreementDto> pledgeAgreementListWithConclusionNotDone = pledgeAgreementService
@@ -64,7 +64,7 @@ public class CostHistoryController {
     }
 
     @GetMapping("/pledge_subject")
-    public String costHistoryPage(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+    public String costHistoryPage(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                   Model model){
 
         PledgeSubjectDto pledgeSubjectDto = pledgeSubjectService.getPledgeSubjectById(pledgeSubjectId);
@@ -77,7 +77,7 @@ public class CostHistoryController {
     }
 
     @GetMapping("/insert/card")
-    public String costHistoryNewCard(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+    public String costHistoryNewCard(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                      Model model){
 
         PledgeSubjectDto pledgeSubjectDto = pledgeSubjectService.getPledgeSubjectById(pledgeSubjectId);
@@ -111,7 +111,7 @@ public class CostHistoryController {
     }
 
     @GetMapping("/update/card")
-    public String costHistoryUpdateCard(@RequestParam("costHistoryId") long costHistoryId,
+    public String costHistoryUpdateCard(@RequestParam("costHistoryId") Long costHistoryId,
                                         Model model){
 
         CostHistoryDto costHistoryDto = costHistoryService.getCostHistoryById(costHistoryId);

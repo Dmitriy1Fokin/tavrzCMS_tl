@@ -148,7 +148,7 @@ public class PledgeAgreementController {
     }
 
     @GetMapping("/detail")
-    public String pledgeAgreementDetailPage(@RequestParam("pledgeAgreementId") long pledgeAgreementId,
+    public String pledgeAgreementDetailPage(@RequestParam("pledgeAgreementId") Long pledgeAgreementId,
                                             Model model){
 
         PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
@@ -228,7 +228,7 @@ public class PledgeAgreementController {
     }
 
     @GetMapping("/pledge_subjects")
-    public String pledgeSubjectsPage(@RequestParam("pledgeAgreementId") long pledgeAgreementId,
+    public String pledgeSubjectsPage(@RequestParam("pledgeAgreementId") Long pledgeAgreementId,
                                      Model model){
 
         PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
@@ -247,8 +247,8 @@ public class PledgeAgreementController {
     }
 
     @PostMapping("/insertLA")
-    public String insertLA(@RequestParam("pledgeAgreementId") long pledgeAgreementId,
-                           @RequestParam("loanAgreementIdArray[]") long[] loanAgreementIdArray,
+    public String insertLA(@RequestParam("pledgeAgreementId") Long pledgeAgreementId,
+                           @RequestParam("loanAgreementIdArray[]") Long[] loanAgreementIdArray,
                            Model model){
 
         PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.getPledgeAgreementById(pledgeAgreementId);
@@ -257,7 +257,7 @@ public class PledgeAgreementController {
                 .stream().map(LoanAgreementDto::getLoanAgreementId).collect(Collectors.toList());
         loanAgreementIds.addAll(loanAgreementService.getClosedLoanAgreementsByPledgeAgreement(pledgeAgreementDto.getPledgeAgreementId())
                 .stream().map(LoanAgreementDto::getLoanAgreementId).collect(Collectors.toList()));
-        loanAgreementIds.addAll(Arrays.stream(loanAgreementIdArray).boxed().collect(Collectors.toList()));
+        loanAgreementIds.addAll(Arrays.asList(loanAgreementIdArray));
 
         PledgeAgreementDtoWrapper pledgeAgreementDtoWrapper = new PledgeAgreementDtoWrapper(pledgeAgreementDto, loanAgreementIds);
         pledgeAgreementDto = pledgeAgreementService.updatePledgeAgreement(pledgeAgreementDtoWrapper);
@@ -356,12 +356,12 @@ public class PledgeAgreementController {
     }
 
     @PostMapping("/pledge_subject/insert/exist")
-    public String insertExistPledgeSubject( @RequestParam("pledgeSubjectsIdArray[]") long[] pledgeSubjectsIdArray,
-                                            @RequestParam("pledgeAgreementId") long pledgeAgreementId,
+    public String insertExistPledgeSubject( @RequestParam("pledgeSubjectsIdArray[]") Long[] pledgeSubjectsIdArray,
+                                            @RequestParam("pledgeAgreementId") Long pledgeAgreementId,
                                             Model model){
 
         PledgeAgreementDto pledgeAgreementDto = pledgeAgreementService.insertCurrentPledgeSubjectInPledgeAgreement(
-                Arrays.stream(pledgeSubjectsIdArray).boxed().collect(Collectors.toList()), pledgeAgreementId);
+                Arrays.asList(pledgeSubjectsIdArray), pledgeAgreementId);
 
         return pledgeSubjectsPage(pledgeAgreementDto.getPledgeAgreementId(), model);
     }
@@ -396,8 +396,8 @@ public class PledgeAgreementController {
     }
 
     @PostMapping("withdrawFromDepositPledgeSubject")
-    public @ResponseBody PledgeAgreementDto withdrawFromDepositPledgeSubject(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
-                                         @RequestParam("pledgeAgreementId") long pledgeAgreementId){
+    public @ResponseBody PledgeAgreementDto withdrawFromDepositPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
+                                         @RequestParam("pledgeAgreementId") Long pledgeAgreementId){
 
         return pledgeAgreementService.withdrawFromDepositPledgeSubject(pledgeSubjectId, pledgeAgreementId);
     }

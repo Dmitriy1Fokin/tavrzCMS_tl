@@ -16,6 +16,10 @@ public class MonitoringService {
         this.tavrzcmsAPIFeignService = tavrzcmsAPIFeignService;
     }
 
+    public MonitoringDto getMonitoringById(Long monitoringId){
+        return tavrzcmsAPIFeignService.getMonitoringById(monitoringId);
+    }
+
     public List<MonitoringDto> getMonitoringByPledgeSubject(Long pledgeSubjectId){
         return tavrzcmsAPIFeignService.getMonitoringsByPledgeSubject(pledgeSubjectId);
     }
@@ -28,6 +32,16 @@ public class MonitoringService {
     @Transactional
     public void insertMonitoringInPledgeAgreement(MonitoringDto monitoringDto, Long pledgeAgreementId){
         tavrzcmsAPIFeignService.insertMonitoringByPledgeAgreement(monitoringDto, pledgeAgreementId);
+    }
+
+    @Transactional
+    public void insertMonitoringInPledgeSubject(MonitoringDto monitoringDto){
+        tavrzcmsAPIFeignService.insertMonitoring(monitoringDto, monitoringDto.getPledgeSubjectId());
+    }
+
+    @Transactional
+    public MonitoringDto updateMonitoring(MonitoringDto monitoringDto){
+        return tavrzcmsAPIFeignService.updateMonitoring(monitoringDto);
     }
 
 }

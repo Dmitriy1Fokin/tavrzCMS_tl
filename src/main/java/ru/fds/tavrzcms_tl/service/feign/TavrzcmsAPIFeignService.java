@@ -396,6 +396,9 @@ public interface TavrzcmsAPIFeignService {
 
 
 
+    @GetMapping("/monitoring/{monitoringId}")
+    MonitoringDto getMonitoringById(@PathVariable("monitoringId") Long monitoringId);
+
     @GetMapping("/monitoring/pledge_subject")
     List<MonitoringDto> getMonitoringsByPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId);
 

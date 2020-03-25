@@ -79,7 +79,7 @@ public class LoanAgreementController {
     }
 
     @GetMapping("/detail")
-    public String loanAgreementDetailPage(@RequestParam("loanAgreementId") long loanAgreementId,
+    public String loanAgreementDetailPage(@RequestParam("loanAgreementId") Long loanAgreementId,
                                           Model model){
 
         LoanAgreementDto loanAgreementDto = loanAgreementService.getLoanAgreementById(loanAgreementId);

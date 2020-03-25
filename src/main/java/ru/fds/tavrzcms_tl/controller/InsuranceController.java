@@ -30,7 +30,7 @@ public class InsuranceController {
     }
 
     @GetMapping("/insurances")
-    public String insurancesPage(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+    public String insurancesPage(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                  Model model){
 
         PledgeSubjectDto pledgeSubjectDto = pledgeSubjectService.getPledgeSubjectById(pledgeSubjectId);

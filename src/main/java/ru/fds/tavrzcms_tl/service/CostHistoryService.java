@@ -20,8 +20,17 @@ public class CostHistoryService {
         return tavrzcmsAPIFeignService.getCostHistoryByPledgeSubject(pledgeSubjectId);
     }
 
+    public CostHistoryDto getCostHistoryById(Long costHistoryId){
+        return tavrzcmsAPIFeignService.getCostHistoryById(costHistoryId);
+    }
+
     @Transactional
     public CostHistoryDto insertCostHistory(CostHistoryDto costHistoryDto){
         return tavrzcmsAPIFeignService.insertCostHistory(costHistoryDto);
+    }
+
+    @Transactional
+    public CostHistoryDto updateCostHistory(CostHistoryDto costHistoryDto){
+        return tavrzcmsAPIFeignService.updateCostHistory(costHistoryDto);
     }
 }

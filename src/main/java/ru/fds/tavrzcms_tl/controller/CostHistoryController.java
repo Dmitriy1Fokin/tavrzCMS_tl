@@ -35,6 +35,7 @@ public class CostHistoryController {
     private static final String PAGE_PA = "cost_history/pledge_agreements";
     private static final String PAGE_PS = "cost_history/pledge_subject";
     private static final String PAGE_CARD_INSERT = "cost_history/card_new";
+    private static final String PAGE_CARD_UPDATE = "cost_history/card_update";
 
     public CostHistoryController(PledgeAgreementService pledgeAgreementService,
                                  PledgeSubjectService pledgeSubjectService,
@@ -76,8 +77,8 @@ public class CostHistoryController {
     }
 
     @GetMapping("/insert/card")
-    public String costHistoryCard(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
-                                  Model model){
+    public String costHistoryNewCard(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+                                     Model model){
 
         PledgeSubjectDto pledgeSubjectDto = pledgeSubjectService.getPledgeSubjectById(pledgeSubjectId);
 
@@ -105,6 +106,31 @@ public class CostHistoryController {
         }
 
         costHistoryService.insertCostHistory(costHistoryDto);
+
+        return costHistoryPage(costHistoryDto.getPledgeSubjectId(), model);
+    }
+
+    @GetMapping("/update/card")
+    public String costHistoryUpdateCard(@RequestParam("costHistoryId") long costHistoryId,
+                                        Model model){
+
+        CostHistoryDto costHistoryDto = costHistoryService.getCostHistoryById(costHistoryId);
+
+        model.addAttribute(ATTR_COST_HISTORY, costHistoryDto);
+
+        return PAGE_CARD_UPDATE;
+    }
+
+    @PostMapping("/update")
+    public String updateCostHistory(@Valid CostHistoryDto costHistoryDto,
+                                    BindingResult bindingResult,
+                                    Model model){
+
+        if(bindingResult.hasErrors()) {
+            return PAGE_CARD_UPDATE;
+        }
+
+        costHistoryService.updateCostHistory(costHistoryDto);
 
         return costHistoryPage(costHistoryDto.getPledgeSubjectId(), model);
     }

@@ -42,7 +42,7 @@
 <br>
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
     <a th:href="@{/cost_history/insert/card(pledgeSubjectId=${pledgeSubjectDto.getPledgeSubjectId()})}"
-       href="card.html"
+       href="card_update.html"
        th:text="'Обновить стоимости предмета залога'">Обновить стоимости предмета залога</a>
     <br>
     <br>
@@ -80,7 +80,9 @@
                     <td th:text="${#temporals.format(costHistory.getAppraisalReportDate(), 'dd.MM.yyyy')}">н/д</td>
                     <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
                         <td>
-
+                            <a th:href="@{/cost_history/update/card(costHistoryId=${costHistory.getCostHistoryId()})}"
+                               href="card_update.html"
+                               th:text="'Изменить'">Изменить</a>
                         </td>
                     </div>
                 </tr>

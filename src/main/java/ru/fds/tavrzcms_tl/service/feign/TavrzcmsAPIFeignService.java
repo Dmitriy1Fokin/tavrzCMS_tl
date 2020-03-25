@@ -376,6 +376,9 @@ public interface TavrzcmsAPIFeignService {
 
 
 
+    @GetMapping("/cost_history/{costHistoryId}")
+    CostHistoryDto getCostHistoryById(@PathVariable("costHistoryId") Long costHistoryId);
+
     @GetMapping("/cost_history/pledge_subject")
     List<CostHistoryDto> getCostHistoryByPledgeSubject(@RequestParam("pledgeSubjectId") Long pledgeSubjectId);
 

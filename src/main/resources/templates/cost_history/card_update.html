@@ -3,7 +3,7 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Обновление cтоимостей предмета залога: ' + ${pledgeSubjectName}">Обновление cтоимостей</title>
+    <title th:text="'Изменить стоимости'">Изменить стоимости</title>
     <style type="text/css">
         .nav-item{
             display: inline;
@@ -25,10 +25,10 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<h1 th:text="'Обновление cтоимостей предмета залога:' + ${pledgeSubjectName}">Обновление cтоимостей</h1>
+<h1 th:text="'Изменить стоимости'">Изменить стоимости</h1>
 
-<form th:action="@{/cost_history/insert}" th:method="post" th:object="${costHistoryDto}" action="card.html">
-    <input type="hidden", name="pledgeSubjectName" th:value="${pledgeSubjectName}">
+<form th:action="@{/cost_history/update}" th:method="POST" th:object="${costHistoryDto}" action="card_update.html">
+    <input type="hidden", th:field="*{costHistoryId}" th:value="${costHistoryDto.getCostHistoryId()}">
     <input type="hidden", th:field="*{pledgeSubjectId}" th:value="${costHistoryDto.getPledgeSubjectId()}">
 
     <div class="row">

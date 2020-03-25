@@ -167,4 +167,9 @@ public class PledgeAgreementService {
         return tavrzcmsAPIFeignService.insertCurrentPledgeSubjectInPledgeAgreement(pledgeSubjectsIdArray, pledgeAgreementId);
     }
 
+    @Transactional
+    public PledgeAgreementDto withdrawFromDepositPledgeSubject(Long pledgeSubjectId, Long pledgeAgreementId){
+        return tavrzcmsAPIFeignService.withdrawPledgeSubjectFromPledgeAgreement(pledgeSubjectId, pledgeAgreementId);
+    }
+
 }

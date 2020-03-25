@@ -61,6 +61,9 @@
             <th>Оценщик</th>
             <th>№ отчета об оценке</th>
             <th>Дата отчета об оценке</th>
+            <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                <th>Изменить</th>
+            </div>
         </tr>
         </thead>
         <tbody>
@@ -75,6 +78,11 @@
                     <td th:text="${costHistory.getAppraiser()}">н/д</td>
                     <td th:text="${costHistory.getAppraisalReportNum()}">н/д</td>
                     <td th:text="${#temporals.format(costHistory.getAppraisalReportDate(), 'dd.MM.yyyy')}">н/д</td>
+                    <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                        <td>
+
+                        </td>
+                    </div>
                 </tr>
             </div>
         </tbody>

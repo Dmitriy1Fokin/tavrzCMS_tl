@@ -395,6 +395,12 @@ public class PledgeAgreementController {
         return pledgeSubjectsPage(pledgeAgreementId, model);
     }
 
+    @PostMapping("withdrawFromDepositPledgeSubject")
+    public @ResponseBody PledgeAgreementDto withdrawFromDepositPledgeSubject(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+                                         @RequestParam("pledgeAgreementId") long pledgeAgreementId){
+
+        return pledgeAgreementService.withdrawFromDepositPledgeSubject(pledgeSubjectId, pledgeAgreementId);
+    }
 
 
 }

@@ -112,10 +112,17 @@
     <br>
 </div>
 
-<div class="containerTable">
-    <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTableWithDelete(${pledgeSubjectDtoList}, ${pledgeAgreementDto.getPledgeAgreementId()})"></div>
-</div>
 
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <div class="containerTable">
+        <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTableWithDelete(${pledgeSubjectDtoList}, ${pledgeAgreementDto.getPledgeAgreementId()})"></div>
+    </div>
+</div>
+<div sec:authorize="hasAnyRole('ADMIN', 'GUEST')">
+    <div class="containerTable">
+        <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+    </div>
+</div>
 
 
 </body>

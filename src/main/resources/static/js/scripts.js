@@ -196,20 +196,19 @@ function insertPS() {
 
 function withdrawFromDepositPledgeSubject(pledgeSubjectId, pledgeAgreementId) {
     $.ajax({
-        url: 'withdrawFromDepositPledgeSubject',
+        url: '/pledge_agreement/withdrawFromDepositPledgeSubject',
         type: 'POST',
         dataType: 'json',
         data: {
             pledgeSubjectId: pledgeSubjectId,
             pledgeAgreementId: pledgeAgreementId
         },
-        success: function (data) {
-            console.log(data);
-
+        success: function () {
             location.reload();
         },
         error: function () {
             alert("!!!!!!!!!!!!!!!!!");
+            location.reload();
         }
     });
 

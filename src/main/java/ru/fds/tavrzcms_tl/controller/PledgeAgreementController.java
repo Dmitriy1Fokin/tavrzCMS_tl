@@ -192,7 +192,7 @@ public class PledgeAgreementController {
         return PAGE_CARD_INSERT;
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String updatePledgeAgreement(@Valid PledgeAgreementDto pledgeAgreementDto,
                                               BindingResult bindingResult,
                                               Model model){

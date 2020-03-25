@@ -124,7 +124,7 @@ public class LoanAgreementController {
 
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String updateLoanAgreement(@Valid LoanAgreementDto loanAgreementDto,
                                       BindingResult bindingResult,
                                       Model model){

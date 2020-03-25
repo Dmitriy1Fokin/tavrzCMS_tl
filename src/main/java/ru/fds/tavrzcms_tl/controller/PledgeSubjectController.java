@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.fds.tavrzcms_tl.dto.AuditResultDto;
@@ -76,7 +76,7 @@ public class PledgeSubjectController {
         return PAGE_CARD_UPDATE;
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String updatePledgeSubject(@Valid PledgeSubjectDto pledgeSubjectDto,
                                       BindingResult bindingResult,
                                       Model model){

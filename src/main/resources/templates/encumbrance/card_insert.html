@@ -27,7 +27,7 @@
 
 <h1 th:text="'Добавить обременение'">Добавить обременение</h1>
 
-<form th:action="@{/encumbrance/insert}" th:method="post" th:object="${encumbranceDto}" action="card.html">
+<form th:action="@{/encumbrance/insert}" th:method="POST" th:object="${encumbranceDto}" action="card_insert.html">
     <input type="hidden", th:field="*{pledgeSubjectId}" th:value="${encumbranceDto.getPledgeSubjectId()}">
 
     <div class="row">
@@ -39,7 +39,8 @@
     <div class="row">
         <label>Вид обременения</label>
         <select required th:field="*{typeOfEncumbrance}">
-            <option value="PLEDGE">залог</option>
+            <option value="PLEDGE_OUR">залог Банка</option>
+            <option value="PLEDGE_OTHER">залог третьих лиц</option>
             <option value="ARREST">арест</option>
             <option value="LEASE">аренда</option>
             <option value="SERVITUDE">сервитут</option>

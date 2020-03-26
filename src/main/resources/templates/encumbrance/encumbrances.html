@@ -41,8 +41,8 @@
 <br>
 <br>
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-    <a th:href="@{/encumbrance/card(pledgeSubjectId=${pledgeSubject.getPledgeSubjectId()})}"
-       href="card.html"
+    <a th:href="@{/encumbrance/insert/card(pledgeSubjectId=${pledgeSubject.getPledgeSubjectId()})}"
+       href="card_insert.html"
        th:text="'Добавить обременение'">Добавить обременение</a>
     <br>
     <br>
@@ -58,6 +58,9 @@
             <th>Дата начала обременения</th>
             <th>Дата окончания обременения</th>
             <th>№ обременения</th>
+            <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                <th>Изменить</th>
+            </div>
         </tr>
         </thead>
         <tbody>
@@ -69,6 +72,13 @@
                 <td th:text="${#temporals.format(encumbrance.getDateBegin(), 'dd.MM.yyyy')}">н/д</td>
                 <td th:text="${#temporals.format(encumbrance.getDateEnd(), 'dd.MM.yyyy')}">н/д</td>
                 <td th:text="${encumbrance.getNumOfEncumbrance()}">н/д</td>
+                <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                    <td>
+                        <a th:href="@{/encumbrance/update/card(encumbranceId=${encumbrance.getEncumbranceId()})}"
+                           href="card_update.html"
+                           th:text="'Изменить'">Изменить</a>
+                    </td>
+                </div>
             </tr>
 
         </div>

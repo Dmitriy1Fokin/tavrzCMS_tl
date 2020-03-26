@@ -49,7 +49,7 @@ public class InsuranceController {
     }
 
     @GetMapping("/insert/card")
-    public String insuranceNewCard(@RequestParam("pledgeSubjectId") long pledgeSubjectId,
+    public String insuranceNewCard(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
                                    Model model){
 
         InsuranceDto insuranceDto = InsuranceDto.builder()
@@ -75,7 +75,7 @@ public class InsuranceController {
     }
 
     @GetMapping("/update/card")
-    public String insuranceUpdateCard(@RequestParam("insuranceId") long insuranceId,
+    public String insuranceUpdateCard(@RequestParam("insuranceId") Long insuranceId,
                                       Model model){
 
         InsuranceDto insuranceDto = insuranceService.getInsuranceById(insuranceId);

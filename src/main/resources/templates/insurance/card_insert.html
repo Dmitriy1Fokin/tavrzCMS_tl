@@ -28,7 +28,7 @@
 
 <h1 th:text="'Добавить договор страхования'">Добавить договор страхования</h1>
 
-<form th:action="@{/insurance/insert}" th:method="post" th:object="${insuranceDto}" action="card.html">
+<form th:action="@{/insurance/insert}" th:method="POST" th:object="${insuranceDto}" action="card_update.html">
     <input type="hidden", th:field="*{pledgeSubjectId}" th:value="${insuranceDto.getPledgeSubjectId()}">
 
     <div class="row">

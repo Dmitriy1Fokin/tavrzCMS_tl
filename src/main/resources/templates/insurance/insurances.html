@@ -41,8 +41,8 @@
 <br>
 <br>
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-    <a th:href="@{/insurance/card(pledgeSubjectId=${pledgeSubject.getPledgeSubjectId()})}"
-       href="card.html"
+    <a th:href="@{/insurance/insert/card(pledgeSubjectId=${pledgeSubject.getPledgeSubjectId()})}"
+       href="card_update.html"
        th:text="'Добавить договор страхования'">Добавить договор страхования</a>
     <br>
     <br>
@@ -59,6 +59,9 @@
                 <th>Страховая сумма</th>
                 <th>Оплата страховой премии</th>
                 <th>Сумма франшизы</th>
+                <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                    <th>Изменить</th>
+                </div>
             </tr>
         </thead>
         <tbody>
@@ -71,6 +74,13 @@
                     <td th:text="${#numbers.formatCurrency(insurance.getSumInsured())}">н/д</td>
                     <td th:text="${insurance.getPaymentOfInsurancePremium()}">н/д</td>
                     <td th:text="${#numbers.formatCurrency(insurance.getFranchiseAmount())}">н/д</td>
+                    <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                        <td>
+                            <a th:href="@{/insurance/update/card(insuranceId=${insurance.getInsuranceId()})}"
+                               href="card_update.html"
+                               th:text="'Изменить'">Изменить</a>
+                        </td>
+                    </div>
                 </tr>
             </div>
         </tbody>

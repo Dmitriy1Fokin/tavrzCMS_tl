@@ -46,7 +46,6 @@ public class ClientController {
     private static final String ATTR_LOAN_AGREEMENT_CLOSED_LIST = "loanAgreementClosedList";
     private static final String ATTR_CLIENT_MANAGER_LIST = "clientManagerDtoList";
     private static final String ATTR_EMPLOYEE_LIST = "employeeDtoList";
-    private static final String ATTR_WHAT_DO = "whatDo";
     private static final String ATTR_MONITORING = "monitoringDto";
     private static final String PAGE_CARD_UPDATE = "client/card_update";
     private static final String PAGE_CARD_INSERT = "client/card_insert";
@@ -105,37 +104,11 @@ public class ClientController {
         return PAGE_CARD_UPDATE;
     }
 
-    @GetMapping("/insert/card")
-    public String clientCardInsertPage(@RequestParam("typeOfClient") String typeOfClient,
-                                       @RequestParam("whatDo") String whatDo,
-                                       Model model){
-
-        List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
-        List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
-
-        ClientDto clientDto = new ClientDto();
-        if(typeOfClient.equals(TypeOfClient.LEGAL_ENTITY.name())){
-            clientDto.setTypeOfClient(TypeOfClient.LEGAL_ENTITY);
-            clientDto.setClientLegalEntityDto(new ClientLegalEntityDto());
-
-        }else {
-            clientDto.setTypeOfClient(TypeOfClient.INDIVIDUAL);
-            clientDto.setClientIndividualDto(new ClientIndividualDto());
-
-        }
-
-        model.addAttribute(ATTR_CLIENT, clientDto);
-        model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
-        model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
-        model.addAttribute(ATTR_WHAT_DO, whatDo);
-
-        return PAGE_CARD_INSERT;
-    }
-
     @PostMapping("/update")
-    public String updateInsertClient(@Valid ClientDto clientDto,
-                                     BindingResult bindingResult,
-                                     Model model){
+    public String updateClient(@Valid ClientDto clientDto,
+                               BindingResult bindingResult,
+                               Model model){
+
         if(bindingResult.hasErrors()){
             List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
             List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
@@ -144,7 +117,7 @@ public class ClientController {
             return PAGE_CARD_UPDATE;
         }
 
-        clientDto = clientService.updateInsertClient(clientDto);
+        clientDto = clientService.updateClient(clientDto);
 
         return clientDetailPage(clientDto.getClientId(), model);
     }
@@ -178,4 +151,60 @@ public class ClientController {
 
         return clientDetailPage(clientId, model);
     }
+
+    @GetMapping("/insert/legal_entity/card")
+    public String clientLegalEntityInsertCardInsertPage(Model model){
+
+        List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
+        List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
+
+        ClientDto clientDto = ClientDto.builder()
+                .typeOfClient(TypeOfClient.LEGAL_ENTITY)
+                .clientLegalEntityDto(new ClientLegalEntityDto())
+                .build();
+
+        model.addAttribute(ATTR_CLIENT, clientDto);
+        model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
+        model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
+
+        return PAGE_CARD_INSERT;
+    }
+
+    @GetMapping("/insert/individual/card")
+    public String clientIndividualInsertCardInsertPage(Model model){
+
+        List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
+        List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
+
+        ClientDto clientDto = ClientDto.builder()
+                .typeOfClient(TypeOfClient.INDIVIDUAL)
+                .clientIndividualDto(new ClientIndividualDto())
+                .build();
+
+        model.addAttribute(ATTR_CLIENT, clientDto);
+        model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
+        model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
+
+        return PAGE_CARD_INSERT;
+    }
+
+    @PostMapping("/insert")
+    public String insertClient(@Valid ClientDto clientDto,
+                               BindingResult bindingResult,
+                               Model model){
+
+        if(bindingResult.hasErrors()){
+            List<ClientManagerDto> clientManagerDtoList = clientManagerService.getAllClientManagers();
+            List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
+            model.addAttribute(ATTR_CLIENT_MANAGER_LIST, clientManagerDtoList);
+            model.addAttribute(ATTR_EMPLOYEE_LIST, employeeDtoList);
+            return PAGE_CARD_INSERT;
+        }
+
+        clientDto = clientService.insertClient(clientDto);
+
+        return clientDetailPage(clientDto.getClientId(), model);
+    }
+
+
 }

@@ -26,7 +26,12 @@ public class ClientService {
     }
 
     @Transactional
-    public ClientDto updateInsertClient(ClientDto clientDto){
+    public ClientDto updateClient(ClientDto clientDto){
+        return tavrzcmsAPIFeignService.updateClient(clientDto);
+    }
+
+    @Transactional
+    public  ClientDto insertClient(ClientDto clientDto){
         return tavrzcmsAPIFeignService.insertClient(clientDto);
     }
 

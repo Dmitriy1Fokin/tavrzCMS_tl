@@ -344,6 +344,7 @@ public interface TavrzcmsAPIFeignService {
 
     @PutMapping("/pledge_subject/update")
     PledgeSubjectDto updatePledgeSubject(@Valid @RequestBody PledgeSubjectUpdateDtoWrapper pledgeSubjectUpdateDtoWrapper);
+
     @PostMapping("/pledge_subject/insert_from_file/auto")
     List<PledgeSubjectDto> insertPledgeSubjectAutoFromFile(@RequestParam("file") MultipartFile file);
 

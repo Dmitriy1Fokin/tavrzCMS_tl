@@ -41,6 +41,7 @@ public class MainController {
     private static final String ATTR_EMPLOYEE_EXCLUDE_CHIEF = "employeeDtoMapExcludeChief";
     private static final String PAGE_LOGIN = "login";
     private static final String PAGE_HOME = "home";
+    private static final String PAGE_UPDATE = "update";
 
     public MainController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,
@@ -169,4 +170,11 @@ public class MainController {
 
         return PAGE_HOME;
     }
+
+    @GetMapping("/update")
+    public String updatePage(){
+        return PAGE_UPDATE;
+    }
+
+
 }

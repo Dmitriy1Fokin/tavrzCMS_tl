@@ -3,14 +3,7 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <div th:switch="${whatDo}">
-        <div th:case="updateClient">
-            <title>Изменить данные клиента</title>
-        </div>
-        <div th:case="insertClient">
-            <title>Создание нового клиента</title>
-        </div>
-    </div>
+    <title>Создание нового клиента</title>
     <style type="text/css">
         .nav-item{
             display: inline;
@@ -32,51 +25,24 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<div th:switch="${whatDo}">
-    <div th:case="updateClient">
-        <form th:action="@{/client/update_insert}" th:method="post" th:object="${clientDto}" action="client/card.html">
-            <input type="hidden", name="whatDo" th:value="${whatDo}">
-            <input type="hidden", th:field="*{clientId}" th:value="${clientDto.getClientId()}">
-            <input type="hidden", th:field="*{typeOfClient}" th:value="${clientDto.typeOfClient}">
+<form th:action="@{/client/insert}" th:method="POST" th:object="${clientDto}" action="client/card_insert.html">
+    <input type="hidden", th:field="*{typeOfClient}" th:value="${clientDto.typeOfClient}">
 
-            <div th:replace="fragments/client_forms :: generalProperty(${clientDto}, ${employeeDtoList}, ${clientManagerDtoList})"></div>
-            <br>
+    <div th:replace="fragments/client_forms :: generalProperty(${clientDto}, ${employeeDtoList}, ${clientManagerDtoList})"></div>
+    <br>
 
-            <div th:switch="${clientDto.getTypeOfClient().name()}">
-                <div th:case="LEGAL_ENTITY">
-                    <div th:replace="fragments/client_forms :: legalEntitylProperty(${clientDto.getClientLegalEntityDto()})"></div>
-                </div>
-                <div th:case="INDIVIDUAL">
-                    <div th:replace="fragments/client_forms :: individualProperty(${clientDto.getClientIndividualDto()})"></div>
-                </div>
-            </div>
-
-            <br>
-            <button type="submit">Обновить</button>
-        </form>
+    <div th:switch="${clientDto.getTypeOfClient().name()}">
+        <div th:case="LEGAL_ENTITY">
+            <div th:replace="fragments/client_forms :: legalEntitylProperty(${clientDto.getClientLegalEntityDto()})"></div>
+        </div>
+        <div th:case="INDIVIDUAL">
+            <div th:replace="fragments/client_forms :: individualProperty(${clientDto.getClientIndividualDto()})"></div>
+        </div>
     </div>
-    <div th:case="insertClient">
-        <form th:action="@{/client/update_insert}" th:method="post" th:object="${clientDto}" action="client/card.html">
-            <input type="hidden", name="whatDo" th:value="${whatDo}">
-            <input type="hidden", th:field="*{typeOfClient}" th:value="${clientDto.typeOfClient}">
 
-            <div th:replace="fragments/client_forms :: generalProperty(${clientDto}, ${employeeDtoList}, ${clientManagerDtoList})"></div>
-            <br>
-
-            <div th:switch="${clientDto.getTypeOfClient().name()}">
-                <div th:case="LEGAL_ENTITY">
-                    <div th:replace="fragments/client_forms :: legalEntitylProperty(${clientDto.getClientLegalEntityDto()})"></div>
-                </div>
-                <div th:case="INDIVIDUAL">
-                    <div th:replace="fragments/client_forms :: individualProperty(${clientDto.getClientIndividualDto()})"></div>
-                </div>
-            </div>
-
-            <br>
-            <button type="submit">Создать</button>
-        </form>
-    </div>
-</div>
+    <br>
+    <button type="submit">Создать</button>
+</form>
 
 </body>
 </html>

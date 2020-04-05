@@ -17,9 +17,9 @@ public class FeignErrorDecoder implements ErrorDecoder {
         switch (response.status()){
             case 400:
             case 404:
-            {
                 return new ResponseStatusException(HttpStatus.valueOf(response.status()), "Not Found");
-            }
+            case 405:
+                return new ResponseStatusException(HttpStatus.valueOf(response.status()), "Bad request");
             default:
                 return new Exception(response.reason());
         }

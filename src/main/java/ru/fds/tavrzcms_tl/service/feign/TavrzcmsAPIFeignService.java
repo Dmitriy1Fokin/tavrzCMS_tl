@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.AuditResultDto;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
@@ -140,11 +141,11 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/loan_agreement/update")
     LoanAgreementDto updateLoanAgreement(@Valid @RequestBody LoanAgreementDto loanAgreementDto);
 
-    @PostMapping("/loan_agreement/insert_from_file")
-    List<LoanAgreementDto> insertLoanAgreementFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/loan_agreement/insert_from_file", consumes = "multipart/form-data")
+    List<LoanAgreementDto> insertLoanAgreementFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/loan_agreement/update_from_file")
-    List<LoanAgreementDto> updateLoanAgreementFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/loan_agreement/update_from_file", consumes = "multipart/form-data")
+    List<LoanAgreementDto> updateLoanAgreementFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -250,11 +251,11 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/pledge_agreement/update")
     PledgeAgreementDto updatePledgeAgreement(@Valid @RequestBody PledgeAgreementDtoWrapper pledgeAgreementDtoWrapper);
 
-    @PostMapping("/pledge_agreement/insert/file")
-    List<PledgeAgreementDto> insertPledgeAgreementFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_agreement/insert/file", consumes = "multipart/form-data")
+    List<PledgeAgreementDto> insertPledgeAgreementFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/pledge_agreement/update/file")
-    List<PledgeAgreementDto> updatePledgeAgreementFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/pledge_agreement/update/file", consumes = "multipart/form-data")
+    List<PledgeAgreementDto> updatePledgeAgreementFromFile(@RequestPart("file") MultipartFile file);
 
     @PutMapping("/pledge_agreement/update/withdraw_pledge_subject")
     PledgeAgreementDto withdrawPledgeSubjectFromPledgeAgreement(@RequestParam("pledgeSubjectId") Long pledgeSubjectId,
@@ -287,17 +288,17 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/client/update")
     ClientDto updateClient(@Valid @RequestBody ClientDto clientDto);
 
-    @PostMapping("/client/insert_from_file/client_legal_entity")
-    List<ClientDto> insertClientLegalEntityFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/client/insert_from_file/client_legal_entity", consumes = "multipart/form-data")
+    List<ClientDto> insertClientLegalEntityFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/client/insert_from_file/client_individual")
-    List<ClientDto> insertClientIndividualFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/client/insert_from_file/client_individual", consumes = "multipart/form-data")
+    List<ClientDto> insertClientIndividualFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/client/update_from_file/client_legal_entity")
-    List<ClientDto> updateClientLegalEntityFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/client/update_from_file/client_legal_entity", consumes = "multipart/form-data")
+    List<ClientDto> updateClientLegalEntityFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/client/update_from_file/client_individual")
-    List<ClientDto> updateClientIndividualFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/client/update_from_file/client_individual", consumes = "multipart/form-data")
+    List<ClientDto> updateClientIndividualFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -316,11 +317,11 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/client_manager/update")
     ClientManagerDto updateClientManager(@Valid @RequestBody ClientManagerDto clientManagerDto);
 
-    @PostMapping("/client_manager/insert_from_file")
-    List<ClientManagerDto> insertClientManagerFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/client_manager/insert_from_file", consumes = "multipart/form-data")
+    List<ClientManagerDto> insertClientManagerFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/client_manager/update_from_file")
-    List<ClientManagerDto> updateClientManagerFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/client_manager/update_from_file", consumes = "multipart/form-data")
+    List<ClientManagerDto> updateClientManagerFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -345,35 +346,35 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/pledge_subject/update")
     PledgeSubjectDto updatePledgeSubject(@Valid @RequestBody PledgeSubjectUpdateDtoWrapper pledgeSubjectUpdateDtoWrapper);
 
-    @PostMapping("/pledge_subject/insert_from_file/auto")
-    List<PledgeSubjectDto> insertPledgeSubjectAutoFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/auto", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectAutoFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/equipment")
-    List<PledgeSubjectDto> insertPledgeSubjectEquipmentFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/equipment", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectEquipmentFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/building")
-    List<PledgeSubjectDto> insertPledgeSubjectBuildingFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/building", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectBuildingFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/land_lease")
-    List<PledgeSubjectDto> insertPledgeSubjectLandLeaseFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/land_lease", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectLandLeaseFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/land_ownership")
-    List<PledgeSubjectDto> insertPledgeSubjectLandOwnershipFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/land_ownership", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectLandOwnershipFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/premise")
-    List<PledgeSubjectDto> insertPledgeSubjectPremiseFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/premise", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectPremiseFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/securities")
-    List<PledgeSubjectDto> insertPledgeSubjectSecuritiesFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/securities", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectSecuritiesFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/tbo")
-    List<PledgeSubjectDto> insertPledgeSubjectTboFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/tbo", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectTboFromFile(@RequestPart("file") MultipartFile file);
 
-    @PostMapping("/pledge_subject/insert_from_file/vessel")
-    List<PledgeSubjectDto> insertPledgeSubjectVesselFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/pledge_subject/insert_from_file/vessel", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> insertPledgeSubjectVesselFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/pledge_subject/update_from_file")
-    List<PledgeSubjectDto> updatePledgeSubjectFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/pledge_subject/update_from_file", consumes = "multipart/form-data")
+    List<PledgeSubjectDto> updatePledgeSubjectFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -389,11 +390,11 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/cost_history/update")
     CostHistoryDto updateCostHistory(@Valid @RequestBody CostHistoryDto costHistoryDto);
 
-    @PostMapping("/cost_history/insert_from_file")
-    List<CostHistoryDto> insertCostHistoryFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/cost_history/insert_from_file", consumes = "multipart/form-data")
+    List<CostHistoryDto> insertCostHistoryFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/cost_history/update_from_file")
-    List<CostHistoryDto> updateCostHistoryFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/cost_history/update_from_file", consumes = "multipart/form-data")
+    List<CostHistoryDto> updateCostHistoryFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -415,14 +416,14 @@ public interface TavrzcmsAPIFeignService {
     List<MonitoringDto> insertMonitoringByClient(@Valid @RequestBody MonitoringDto monitoringDto,
                                                         @RequestParam("clientId") Long clienttId);
 
-    @PostMapping("/monitoring/insert_from_file")
-    List<MonitoringDto> insertMonitoringFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/monitoring/insert_from_file", consumes = "multipart/form-data")
+    List<MonitoringDto> insertMonitoringFromFile(@RequestPart("file") MultipartFile file);
 
     @PutMapping("/monitoring/update")
     MonitoringDto updateMonitoring(@Valid @RequestBody MonitoringDto monitoringDto);
 
-    @PutMapping("/monitoring/update_from_file")
-    List<MonitoringDto> updateMonitoringFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/monitoring/update_from_file", consumes = "multipart/form-data")
+    List<MonitoringDto> updateMonitoringFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -438,11 +439,11 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/insurance/update")
     InsuranceDto updateInsurance(@Valid @RequestBody InsuranceDto insuranceDto);
 
-    @PostMapping("/insurance/insert_from_file")
-    List<InsuranceDto> insertInsuranceFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/insurance/insert_from_file", consumes = "multipart/form-data")
+    List<InsuranceDto> insertInsuranceFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/insurance/update_from_file")
-    List<InsuranceDto> updateInsuranceFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/insurance/update_from_file", consumes = "multipart/form-data")
+    List<InsuranceDto> updateInsuranceFromFile(@RequestPart("file") MultipartFile file);
 
 
 
@@ -458,10 +459,10 @@ public interface TavrzcmsAPIFeignService {
     @PutMapping("/encumbrance/update")
     EncumbranceDto updateEncumbrance(@Valid @RequestBody EncumbranceDto encumbranceDto);
 
-    @PostMapping("/encumbrance/insert_from_file")
-    List<EncumbranceDto> insertEncumbranceFromFile(@RequestParam("file") MultipartFile file);
+    @PostMapping(value = "/encumbrance/insert_from_file", consumes = "multipart/form-data")
+    List<EncumbranceDto> insertEncumbranceFromFile(@RequestPart("file") MultipartFile file);
 
-    @PutMapping("/encumbrance/update_from_file")
-    List<EncumbranceDto> updateEncumbranceFromFile(@RequestParam("file") MultipartFile file);
+    @PutMapping(value = "/encumbrance/update_from_file", consumes = "multipart/form-data")
+    List<EncumbranceDto> updateEncumbranceFromFile(@RequestPart("file") MultipartFile file);
 
 }

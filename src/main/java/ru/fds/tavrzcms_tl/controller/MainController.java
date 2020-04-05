@@ -1,5 +1,6 @@
 package ru.fds.tavrzcms_tl.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,9 +8,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
+import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
+import ru.fds.tavrzcms_tl.service.ClientService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
@@ -21,11 +26,13 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Slf4j
 public class MainController {
 
     private final EmployeeService employeeService;
     private final PledgeAgreementService pledgeAgreementService;
     private final LoanAgreementService loanAgreementService;
+    private final ClientService clientService;
 
     private static final String ATTR_EMPLOYEE = "employeeDto";
     private static final String ATTR_COUNT_PA = "countOfAllPledgeAgreement";
@@ -39,16 +46,19 @@ public class MainController {
     private static final String ATTR_COUNT_CONCLUSION_IS_DONE = "countOfConclusionIsDone";
     private static final String ATTR_COUNT_CONCLUSION_OVERDUE = "countOfConclusionOverdue";
     private static final String ATTR_EMPLOYEE_EXCLUDE_CHIEF = "employeeDtoMapExcludeChief";
+    private static final String ATTR_MESSAGE_ERROR = "messageError";
     private static final String PAGE_LOGIN = "login";
     private static final String PAGE_HOME = "home";
     private static final String PAGE_UPDATE = "update";
 
     public MainController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,
-                          LoanAgreementService loanAgreementService) {
+                          LoanAgreementService loanAgreementService,
+                          ClientService clientService) {
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
+        this.clientService = clientService;
     }
 
     @GetMapping("/login")
@@ -174,6 +184,20 @@ public class MainController {
     @GetMapping("/update")
     public String updatePage(){
         return PAGE_UPDATE;
+    }
+
+    @PostMapping("/insert_from_file")
+    public String importClientLegalEntityFromExcel(@RequestParam("file") MultipartFile file,
+                                                   @RequestParam("whatUpload") String whatUpload,
+                                                   Model model){
+
+            List<ClientDto> clientDtoList = clientService.insertClientLegalEntityFromFile(file);
+
+            model.addAttribute("clientDtoList", clientDtoList);
+            model.addAttribute("messageSuccess", true);
+            model.addAttribute("whatUpload", whatUpload);
+
+            return PAGE_UPDATE;
     }
 
 

@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
@@ -33,6 +34,11 @@ public class ClientService {
     @Transactional
     public  ClientDto insertClient(ClientDto clientDto){
         return tavrzcmsAPIFeignService.insertClient(clientDto);
+    }
+
+    @Transactional
+    public List<ClientDto> insertClientLegalEntityFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertClientLegalEntityFromFile(file);
     }
 
 }

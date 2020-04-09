@@ -20,6 +20,8 @@ public class FeignErrorDecoder implements ErrorDecoder {
                 return new ResponseStatusException(HttpStatus.valueOf(response.status()), "Not Found");
             case 405:
                 return new ResponseStatusException(HttpStatus.valueOf(response.status()), "Bad request");
+            case 409:
+                return new ResponseStatusException(HttpStatus.CONFLICT, "Input error");
             default:
                 return new Exception(response.reason());
         }

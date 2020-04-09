@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.MonitoringDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
@@ -42,6 +43,11 @@ public class MonitoringService {
     @Transactional
     public MonitoringDto updateMonitoring(MonitoringDto monitoringDto){
         return tavrzcmsAPIFeignService.updateMonitoring(monitoringDto);
+    }
+
+    @Transactional
+    public List<MonitoringDto> insertMonitoringFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertMonitoringFromFile(file);
     }
 
 }

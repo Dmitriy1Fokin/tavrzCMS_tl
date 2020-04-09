@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="monitoringTable (monitoringList)">
+    <table class="customTable">
+        <thead>
+            <tr>
+                <th>№п/п</th>
+                <th>Дата</th>
+                <th>Ответственный сотрудник</th>
+                <th>Резульнат мониторинга</th>
+                <th>Вид монитоинга</th>
+                <th>Залоговая стоимость</th>
+                <th>Комментарии</th>
+                <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                    <th>Изменить</th>
+                </div>
+            </tr>
+        </thead>
+        <tbody>
+            <div th:each="monitoring, stat : ${monitoringList}">
+                <tr>
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${#temporals.format(monitoring.getDateMonitoring(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${monitoring.getEmployee()}">н/д</td>
+                    <td th:text="${monitoring.getStatusMonitoring().getTranslate()}">н/д</td>
+                    <td th:text="${monitoring.getTypeOfMonitoring().getTranslate()}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(monitoring.getCollateralValue())}">н/д</td>
+                    <td th:text="${monitoring.getNotice()}">н/д</td>
+                    <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                        <td>
+                            <a th:href="@{/monitoring/update/card(monitoringId=${monitoring.getMonitoringId()})}"
+                               href="card_update.html"
+                               th:text="'Изменить'">Изменить</a>
+                        </td>
+                    </div>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

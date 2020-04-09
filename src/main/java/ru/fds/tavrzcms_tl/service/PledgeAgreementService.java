@@ -3,6 +3,7 @@ package ru.fds.tavrzcms_tl.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
@@ -172,4 +173,8 @@ public class PledgeAgreementService {
         return tavrzcmsAPIFeignService.withdrawPledgeSubjectFromPledgeAgreement(pledgeSubjectId, pledgeAgreementId);
     }
 
+    @Transactional
+    public List<PledgeAgreementDto> insertPledgeAgreementFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertPledgeAgreementFromFile(file);
+    }
 }

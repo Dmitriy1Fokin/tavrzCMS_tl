@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="costHistoryTable (costHistoryList)">
+    <table class="customTable">
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Дата</th>
+            <th>РС по ДЗ</th>
+            <th>ЗС по ДЗ</th>
+            <th>РС по ЗЗ</th>
+            <th>ЗС по ЗЗ</th>
+            <th>СС</th>
+            <th>Оценщик</th>
+            <th>№ отчета об оценке</th>
+            <th>Дата отчета об оценке</th>
+            <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                <th>Изменить</th>
+            </div>
+        </tr>
+        </thead>
+        <tbody>
+            <div th:each="costHistory, stat : ${costHistoryList}">
+                <tr>
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${#temporals.format(costHistory.getDateConclusion(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(costHistory.getRsDz())}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(costHistory.getZsDz())}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(costHistory.getRsZz())}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(costHistory.getZsZz())}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(costHistory.getSs())}">н/д</td>
+                    <td th:text="${costHistory.getAppraiser()}">н/д</td>
+                    <td th:text="${costHistory.getAppraisalReportNum()}">н/д</td>
+                    <td th:text="${#temporals.format(costHistory.getAppraisalReportDate(), 'dd.MM.yyyy')}">н/д</td>
+                    <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                        <td>
+                            <a th:href="@{/cost_history/update/card(costHistoryId=${costHistory.getCostHistoryId()})}"
+                               href="card_update.html"
+                               th:text="'Изменить'">Изменить</a>
+                        </td>
+                    </div>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

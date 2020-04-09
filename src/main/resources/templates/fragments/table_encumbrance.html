@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="encumbranceTable (encumbranceList)">
+    <table class="customTable">
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>Наименование</th>
+            <th>Вид обременения</th>
+            <th>В пользу кого</th>
+            <th>Дата начала обременения</th>
+            <th>Дата окончания обременения</th>
+            <th>№ обременения</th>
+            <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                <th>Изменить</th>
+            </div>
+        </tr>
+        </thead>
+        <tbody>
+            <div th:each="encumbrance, stat : ${encumbranceList}">
+                <tr>
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${encumbrance.getNameEncumbrance()}">н/д</td>
+                    <td th:text="${encumbrance.getTypeOfEncumbrance().getTranslate()}">н/д</td>
+                    <td th:text="${encumbrance.getInFavorOfWhom()}">н/д</td>
+                    <td th:text="${#temporals.format(encumbrance.getDateBegin(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${#temporals.format(encumbrance.getDateEnd(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${encumbrance.getNumOfEncumbrance()}">н/д</td>
+                    <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                        <td>
+                            <a th:href="@{/encumbrance/update/card(encumbranceId=${encumbrance.getEncumbranceId()})}"
+                               href="card_update.html"
+                               th:text="'Изменить'">Изменить</a>
+                        </td>
+                    </div>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -63,9 +63,6 @@
     <input type="submit" value="импорт"/>
 </form>
 
-
-<div th:text="${messageError}"></div>
-
 <div th:if="${messageSuccess}">
     <div th:switch="${whatUpload}">
         <div th:case="clientLegalEntity">
@@ -92,48 +89,90 @@
             <br>
             <div th:replace="fragments/table_loan_agreements :: loanAgreementTable(${loanAgreementDtoList})"></div>
         </div>
-        <!--<div th:case="psBuilding">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${loanAgreementDtoList})"></div>-->
-        <!--</div>-->
-        <!--<div th:case="clientLegalEntity">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${clientLegalEntityList})"></div>-->
-        <!--</div>-->
-        <!--<div th:case="clientLegalEntity">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${clientLegalEntityList})"></div>-->
-        <!--</div>-->
-        <!--<div th:case="clientLegalEntity">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${clientLegalEntityList})"></div>-->
-        <!--</div>-->
-        <!--<div th:case="clientLegalEntity">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${clientLegalEntityList})"></div>-->
-        <!--</div>-->
-        <!--<div th:case="clientLegalEntity">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${clientLegalEntityList})"></div>-->
-        <!--</div>-->
-        <!--<div th:case="clientLegalEntity">-->
-            <!--<br>-->
-            <!--<span>Добавлены следующие клиенты (ЮЛ)</span>-->
-            <!--<br>-->
-            <!--<div th:replace="fragments/table_client :: clietTable(${clientLegalEntityList})"></div>-->
-        <!--</div>-->
+        <div th:case="psBuilding">
+            <br>
+            <span>Добавлены предметы залога - Здания</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psRoom">
+            <br>
+            <span>Добавлены предметы залога - Помещения</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psLandOwnership">
+            <br>
+            <span>Добавлены предметы залога - Земельные участки в собственности</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psLandLease">
+            <br>
+            <span>Добавлены предметы залога - Земельные участки в аренде</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psAuto">
+            <br>
+            <span>Добавлены предметы залога - Транспорт</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psEquipment">
+            <br>
+            <span>Добавлены предметы залога - Оборудование</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psTBO">
+            <br>
+            <span>Добавлены предметы залога - ТМЦ</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psSecurities">
+            <br>
+            <span>Добавлены предметы залога - Ценные бумаги</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="psVessel">
+            <br>
+            <span>Добавлены предметы залога - Судно</span>
+            <br>
+            <div th:replace="fragments/table_pledge_subjects :: pledgeSubjectTable(${pledgeSubjectDtoList})"></div>
+        </div>
+        <div th:case="insurance">
+            <br>
+            <span>Добавлены договоры страхования</span>
+            <br>
+            <div th:replace="fragments/table_insurance :: insuranceTable(${insuranceDtoList})"></div>
+        </div>
+        <div th:case="encumbrance">
+            <br>
+            <span>Добавлены обременения</span>
+            <br>
+            <div th:replace="fragments/table_encumbrance :: encumbranceTable(${encumbranceDtoList})"></div>
+        </div>
+        <div th:case="costHistory">
+            <br>
+            <span>Добавлены стоимости предметов залога</span>
+            <br>
+            <div th:replace="fragments/table_cost_history :: costHistoryTable(${costHistoryDtoList})"></div>
+        </div>
+        <div th:case="monitoring">
+            <br>
+            <span>Добавлены мониторинги предметов залога</span>
+            <br>
+            <div th:replace="fragments/table_monitoring :: monitoringTable(${monitoringDtoList})"></div>
+        </div>
+        <div th:case="clientManager">
+            <br>
+            <span>Добавлены клиентские менеджеры</span>
+            <br>
+            <div th:replace="fragments/table_client_manager :: clientManagerTable(${clientManagerDtoList})"></div>
+        </div>
 
     </div>
 </div>

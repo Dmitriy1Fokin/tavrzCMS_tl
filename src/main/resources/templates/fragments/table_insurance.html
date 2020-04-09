@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="insuranceTable (insuranceList)">
+    <table class="customTable">
+        <thead>
+        <tr>
+            <th>№п/п</th>
+            <th>№ договора страхования</th>
+            <th>Дата договора</th>
+            <th>Дата начала страхования</th>
+            <th>Дата окончания страхования</th>
+            <th>Страховая сумма</th>
+            <th>Оплата страховой премии</th>
+            <th>Сумма франшизы</th>
+            <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                <th>Изменить</th>
+            </div>
+        </tr>
+        </thead>
+        <tbody>
+            <div th:each="insurance, stat : ${insuranceList}">
+                <tr>
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${insurance.getNumInsurance()}">н/д</td>
+                    <td th:text="${#temporals.format(insurance.getDateInsuranceContract(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${#temporals.format(insurance.getDateBeginInsurance(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${#temporals.format(insurance.getDateEndInsurance(), 'dd.MM.yyyy')}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(insurance.getSumInsured())}">н/д</td>
+                    <td th:text="${insurance.getPaymentOfInsurancePremium()}">н/д</td>
+                    <td th:text="${#numbers.formatCurrency(insurance.getFranchiseAmount())}">н/д</td>
+                    <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+                        <td>
+                            <a th:href="@{/insurance/update/card(insuranceId=${insurance.getInsuranceId()})}"
+                               href="card_update.html"
+                               th:text="'Изменить'">Изменить</a>
+                        </td>
+                    </div>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

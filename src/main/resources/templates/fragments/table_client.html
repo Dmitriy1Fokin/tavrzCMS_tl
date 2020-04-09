@@ -8,12 +8,12 @@
 <div th:fragment="clietTable (clientList)">
     <table class="customTable">
         <thead>
-        <tr>
-            <th>№п/п</th>
-            <th>Наименование</th>
-            <th>Тип клиента</th>
-            <th>ИНН/Паспорт</th>
-        </tr>
+            <tr>
+                <th>№п/п</th>
+                <th>Наименование</th>
+                <th>Тип клиента</th>
+                <th>ИНН/Паспорт</th>
+            </tr>
         </thead>
         <tbody>
         <div th:each="client : ${clientList}">

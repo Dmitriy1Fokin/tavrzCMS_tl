@@ -3,6 +3,7 @@ package ru.fds.tavrzcms_tl.service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
 import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
@@ -81,6 +82,11 @@ public class LoanAgreementService {
     @Transactional
     public LoanAgreementDto insertLoanAgreement(LoanAgreementDto loanAgreementDto){
         return tavrzcmsAPIFeignService.insertLoanAgreement(loanAgreementDto);
+    }
+
+    @Transactional
+    public List<LoanAgreementDto> insertLoanAgreementFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertLoanAgreementFromFile(file);
     }
 
     public List<LoanAgreementDto> getLoanAgreementByNum(String numLA){

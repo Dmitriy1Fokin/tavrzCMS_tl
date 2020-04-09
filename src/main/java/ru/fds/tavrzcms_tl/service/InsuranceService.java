@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.InsuranceDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
@@ -32,5 +33,10 @@ public class InsuranceService {
     @Transactional
     public InsuranceDto updateInsurance(InsuranceDto insuranceDto){
         return tavrzcmsAPIFeignService.updateInsurance(insuranceDto);
+    }
+
+    @Transactional
+    public List<InsuranceDto> insertInsuranseFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertInsuranceFromFile(file);
     }
 }

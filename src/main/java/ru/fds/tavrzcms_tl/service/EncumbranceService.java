@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dto.EncumbranceDto;
 import ru.fds.tavrzcms_tl.service.feign.TavrzcmsAPIFeignService;
 
@@ -32,5 +33,10 @@ public class EncumbranceService {
     @Transactional
     public EncumbranceDto updateEncumbrance(EncumbranceDto encumbranceDto){
         return tavrzcmsAPIFeignService.updateEncumbrance(encumbranceDto);
+    }
+
+    @Transactional
+    public List<EncumbranceDto> insertEncumbranceFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertEncumbranceFromFile(file);
     }
 }

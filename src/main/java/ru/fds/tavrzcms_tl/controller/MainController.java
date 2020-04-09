@@ -13,11 +13,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
+import ru.fds.tavrzcms_tl.dto.ClientManagerDto;
+import ru.fds.tavrzcms_tl.dto.CostHistoryDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
+import ru.fds.tavrzcms_tl.dto.EncumbranceDto;
+import ru.fds.tavrzcms_tl.dto.InsuranceDto;
+import ru.fds.tavrzcms_tl.dto.LoanAgreementDto;
+import ru.fds.tavrzcms_tl.dto.MonitoringDto;
+import ru.fds.tavrzcms_tl.dto.PledgeAgreementDto;
+import ru.fds.tavrzcms_tl.dto.PledgeSubjectDto;
+import ru.fds.tavrzcms_tl.service.ClientManagerService;
 import ru.fds.tavrzcms_tl.service.ClientService;
+import ru.fds.tavrzcms_tl.service.CostHistoryService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
+import ru.fds.tavrzcms_tl.service.EncumbranceService;
+import ru.fds.tavrzcms_tl.service.InsuranceService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
+import ru.fds.tavrzcms_tl.service.MonitoringService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
+import ru.fds.tavrzcms_tl.service.PledgeSubjectService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +47,12 @@ public class MainController {
     private final PledgeAgreementService pledgeAgreementService;
     private final LoanAgreementService loanAgreementService;
     private final ClientService clientService;
+    private final PledgeSubjectService pledgeSubjectService;
+    private final InsuranceService insuranceService;
+    private final EncumbranceService encumbranceService;
+    private final CostHistoryService costHistoryService;
+    private final MonitoringService monitoringService;;
+    private final ClientManagerService clientManagerService;
 
     private static final String ATTR_EMPLOYEE = "employeeDto";
     private static final String ATTR_COUNT_PA = "countOfAllPledgeAgreement";
@@ -54,11 +74,23 @@ public class MainController {
     public MainController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,
                           LoanAgreementService loanAgreementService,
-                          ClientService clientService) {
+                          ClientService clientService,
+                          PledgeSubjectService pledgeSubjectService,
+                          InsuranceService insuranceService,
+                          EncumbranceService encumbranceService,
+                          CostHistoryService costHistoryService,
+                          MonitoringService monitoringService,
+                          ClientManagerService clientManagerService) {
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
         this.clientService = clientService;
+        this.pledgeSubjectService = pledgeSubjectService;
+        this.insuranceService = insuranceService;
+        this.encumbranceService = encumbranceService;
+        this.costHistoryService = costHistoryService;
+        this.monitoringService = monitoringService;
+        this.clientManagerService = clientManagerService;
     }
 
     @GetMapping("/login")
@@ -190,10 +222,65 @@ public class MainController {
     public String importClientLegalEntityFromExcel(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("whatUpload") String whatUpload,
                                                    Model model){
-
+        if(whatUpload.equals("clientLegalEntity")){
             List<ClientDto> clientDtoList = clientService.insertClientLegalEntityFromFile(file);
+            model.addAttribute(clientDtoList);
+        }else if(whatUpload.equals("clientIndividual")){
+            List<ClientDto> clientDtoList = clientService.insertClientIndividualFromFile(file);
+            model.addAttribute(clientDtoList);
+        }else if(whatUpload.equals("loanAgreement")){
+            List<LoanAgreementDto> loanAgreementDtoList = loanAgreementService.insertLoanAgreementFromFile(file);
+            model.addAttribute(loanAgreementDtoList);
+        }else if(whatUpload.equals("pledgeAgreement")){
+            List<PledgeAgreementDto> pledgeAgreementDtoList = pledgeAgreementService.insertPledgeAgreementFromFile(file);
+            model.addAttribute(pledgeAgreementDtoList);
+        }else if(whatUpload.equals("psBuilding")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectBuildingFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psRoom")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectRoomFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psLandOwnership")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectLandOwnershipFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psLandLease")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectLandLeaseFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psAuto")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectAutoFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psEquipment")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectEquipmentFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psTBO")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectTboFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psSecurities")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectSecurityFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("psVessel")){
+            List<PledgeSubjectDto> pledgeSubjectDtoList = pledgeSubjectService.insertPledgeSubjectVesselFromFile(file);
+            model.addAttribute(pledgeSubjectDtoList);
+        }else if(whatUpload.equals("insurance")){
+            List<InsuranceDto> insuranceDtoList = insuranceService.insertInsuranseFromFile(file);
+            model.addAttribute(insuranceDtoList);
+        }else if(whatUpload.equals("encumbrance")){
+            List<EncumbranceDto> encumbranceDtoList = encumbranceService.insertEncumbranceFromFile(file);
+            model.addAttribute(encumbranceDtoList);
+        }else if(whatUpload.equals("costHistory")){
+            List<CostHistoryDto> costHistoryDtoList = costHistoryService.insertCostHistoryFromFile(file);
+            model.addAttribute(costHistoryDtoList);
+        }else if(whatUpload.equals("monitoring")){
+            List<MonitoringDto> monitoringDtoList = monitoringService.insertMonitoringFromFile(file);
+            model.addAttribute(monitoringDtoList);
+        }else if(whatUpload.equals("clientManager")){
+            List<ClientManagerDto> clientManagerDtoList = clientManagerService.insertClientManagerFromFile(file);
+            model.addAttribute(clientManagerDtoList);
+        }else {
+            throw new IllegalArgumentException("Bad request");
+        }
 
-            model.addAttribute("clientDtoList", clientDtoList);
+
             model.addAttribute("messageSuccess", true);
             model.addAttribute("whatUpload", whatUpload);
 

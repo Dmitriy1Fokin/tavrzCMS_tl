@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="clientManagerTable (clientManagerList)">
+    <table class="customTable">
+        <thead>
+            <tr>
+                <th>№п/п</th>
+                <th>ФИО</th>
+            </tr>
+        </thead>
+        <tbody>
+            <div th:each="clientManager, stat : ${clientManagerList}">
+                <tr>
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${clientManager.getFullName()}">н/д</td>
+                </tr>
+            </div>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

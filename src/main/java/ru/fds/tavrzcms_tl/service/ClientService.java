@@ -41,4 +41,9 @@ public class ClientService {
         return tavrzcmsAPIFeignService.insertClientLegalEntityFromFile(file);
     }
 
+    @Transactional
+    public List<ClientDto> insertClientIndividualFromFile(MultipartFile file){
+        return tavrzcmsAPIFeignService.insertClientIndividualFromFile(file);
+    }
+
 }

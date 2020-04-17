@@ -58,10 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/pledge_subject/insert_pledge_subject").hasAnyRole(ROLE_USER, ROLE_USER_CHIEF)
                 .antMatchers("/employee").hasRole(ROLE_USER_CHIEF)
                 .antMatchers("/admin").hasRole(ROLE_ADMIN)
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login/").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/")
+                .formLogin().loginPage("/login/").defaultSuccessUrl("/")
                 .and()
                 .logout().logoutUrl("/logout");
     }

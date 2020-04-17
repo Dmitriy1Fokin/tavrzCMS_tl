@@ -36,7 +36,7 @@ public class InsuranceService {
     }
 
     @Transactional
-    public List<InsuranceDto> insertInsuranseFromFile(MultipartFile file){
+    public List<InsuranceDto> insertInsuranceFromFile(MultipartFile file){
         return tavrzcmsAPIFeignService.insertInsuranceFromFile(file);
     }
 }

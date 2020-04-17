@@ -2,6 +2,7 @@ package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.exception.NotFoundException;
 import ru.fds.tavrzcms_tl.repository.AppUserRepository;
@@ -45,5 +46,10 @@ public class EmployeeService {
 
     public List<EmployeeDto> getAllEmployees(){
         return tavrzcmsAPIFeignService.getAllEmployees();
+    }
+
+    @Transactional
+    public EmployeeDto updateEmployee(EmployeeDto employeeDto){
+        return tavrzcmsAPIFeignService.updateEmployee(employeeDto);
     }
 }

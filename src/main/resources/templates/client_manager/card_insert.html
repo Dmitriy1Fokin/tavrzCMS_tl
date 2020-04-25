@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание нового клиентского менеджера</title>
+    <style type="text/css">
+        .nav-item{
+            display: inline;
+        }
+        .row{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <div th:replace="fragments/nav :: user_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+    <div th:replace="fragments/nav :: admin_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('GUEST')">
+    <div th:replace="fragments/nav :: guest_nav_bar"></div>
+</div>
+
+<form th:action="@{/client_manager/insert}" th:method="POST" th:object="${clientManagerDto}" action="/client_manager/card_insert.html">
+
+    <div class="row">
+        <label>Фамилия</label>
+        <input required th:field="*{surname}" type="text" th:value="${clientManagerDto.getSurname()}"/>
+        <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Имя</label>
+        <input required th:field="*{name}" type="text" th:value="${clientManagerDto.getName()}"/>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Отчество</label>
+        <input th:field="*{patronymic}" type="text" th:value="${clientManagerDto.getPatronymic()}"/>
+        <div th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">Name Error</div>
+    </div>
+
+    <br>
+    <button type="submit">Создать</button>
+</form>
+
+</body>
+</html>

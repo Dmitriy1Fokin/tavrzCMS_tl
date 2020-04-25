@@ -33,4 +33,14 @@ public class ClientManagerService {
     public List<ClientManagerDto> insertClientManagerFromFile(MultipartFile file){
         return tavrzcmsAPIFeignService.insertClientManagerFromFile(file);
     }
+
+    @Transactional
+    public ClientManagerDto updateClientManager(ClientManagerDto clientManagerDto){
+        return tavrzcmsAPIFeignService.updateClientManager(clientManagerDto);
+    }
+
+    @Transactional
+    public ClientManagerDto insertClientManager(ClientManagerDto clientManagerDto){
+        return tavrzcmsAPIFeignService.insertClientManager(clientManagerDto);
+    }
 }

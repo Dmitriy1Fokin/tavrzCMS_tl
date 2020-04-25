@@ -55,7 +55,7 @@
 <br>
 <br>
 <label>Клиентский менеджер: </label>
-<span th:text="${clientManagerDto.getFullName()}"></span>
+<a th:href="@{/client_manager/detail(clientManagerId=${clientManagerDto.getClientManagerId()})}" href="/client_manager/detail" th:text="${clientManagerDto.getFullName()}">0</a>
 <br>
 <br>
 <label>Id клиента:</label>

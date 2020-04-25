@@ -26,6 +26,10 @@ public class ClientService {
         return tavrzcmsAPIFeignService.getClientBySearchCriteria(searchParam);
     }
 
+    public List<ClientDto> getClientByClientManager(Long clientManagerId){
+        return tavrzcmsAPIFeignService.getClientsByClientManager(clientManagerId);
+    }
+
     @Transactional
     public ClientDto updateClient(ClientDto clientDto){
         return tavrzcmsAPIFeignService.updateClient(clientDto);

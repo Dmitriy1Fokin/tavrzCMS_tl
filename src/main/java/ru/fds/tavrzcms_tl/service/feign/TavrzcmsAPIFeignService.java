@@ -279,6 +279,9 @@ public interface TavrzcmsAPIFeignService {
     @GetMapping("/client/client_manager")
     List<ClientDto> getClientsByClientManager(@RequestParam("clientManagerId") Long clientManagerId);
 
+    @GetMapping("/client/client_manager/count")
+    Integer getCountClientByClientManager(@RequestParam("clientManagerId") Long clientManagerId);
+
     @GetMapping("/client/search")
     List<ClientDto> getClientBySearchCriteria(@RequestParam Map<String, String> reqParam);
 

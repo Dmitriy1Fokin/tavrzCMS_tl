@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Клиентский менеджер</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        .containerTable{
+            width: 3000px;
+        }
+        .customTable, .customTable td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            table-layout: fixed;
+        }
+        .nav-item{
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <div th:replace="fragments/nav :: user_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+    <div th:replace="fragments/nav :: admin_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('GUEST')">
+    <div th:replace="fragments/nav :: guest_nav_bar"></div>
+</div>
+
+
+<h1>Клиентский менеджер </h1>
+<span th:text="${clientManagerDto.getFullName()}"></span>
+<br>
+<br>
+<label>Id клиентского менеджера:</label>
+<span th:text="${clientManagerDto.getClientManagerId()}"></span>
+<br>
+<br>
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <a th:href="@{/client_manager/update/card(clientManagerId=${clientManagerDto.getClientManagerId()})}"
+       href="client_manager/card_update.html"
+       th:text="'Изменить данные клиентского менеджера'">Изменить данные клиентского менеджера</a>
+    <br>
+    <br>
+</div>
+
+<span th:text="${'Клиентов на сопровождении: ' + clientDtoList.size()}"></span>
+
+<div th:unless="${clientDtoList.isEmpty()}">
+    <div th:replace="fragments/table_client :: clietTable(${clientDtoList})"></div>
+</div>
+</body>
+</html>

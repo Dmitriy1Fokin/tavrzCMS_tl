@@ -3,6 +3,7 @@ package ru.fds.tavrzcms_tl.controller;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
+import ru.fds.tavrzcms_tl.service.UserDetailsServiceImpl;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class UserController {
     private final EmployeeService employeeService;
     private final PledgeAgreementService pledgeAgreementService;
     private final LoanAgreementService loanAgreementService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     private static final String ATTR_EMPLOYEE = "employeeDto";
     private static final String ATTR_COUNT_PA = "countOfAllPledgeAgreement";
@@ -44,15 +47,17 @@ public class UserController {
     private static final String ATTR_EMPLOYEE_EXCLUDE_CHIEF = "employeeDtoMapExcludeChief";
 
     private static final String PAGE_HOME = "home";
-    private static final String PAGE_CARD_UPDATE = "employee/card_update";
-
+    private static final String PAGE_EMPLOYEE_CARD_UPDATE = "user/employee_card_update";
+    private static final String PAGE_UPDATE_PASSWORD = "user/card_update_pass";
 
     public UserController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,
-                          LoanAgreementService loanAgreementService) {
+                          LoanAgreementService loanAgreementService,
+                          UserDetailsServiceImpl userDetailsService) {
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/")
@@ -151,7 +156,7 @@ public class UserController {
 
         model.addAttribute(employeeDto);
 
-        return PAGE_CARD_UPDATE;
+        return PAGE_EMPLOYEE_CARD_UPDATE;
     }
 
     @PostMapping("/employee/update")
@@ -159,11 +164,38 @@ public class UserController {
                                  BindingResult bindingResult,
                                  Model model){
         if(bindingResult.hasErrors()){
-            return PAGE_CARD_UPDATE;
+            return PAGE_EMPLOYEE_CARD_UPDATE;
         }
 
         employeeDto = employeeService.updateEmployee(employeeDto);
 
         return homeEmployeePage(employeeDto.getEmployeeId(), model);
+    }
+
+    @GetMapping("/user/update/password/card")
+    public String userPasswordUpdateCard(){
+        return PAGE_UPDATE_PASSWORD;
+    }
+
+    @PostMapping("/user/update/password")
+    public String userPasswordUpdate(@RequestParam("password") String password,
+                                     @RequestParam("passwordConfirm") String passwordConfirm,
+                                     @RequestParam("oldPassword") String oldPassword,
+                                     Model model){
+        User user = (User) userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if(!userDetailsService.checkIfValidOldPassword(user, oldPassword)){
+            model.addAttribute("errorMessage", "wrong old password");
+            return PAGE_UPDATE_PASSWORD;
+        }
+
+        if(!password.equals(passwordConfirm)){
+            model.addAttribute("errorMessage", "Password mismatch");
+            return PAGE_UPDATE_PASSWORD;
+        }
+
+        userDetailsService.updatePassword(user, password);
+
+        return homePage(user, model);
     }
 }

@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/scripts.js"></script>
     <meta charset="UTF-8">
     <title>Изменить данные сотрудника</title>
     </div>
@@ -26,7 +28,7 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<form th:action="@{/employee/update}" th:method="POST" th:object="${employeeDto}" action="/employee/update">
+<form th:action="@{/employee/update}" th:method="POST" th:object="${employeeDto}" action="/user/update">
     <input type="hidden", th:field="*{employeeId}" th:value="${employeeDto.getEmployeeId()}">
     <input type="hidden", th:field="*{appUserId}" th:value="${employeeDto.getAppUserId()}">
 
@@ -52,6 +54,9 @@
     <button type="submit">Обновить</button>
 </form>
 
+<br>
+<br>
+<a th:href="@{/user/update/password/card(userId=${employeeDto.getAppUserId()})}" href="user/card_update_pass.html" th:text="'изменить пароль'">0</a>
 
 </body>
 </html>

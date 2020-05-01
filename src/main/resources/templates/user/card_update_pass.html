@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/scripts.js"></script>
+    <meta charset="UTF-8">
+    <title>Изменить пароль пользователя</title>
+    </div>
+    <style type="text/css">
+        .nav-item{
+            display: inline;
+        }
+        .row{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <div th:replace="fragments/nav :: user_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+    <div th:replace="fragments/nav :: admin_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('GUEST')">
+    <div th:replace="fragments/nav :: guest_nav_bar"></div>
+</div>
+
+<div th:unless="${errorMessage?.isEmpty()}">
+    <span th:text="${errorMessage}"></span>
+</div>
+
+<form th:action="@{/user/update/password}" th:method="POST" action="/user/update/password">
+    <label for="oldPass">Старый пароль</label>
+    <input required id="oldPass" name="oldPassword" type="password" />
+    <br>
+    <label for="pass">Новый пароль</label>
+    <input required id="pass" name="password" type="password" />
+    <br>
+    <label for="passConfirm">Подтверждение нового пароля</label>
+    <input required id="passConfirm" name="passwordConfirm" type="password" />
+    <br>
+    <button type="submit">Изменить пароль</button>
+</form>
+
+
+</body>
+</html>

@@ -36,7 +36,7 @@
 <div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
     <div>Сотрудник</div>
     <span th:text="${employeeDto.getFullName()}"></span>
-    <a th:href="@{/employee/update/card(employeeId=${employeeDto.employeeId})}" href="employee/card_update.html" th:text="изменить">0</a>
+    <a th:href="@{/employee/update/card(employeeId=${employeeDto.employeeId})}" href="user/employee_card_update.html" th:text="изменить">0</a>
 
 
     <br>

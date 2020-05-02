@@ -45,8 +45,12 @@ public class UserController {
     private static final String ATTR_COUNT_CONCLUSION_IS_DONE = "countOfConclusionIsDone";
     private static final String ATTR_COUNT_CONCLUSION_OVERDUE = "countOfConclusionOverdue";
     private static final String ATTR_EMPLOYEE_EXCLUDE_CHIEF = "employeeDtoMapExcludeChief";
+    private static final String ATTR_ERROR_MSG = "errorMessage";
 
-    private static final String PAGE_HOME = "home";
+    private static final String PAGE_HOME_EMPLOYEE = "home/home_employee";
+    private static final String PAGE_HOME_EMPLOYEE_CHIEF = "home/home_employee_chief";
+    private static final String PAGE_HOME_GUEST = "home/home_guest";
+    private static final String PAGE_HOME_EMPLOYEE_FROM_CHIEF = "home/home_employee_from_chief";
     private static final String PAGE_EMPLOYEE_CARD_UPDATE = "user/employee_card_update";
     private static final String PAGE_UPDATE_PASSWORD = "user/card_update_pass";
 
@@ -64,44 +68,47 @@ public class UserController {
     public String homePage(@AuthenticationPrincipal User user, Model model) {
         final GrantedAuthority authorityUser = new SimpleGrantedAuthority("ROLE_USER");
         final GrantedAuthority authorityChief = new SimpleGrantedAuthority("ROLE_USER_CHIEF");
-        final GrantedAuthority authorityGuest = new SimpleGrantedAuthority("ROLE_GUEST");
-        final GrantedAuthority authorityAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
 
         Collection<GrantedAuthority> grantedAuthorities = user.getAuthorities();
-        if(grantedAuthorities.contains(authorityUser) || grantedAuthorities.contains(authorityChief)){
+
+        if(grantedAuthorities.contains(authorityUser)){
             EmployeeDto employeeDto = employeeService.getEmployeeByUser(user);
             setEmployeeAttribute(employeeDto, model);
 
-            if(grantedAuthorities.contains(authorityChief)){
-                Map<EmployeeDto, List<Integer>> employeeDtoMapExcludeChief = new HashMap<>();
-                List<EmployeeDto> employeeListExcludeChief = employeeService.getEmployeesExcludeEmployee(employeeDto.getEmployeeId());
-                for(EmployeeDto emp : employeeListExcludeChief){
-                    List<Integer> integerList = new ArrayList<>();
-                    integerList.add(pledgeAgreementService.countOfCurrentPledgeAgreementForEmployee(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfCurrentPledgeAgreementForEmployee(emp.getEmployeeId(), TypeOfPledgeAgreement.PERV));
-                    integerList.add(pledgeAgreementService.countOfCurrentPledgeAgreementForEmployee(emp.getEmployeeId(), TypeOfPledgeAgreement.POSL));
-                    integerList.add(loanAgreementService.countOfCurrentLoanAgreementsByEmployee(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfMonitoringNotDone(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfMonitoringIsDone(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfMonitoringOverdue(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfConclusionNotDone(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfConclusionIsDone(emp.getEmployeeId()));
-                    integerList.add(pledgeAgreementService.countOfConclusionOverdue(emp.getEmployeeId()));
+            return PAGE_HOME_EMPLOYEE;
+        }else if(grantedAuthorities.contains(authorityChief)){
+            EmployeeDto employeeDto = employeeService.getEmployeeByUser(user);
+            setEmployeeAttribute(employeeDto, model);
 
-                    employeeDtoMapExcludeChief.put(emp, integerList);
-                }
+            List<EmployeeDto> employeeListExcludeChief = employeeService.getEmployeesExcludeEmployee(employeeDto.getEmployeeId());
+            Map<EmployeeDto, List<Integer>> employeeDtoMapExcludeChief = new HashMap<>(employeeListExcludeChief.size());
+            employeeListExcludeChief.forEach(emp -> {
+                List<Integer> integerList = new ArrayList<>();
+                integerList.add(pledgeAgreementService.countOfCurrentPledgeAgreementForEmployee(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfCurrentPledgeAgreementForEmployee(emp.getEmployeeId(), TypeOfPledgeAgreement.PERV));
+                integerList.add(pledgeAgreementService.countOfCurrentPledgeAgreementForEmployee(emp.getEmployeeId(), TypeOfPledgeAgreement.POSL));
+                integerList.add(loanAgreementService.countOfCurrentLoanAgreementsByEmployee(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfMonitoringNotDone(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfMonitoringIsDone(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfMonitoringOverdue(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfConclusionNotDone(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfConclusionIsDone(emp.getEmployeeId()));
+                integerList.add(pledgeAgreementService.countOfConclusionOverdue(emp.getEmployeeId()));
 
-                model.addAttribute(ATTR_EMPLOYEE_EXCLUDE_CHIEF, employeeDtoMapExcludeChief);
-            }
-        }else if(grantedAuthorities.contains(authorityGuest) || grantedAuthorities.contains(authorityAdmin)){
+                employeeDtoMapExcludeChief.put(emp, integerList);
+            });
 
+            model.addAttribute(ATTR_EMPLOYEE_EXCLUDE_CHIEF, employeeDtoMapExcludeChief);
+
+            return PAGE_HOME_EMPLOYEE_CHIEF;
+        }else {
             model.addAttribute(ATTR_COUNT_PA, pledgeAgreementService.countOfAllCurrentPledgeAgreements());
             model.addAttribute(ATTR_COUNT_PERV_PA, pledgeAgreementService.countOfAllCurrentPledgeAgreements(TypeOfPledgeAgreement.PERV));
             model.addAttribute(ATTR_COUNT_POSL_PA, pledgeAgreementService.countOfAllCurrentPledgeAgreements(TypeOfPledgeAgreement.POSL));
             model.addAttribute(ATTR_COUNT_LA, loanAgreementService.countOfAllCurrentLoanAgreements());
-        }
 
-        return PAGE_HOME;
+            return PAGE_HOME_GUEST;
+        }
     }
 
     @GetMapping("/employee")
@@ -110,7 +117,7 @@ public class UserController {
             EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
             setEmployeeAttribute(employeeDto, model);
 
-        return PAGE_HOME;
+        return PAGE_HOME_EMPLOYEE_FROM_CHIEF;
     }
 
     private void setEmployeeAttribute(EmployeeDto employeeDto, Model model){
@@ -185,12 +192,12 @@ public class UserController {
         User user = (User) userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         if(!userDetailsService.checkIfValidOldPassword(user, oldPassword)){
-            model.addAttribute("errorMessage", "wrong old password");
+            model.addAttribute(ATTR_ERROR_MSG, "wrong old password");
             return PAGE_UPDATE_PASSWORD;
         }
 
         if(!password.equals(passwordConfirm)){
-            model.addAttribute("errorMessage", "Password mismatch");
+            model.addAttribute(ATTR_ERROR_MSG, "Password mismatch");
             return PAGE_UPDATE_PASSWORD;
         }
 

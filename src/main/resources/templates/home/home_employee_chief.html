@@ -22,18 +22,8 @@
 </head>
 <body>
 
-<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
-    <div th:replace="fragments/nav :: user_nav_bar"></div>
-</div>
-<div sec:authorize="hasRole('ADMIN')">
-    <div th:replace="fragments/nav :: admin_nav_bar"></div>
-</div>
-<div sec:authorize="hasRole('GUEST')">
-    <div th:replace="fragments/nav :: guest_nav_bar"></div>
-</div>
+<div th:replace="fragments/nav :: user_nav_bar"></div>
 
-
-<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
     <div>Сотрудник</div>
     <span th:text="${employeeDto.getFullName()}"></span>
     <a th:href="@{/employee/update/card(employeeId=${employeeDto.employeeId})}" href="user/employee_card_update.html" th:text="изменить">0</a>
@@ -74,9 +64,7 @@
     <a th:href="@{/cost_history/pledge_agreements(employeeId=${employeeDto.employeeId})}"
        href="cost_history/pledge_agreements.html"
        th:text="подробнее">подробнее</a>
-</div>
 
-<div sec:authorize="hasRole('USER_CHIEF')">
     <div th:if="${employeeDtoMapExcludeChief} != null">
         <br>
         <br>
@@ -119,24 +107,6 @@
             </tbody>
         </table>
     </div>
-</div>
 
-<div sec:authorize="hasAnyRole('GUEST', 'ADMIN')">
-    <p>Договоры залога:</p>
-    <label>Всего:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements/all/guest(page=0)}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfAllPledgeAgreement}">0</a>
-    <label>Первичных:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/guest(page=0, pervPosl='PERV')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPervPledgeAgreements}">0</a>
-    <label>Последующих:</label>
-    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/guest(page=0, pervPosl='POSL')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPoslPledgeAgreements}">0</a>
-
-    <br>
-    <br>
-
-    <p>Кредитные договоры:</p>
-    <label>Всего:</label>
-    <a th:href="@{/loan_agreement/loan_agreements/guest(page=0)}" href="loan_agreement/loan_agreements.html" th:text="${countOfLoanAgreements}">0</a>
-
-</div>
 </body>
 </html>

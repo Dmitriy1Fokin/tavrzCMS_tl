@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашняя страница</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        .containerTable{
+            width: 3000px;
+        }
+        .customTable, .customTable td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            table-layout: fixed;
+        }
+        .nav-item{
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/nav :: user_nav_bar"></div>
+
+
+
+    <div>Сотрудник</div>
+    <span th:text="${employeeDto.getFullName()}"></span>
+    <a th:href="@{/employee/update/card(employeeId=${employeeDto.employeeId})}" href="user/employee_card_update.html" th:text="изменить">0</a>
+
+
+    <br>
+
+    <p>Договоров залога на сопровождении:</p>
+    <label>Всего:</label>
+    <a th:href="@{/pledge_agreement/pledge_agreements/all/emp(page=0, employeeId=${employeeDto.employeeId})}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfAllPledgeAgreement}">0</a>
+    <label>Первичных:</label>
+    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/emp(page=0, employeeId=${employeeDto.employeeId}, pervPosl='PERV')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPervPledgeAgreements}">0</a>
+    <label>Последующих:</label>
+    <a th:href="@{/pledge_agreement/pledge_agreements/perv_posl/emp(page=0, employeeId=${employeeDto.employeeId}, pervPosl='POSL')}" href="pledge_agreement/pledge_agreements.html" th:text="${countOfPoslPledgeAgreements}">0</a>
+
+    <br>
+    <br>
+
+    <label>Кредитных договоров на сопровождении:</label>
+    <a th:href="@{/loan_agreement/loan_agreements/emp(page=0, employeeId=${employeeDto.employeeId})}" href="loan_agreement/loan_agreements.html" th:text="${countOfLoanAgreements}">0</a>
+
+    <p th:text="'Мониторинги (' + ${#dates.monthName(#dates.createNow())} + ')'">Мониторинги</p>
+    <ul>
+        <li th:text="${'Предстоящие: ' + countOfMonitoringNotDone}">Предстоящие</li>
+        <li th:text="${'Выполненые: ' + countOfMonitoringIsDone}">Выполненые</li>
+        <li th:text="${'Просроченные: ' + countOfMonitoringOverdue}">Просроченные</li>
+    </ul>
+    <a th:href="@{/monitoring/pledge_agreements(employeeId=${employeeDto.employeeId})}"
+       href="monitoring/pledge_agreements.html"
+       th:text="подробнее">подробнее</a>
+
+    <p th:text="'Заключения (' + ${#dates.monthName(#dates.createNow())} + ')'">Заключения</p>
+    <ul>
+        <li th:text="${'Предстоящие: ' + countOfConclusionNotDone}">Предстоящие</li>
+        <li th:text="${'Выполненые: ' + countOfConclusionIsDone}">Выполненые</li>
+        <li th:text="${'Просроченные: ' + countOfConclusionOverdue}">Просроченные</li>
+    </ul>
+    <a th:href="@{/cost_history/pledge_agreements(employeeId=${employeeDto.employeeId})}"
+       href="cost_history/pledge_agreements.html"
+       th:text="подробнее">подробнее</a>
+
+
+
+</body>
+</html>

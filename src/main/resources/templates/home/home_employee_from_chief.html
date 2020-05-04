@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/scripts.js"></script>
     <meta charset="UTF-8">
     <title>Домашняя страница</title>
     <style type="text/css">
@@ -24,12 +26,45 @@
 
     <div th:replace="fragments/nav :: user_nav_bar"></div>
 
-
     <div>Сотрудник</div>
     <span th:text="${employeeDto.getFullName()}"></span>
-
-
     <br>
+    <div th:text="${employeeDto.getEmployeeId()}" id="employeeId" hidden ></div>
+
+    <a href="javascript:setVisible('searchBar');">Добавить на сопровождение клиента</a>
+    <div id="searchBar" style="display:none">
+        <br>
+        <form action="" id="inputSearchClient" role="form">
+            <div class="form-group">
+                <div class="row">
+                    <label>Клиент</label>
+                    <select id="typeOfClient" onchange="chooseClient()" name="typeOfClient">
+                        <option selected value="LEGAL_ENTITY">Юридическое лицо</option>
+                        <option value="INDIVIDUAL">Физическое лицо</option>
+                    </select>
+                </div>
+                <br>
+                <div id="elementClient"></div>
+
+                <button type="submit">Найти</button>
+            </div>
+        </form>
+        <div id="searchResultClient" style="display:none">
+            <br>
+            <table class="customTable">
+                <thead>
+                <tr>
+                    <th>check</th>
+                    <th>Наименование</th>
+                </tr>
+                </thead>
+                <tbody id="tBodyClient">
+                </tbody>
+            </table>
+            <br>
+            <input type="button" id="buttonInsert" value="добавить" onclick="insertClientEscort()" disabled="disabled">
+        </div>
+    </div>
 
     <p>Договоров залога на сопровождении:</p>
     <label>Всего:</label>
@@ -66,5 +101,33 @@
        th:text="подробнее">подробнее</a>
 
 
+
+
+
+    <script>
+        $(document).ready(chooseClient());
+        function chooseClient() {
+            let codeInner;
+            const n = document.getElementById("typeOfClient").options.selectedIndex;
+            const choice = document.getElementById("typeOfClient").options[n].value;
+            if(choice === 'LEGAL_ENTITY'){
+                codeInner = '<div class="row">\n' +
+                    '        <label>Наименование</label>\n' +
+                    '        <input id="nameClient" type="text"/>\n' +
+                    '    </div>\n' +
+                    '    <br>';
+                elementClient.innerHTML = '';
+                elementClient.insertAdjacentHTML('afterbegin', codeInner);
+            }else if(choice === 'INDIVIDUAL'){
+                codeInner = '<div class="row">\n' +
+                    '        <label>Фамилия</label>\n' +
+                    '        <input id="nameClient" type="text"/>\n' +
+                    '    </div>\n' +
+                    '    <br>';
+                elementClient.innerHTML = '';
+                elementClient.insertAdjacentHTML('afterbegin', codeInner);
+            }
+        }
+    </script>
 </body>
 </html>

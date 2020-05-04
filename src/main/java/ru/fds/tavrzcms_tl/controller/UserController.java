@@ -11,8 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import ru.fds.tavrzcms_tl.dictionary.TypeOfClient;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
+import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
+import ru.fds.tavrzcms_tl.service.ClientService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
 import ru.fds.tavrzcms_tl.service.PledgeAgreementService;
@@ -32,6 +36,7 @@ public class UserController {
     private final PledgeAgreementService pledgeAgreementService;
     private final LoanAgreementService loanAgreementService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final ClientService clientService;
 
     private static final String ATTR_EMPLOYEE = "employeeDto";
     private static final String ATTR_COUNT_PA = "countOfAllPledgeAgreement";
@@ -57,11 +62,13 @@ public class UserController {
     public UserController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,
                           LoanAgreementService loanAgreementService,
-                          UserDetailsServiceImpl userDetailsService) {
+                          UserDetailsServiceImpl userDetailsService,
+                          ClientService clientService) {
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
         this.userDetailsService = userDetailsService;
+        this.clientService = clientService;
     }
 
     @GetMapping("/")
@@ -204,5 +211,18 @@ public class UserController {
         userDetailsService.updatePassword(user, password);
 
         return homePage(user, model);
+    }
+
+    @GetMapping("/employee/searchClient")
+    public @ResponseBody List<ClientDto> getClientByName(@RequestParam("typeOfClient") TypeOfClient typeOfClient,
+                                                         @RequestParam("nameClient") String nameClient){
+        return clientService.getClientForEscortClient(typeOfClient, nameClient);
+    }
+
+    @PostMapping("/employee/insertClientEscort")
+    public @ResponseBody EmployeeDto insertClientEscort(@RequestParam("employeeId") Long employeeId,
+                                                        @RequestParam("clientIdArray[]") Long[] clientIdArray){
+
+        return employeeService.insertClientEscort(employeeId, clientIdArray);
     }
 }

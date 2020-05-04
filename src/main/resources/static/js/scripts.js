@@ -213,3 +213,71 @@ function withdrawFromDepositPledgeSubject(pledgeSubjectId, pledgeAgreementId) {
     });
 
 }
+
+
+$(document).ready(function () {
+    $("#inputSearchClient").submit(function (e) {
+        e.preventDefault();
+
+        const n = document.getElementById("typeOfClient").options.selectedIndex;
+        const typeOfClient = document.getElementById("typeOfClient").options[n].value;
+        const nameClient = $("#nameClient").val();
+
+        $('#tBodyClient').html('');
+
+        $.ajax({
+            url : '/employee/searchClient',
+            type: 'GET',
+            dataType: 'json',
+            data : {
+                typeOfClient : typeOfClient,
+                nameClient : nameClient
+            },
+            success: function (clientList) {
+                let el = document.getElementById("searchResultClient");
+                el.style.display="block";
+                for (const index in clientList) {
+                    const client = clientList[index];
+                    let clientName = '';
+                    if(client['typeOfClient'] === 'LEGAL_ENTITY'){
+                        const clientLegalEntity = client['clientLegalEntityDto'];
+                        clientName = clientLegalEntity['organizationalForm'] + ' ' + clientLegalEntity['name'];
+                    }else {
+                        const clientIndividual = client['clientIndividualDto'];
+                        clientName = clientIndividual['surname'] + ' ' + clientIndividual['name'] + ' ' + clientIndividual['patronymic'];
+                    }
+
+                    $('#tBodyClient').append("<tr><td><input type=\"checkbox\" onclick='choise()' name=\"checkElement\" value='"+ client['clientId']+ "'></td><td>" + clientName + "</td></tr>");
+                }
+            },
+            error: function () {
+                alert("Уппс!");
+            }
+        });
+    });
+});
+
+
+function insertClientEscort() {
+    var clientIdIdArray = [];
+    $('#tBodyClient input:checkbox:checked').each(function () {
+        clientIdIdArray.push($(this).val());
+    });
+    const employeeId = $("#employeeId").text();
+
+    $.ajax({
+        url: '/employee/insertClientEscort',
+        type: 'POST',
+        dataType: 'json',
+        data: ({
+            clientIdArray: clientIdIdArray,
+            employeeId: employeeId
+        }),
+        success: function () {
+            location.reload();
+        },
+        error: function () {
+            location.reload();
+        }
+    });
+}

@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+        .containerTable{
+            width: 3000px;
+        }
+        .customTable, .customTable td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            table-layout: fixed;
+        }
+        .nav-item{
+            display: inline;
+        }
+    </style>
 </head>
 <body>
+
+<div th:replace="fragments/nav :: admin_nav_bar"></div>
+
+<a th:href="@{/user/insert/card}"
+href="/user/insert/card"
+th:text="'Добавить нового пользователя'">Добавить нового пользователя</a>
+<br>
+<br>
+<a th:href="@{/client/insert/individual/card}"
+   href="client/card_insert.html"
+   th:text="'Добавить нового сотрудника ОпРЗ'">Добавить нового сотрудника ОпРЗ</a>
+<br>
+<br>
+
+<table class="customTable">
+    <thead>
+    <tr>
+        <th>№п/п</th>
+        <th>id</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>EmployeeId</th>
+        <th>Edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="user : ${userList}">
+        <tr>
+            <td th:text="${userStat.count}"></td>
+
+            <td th:text="${user.getUserId()}"></td>
+
+            <td th:text="${user.getName()}"></td>
+
+            <td th:text="${user.getAppRoles()}"></td>
+
+            <td th:text="${user.getEmployeeId()}"></td>
+
+            <td>
+                <a th:href="@{/user/update/card(userId=${user.getUserId()})}"
+                   href="/user/insert/card.html"
+                   th:text="'Edit'">Edit</a>
+            </td>
+        </tr>
+    </div>
+    </tbody>
+</table>
 
 </body>
 </html>

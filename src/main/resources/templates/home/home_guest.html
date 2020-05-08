@@ -22,7 +22,12 @@
 </head>
 <body>
 
+<div sec:authorize="hasRole('ADMIN')">
+    <div th:replace="fragments/nav :: admin_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('GUEST')">
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
+</div>
 
 
 

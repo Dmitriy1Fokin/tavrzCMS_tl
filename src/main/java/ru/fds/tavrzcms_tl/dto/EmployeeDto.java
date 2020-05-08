@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -27,6 +28,7 @@ public class EmployeeDto{
 
     private String patronymic;
 
+    @NotNull
     private Long appUserId;
 
     private String fullName;

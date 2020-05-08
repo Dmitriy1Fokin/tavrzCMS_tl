@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.fds.tavrzcms_tl.converter.AppUserWithPassConverterDto;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfClient;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
+import ru.fds.tavrzcms_tl.dto.AppUserWithPassDto;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
 import ru.fds.tavrzcms_tl.service.ClientService;
@@ -38,6 +40,8 @@ public class UserController {
     private final UserDetailsServiceImpl userDetailsService;
     private final ClientService clientService;
 
+    private final AppUserWithPassConverterDto appUserWithPassConverterDto;
+
     private static final String ATTR_EMPLOYEE = "employeeDto";
     private static final String ATTR_COUNT_PA = "countOfAllPledgeAgreement";
     private static final String ATTR_COUNT_PERV_PA = "countOfPervPledgeAgreements";
@@ -51,24 +55,32 @@ public class UserController {
     private static final String ATTR_COUNT_CONCLUSION_OVERDUE = "countOfConclusionOverdue";
     private static final String ATTR_EMPLOYEE_EXCLUDE_CHIEF = "employeeDtoMapExcludeChief";
     private static final String ATTR_ERROR_MSG = "errorMessage";
+    private static final String ATTR_USER_LIST = "userList";
+    private static final String ATTR_USER_WITH_PASS = "appUserWithPassDto";
 
     private static final String PAGE_HOME_EMPLOYEE = "home/home_employee";
     private static final String PAGE_HOME_EMPLOYEE_CHIEF = "home/home_employee_chief";
     private static final String PAGE_HOME_GUEST = "home/home_guest";
     private static final String PAGE_HOME_EMPLOYEE_FROM_CHIEF = "home/home_employee_from_chief";
+    private static final String PAGE_EMPLOYEE_CARD_INSERT = "user/employee_card_insert";
     private static final String PAGE_EMPLOYEE_CARD_UPDATE = "user/employee_card_update";
     private static final String PAGE_UPDATE_PASSWORD = "user/card_update_pass";
+    private static final String PAGE_USER_INSERT_CARD = "user/user_card_insert";
+    private static final String PAGE_USER_UPDATE_CARD = "user/user_card_update";
+    private static final String PAGE_ADMIN = "admin";
 
     public UserController(EmployeeService employeeService,
                           PledgeAgreementService pledgeAgreementService,
                           LoanAgreementService loanAgreementService,
                           UserDetailsServiceImpl userDetailsService,
-                          ClientService clientService) {
+                          ClientService clientService,
+                          AppUserWithPassConverterDto appUserWithPassConverterDto) {
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
         this.userDetailsService = userDetailsService;
         this.clientService = clientService;
+        this.appUserWithPassConverterDto = appUserWithPassConverterDto;
     }
 
     @GetMapping("/")
@@ -225,4 +237,35 @@ public class UserController {
 
         return employeeService.insertClientEscort(employeeId, clientIdArray);
     }
+
+    @GetMapping("/admin")
+    public String adminPage(Model model){
+        model.addAttribute(ATTR_USER_LIST, appUserWithPassConverterDto.toDto(userDetailsService.getAllUsers()));
+        return PAGE_ADMIN;
+    }
+
+    @GetMapping("/user/insert/card")
+    public String userInsertCard(Model model){
+        model.addAttribute(ATTR_USER_WITH_PASS, new AppUserWithPassDto());
+        return PAGE_USER_INSERT_CARD;
+    }
+
+    @PostMapping("/user/insert")
+    public String userInsert(@Valid AppUserWithPassDto appUserWithPassDto,
+                             BindingResult bindingResult,
+                             @RequestParam("passwordConfirm") String passwordConfirm,
+                             Model model){
+        if(bindingResult.hasErrors()){
+            return PAGE_USER_INSERT_CARD;
+        }
+        if(!appUserWithPassDto.getPassword().equals(passwordConfirm)){
+            return PAGE_USER_INSERT_CARD;
+        }
+
+        userDetailsService.insertUser(appUserWithPassConverterDto.toEntity(appUserWithPassDto));
+
+        return adminPage(model);
+    }
+
+
 }

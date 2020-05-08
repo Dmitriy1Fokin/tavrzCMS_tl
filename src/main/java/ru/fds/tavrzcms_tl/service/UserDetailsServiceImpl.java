@@ -1,6 +1,7 @@
 package ru.fds.tavrzcms_tl.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.fds.tavrzcms_tl.domain.AppUser;
 import ru.fds.tavrzcms_tl.repository.RoleRepository;
 import ru.fds.tavrzcms_tl.repository.AppUserRepository;
 import ru.fds.tavrzcms_tl.domain.Role;
@@ -56,5 +58,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
            appUser.setPassword(passwordEncoder.encode(password));
            appUserRepository.save(appUser);
        });
+    }
+
+    @Transactional
+    public AppUser insertUser(AppUser appUser){
+        return appUserRepository.save(appUser);
+    }
+
+    public List<AppUser> getAllUsers(){
+        return appUserRepository.findAll(Sort.by("name"));
     }
 }

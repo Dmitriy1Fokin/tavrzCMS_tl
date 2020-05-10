@@ -21,7 +21,7 @@ public class AppUserWithPassDto {
     private Long userId;
 
     @NotBlank
-    private String name;
+    private String nickname;
 
     @NotBlank
     private String password;

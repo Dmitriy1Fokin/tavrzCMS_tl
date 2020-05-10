@@ -259,6 +259,7 @@ public class UserController {
             return PAGE_USER_INSERT_CARD;
         }
         if(!appUserWithPassDto.getPassword().equals(passwordConfirm)){
+            model.addAttribute(ATTR_ERROR_MSG, "Password mismatch");
             return PAGE_USER_INSERT_CARD;
         }
 
@@ -266,6 +267,40 @@ public class UserController {
 
         return adminPage(model);
     }
+
+    @GetMapping("/user/employee/insert/card")
+    public String employeeInsertCard(Model model){
+        model.addAttribute(ATTR_USER_WITH_PASS, new AppUserWithPassDto());
+        model.addAttribute(ATTR_EMPLOYEE, new EmployeeDto());
+        return PAGE_EMPLOYEE_CARD_INSERT;
+    }
+
+    @PostMapping("/user/employee/insert")
+    public String employeeInsert(@Valid AppUserWithPassDto appUserWithPassDto,
+                                 BindingResult userBindingResult,
+                                 @Valid EmployeeDto employeeDto,
+                                 BindingResult employeeBindingResult,
+                                 @RequestParam("passwordConfirm") String passwordConfirm,
+                                 Model model){
+        if(userBindingResult.hasErrors()){
+            model.addAttribute(ATTR_EMPLOYEE, employeeDto);
+            return PAGE_EMPLOYEE_CARD_INSERT;
+        }
+        if(employeeBindingResult.hasErrors()){
+            model.addAttribute(ATTR_USER_WITH_PASS, appUserWithPassDto);
+            return PAGE_EMPLOYEE_CARD_INSERT;
+        }
+        if(!appUserWithPassDto.getPassword().equals(passwordConfirm)){
+            model.addAttribute(ATTR_ERROR_MSG, "Password mismatch");
+            return PAGE_EMPLOYEE_CARD_INSERT;
+        }
+
+
+        userDetailsService.insertEmployeeUser(appUserWithPassConverterDto.toEntity(appUserWithPassDto), employeeDto);
+
+        return adminPage(model);
+    }
+
 
 
 }

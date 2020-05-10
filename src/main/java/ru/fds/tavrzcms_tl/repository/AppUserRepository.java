@@ -6,5 +6,5 @@ import ru.fds.tavrzcms_tl.domain.AppUser;
 import java.util.Optional;
 
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
-    Optional<AppUser> findByName(String name);
+    Optional<AppUser> findByNickname(String nickname);
 }

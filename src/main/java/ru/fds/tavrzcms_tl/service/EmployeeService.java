@@ -26,7 +26,7 @@ public class EmployeeService {
     }
 
     public EmployeeDto getEmployeeByUser(User user){
-        return appUserRepository.findByName(user.getUsername())
+        return appUserRepository.findByNickname(user.getUsername())
                 .map(appUser -> tavrzcmsAPIFeignService.getEmployee(appUser.getEmployeeId()))
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -65,5 +65,10 @@ public class EmployeeService {
         clientDtoList.forEach(tavrzcmsAPIFeignService::updateClient);
 
         return getEmployeeById(employeeId);
+    }
+
+    @Transactional
+    public EmployeeDto insertEmployee(EmployeeDto employeeDto){
+        return tavrzcmsAPIFeignService.insertEmployee(employeeDto);
     }
 }

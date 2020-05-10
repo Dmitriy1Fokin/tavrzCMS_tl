@@ -5,7 +5,7 @@
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/scripts.js"></script>
     <meta charset="UTF-8">
-    <title>Add user</title>
+    <title>Add employee</title>
     </div>
     <style type="text/css">
         .nav-item{
@@ -28,12 +28,12 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<form th:action="@{/user/insert}" th:method="POST" th:object="${appUserWithPassDto}" action="/user/update">
+<form th:action="@{/user/employee/insert}" th:method="POST" th:object="${appUserWithPassDto}" action="/user/update">
 
     <div class="row">
     <label>Username</label>
-    <input required th:field="*{getNickname}" type="text" th:value="${appUserWithPassDto.getNickname()}"/>
-    <div th:if="${#fields.hasErrors('name')}" th:errors="*{getNickname}">Name Error</div>
+    <input required th:field="*{nickname}" type="text" th:value="${appUserWithPassDto.getNickname()}"/>
+    <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Name Error</div>
     </div>
     <br>
     <div class="row">
@@ -57,6 +57,28 @@
         <input type="checkbox" name="appRoles" th:field="*{appRoles}" th:value="ROLE_USER_CHIEF">USER_CHIEF<Br>
         <input type="checkbox" name="appRoles" th:field="*{appRoles}" th:value="ROLE_GUEST">GUEST<Br>
         <div th:if="${#fields.hasErrors('appRoles')}" th:errors="*{appRoles}">Name Error</div>
+    </div>
+
+
+
+    <div th:object="${employeeDto}">
+        <div class="row">
+            <label>Фамилия</label>
+            <input required th:field="*{surname}" type="text" th:value="${employeeDto.getSurname()}"/>
+            <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Name Error</div>
+        </div>
+        <br>
+        <div class="row">
+            <label>Имя</label>
+            <input required th:field="*{name}" type="text" th:value="${employeeDto.getName()}"/>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+        </div>
+        <br>
+        <div class="row">
+            <label>Отчество</label>
+            <input th:field="*{patronymic}" type="text" th:value="${employeeDto.getPatronymic()}"/>
+            <div th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">Name Error</div>
+        </div>
     </div>
 
     <br>

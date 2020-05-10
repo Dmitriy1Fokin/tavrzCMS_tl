@@ -29,8 +29,8 @@ href="/user/insert/card"
 th:text="'Добавить нового пользователя'">Добавить нового пользователя</a>
 <br>
 <br>
-<a th:href="@{/client/insert/individual/card}"
-   href="client/card_insert.html"
+<a th:href="@{/user/employee/insert/card}"
+   href="/user/employee/insert/card"
    th:text="'Добавить нового сотрудника ОпРЗ'">Добавить нового сотрудника ОпРЗ</a>
 <br>
 <br>
@@ -53,7 +53,7 @@ th:text="'Добавить нового пользователя'">Добави�
 
             <td th:text="${user.getUserId()}"></td>
 
-            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getNickname()}"></td>
 
             <td th:text="${user.getAppRoles()}"></td>
 

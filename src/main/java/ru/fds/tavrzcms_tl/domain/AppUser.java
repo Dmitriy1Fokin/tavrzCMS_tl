@@ -35,7 +35,7 @@ public class AppUser {
 
     @NotBlank
     @Column(name ="name")
-    private String name;
+    private String nickname;
 
     @NotBlank
     @Column(name ="password")
@@ -52,7 +52,7 @@ public class AppUser {
     public String toString() {
         return "AppUser{" +
                 "userId=" + userId +
-                ", name='" + name + '\'' +
+                ", name='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 ", employeeId=" + employeeId +
                 '}';

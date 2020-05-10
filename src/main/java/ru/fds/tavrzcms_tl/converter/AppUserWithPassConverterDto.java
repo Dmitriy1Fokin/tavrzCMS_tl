@@ -32,7 +32,7 @@ public class AppUserWithPassConverterDto implements ConverterDto<AppUser, AppUse
 
         return AppUser.builder()
                 .userId(dto.getUserId())
-                .name(dto.getName())
+                .nickname(dto.getNickname())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .employeeId(dto.getEmployeeId())
                 .appRoles(roleList)
@@ -43,7 +43,7 @@ public class AppUserWithPassConverterDto implements ConverterDto<AppUser, AppUse
     public AppUserWithPassDto toDto(AppUser entity) {
         return AppUserWithPassDto.builder()
                 .userId(entity.getUserId())
-                .name(entity.getName())
+                .nickname(entity.getNickname())
                 .password(entity.getPassword())
                 .employeeId(entity.getEmployeeId())
                 .appRoles(entity.getAppRoles().stream().map(Role::getName).collect(Collectors.toList()))

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/scripts.js"></script>
+    <meta charset="UTF-8">
+    <title>Add user</title>
+    </div>
+    <style type="text/css">
+        .nav-item{
+            display: inline;
+        }
+        .row{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<div sec:authorize="hasAnyRole('USER', 'USER_CHIEF')">
+    <div th:replace="fragments/nav :: user_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+    <div th:replace="fragments/nav :: admin_nav_bar"></div>
+</div>
+<div sec:authorize="hasRole('GUEST')">
+    <div th:replace="fragments/nav :: guest_nav_bar"></div>
+</div>
+
+<form th:action="@{/user/insert}" th:method="POST" th:object="${appUserWithPassDto}" action="/user/update">
+
+    <div class="row">
+    <label>Username</label>
+    <input required th:field="*{getNickname}" type="text" th:value="${appUserWithPassDto.getNickname()}"/>
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{getNickname}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Password</label>
+        <input required th:field="*{password}" type="password" th:value="${appUserWithPassDto.getPassword()}"/>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</div>
+    </div>
+    <br>
+    <div class="row">
+        <label>Password confirm</label>
+        <input required id="passConfirm" name="passwordConfirm" type="password" />
+    </div>
+    <div th:unless="${errorMessage?.isEmpty()}">
+        <span th:text="${errorMessage}"></span>
+    </div>
+    <br>
+    <div class="row">
+        <label>Roles</label>
+        <input type="checkbox" name="appRoles" th:field="*{appRoles}" th:value="ROLE_ADMIN">ADMIN<Br>
+        <input type="checkbox" name="appRoles" th:field="*{appRoles}" th:value="ROLE_USER">USER<Br>
+        <input type="checkbox" name="appRoles" th:field="*{appRoles}" th:value="ROLE_USER_CHIEF">USER_CHIEF<Br>
+        <input type="checkbox" name="appRoles" th:field="*{appRoles}" th:value="ROLE_GUEST">GUEST<Br>
+        <div th:if="${#fields.hasErrors('appRoles')}" th:errors="*{appRoles}">Name Error</div>
+    </div>
+
+    <br>
+    <button type="submit">add user</button>
+</form>
+
+</body>
+</html>

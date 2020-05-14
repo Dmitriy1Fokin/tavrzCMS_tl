@@ -16,15 +16,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUserWithPassDto {
+public class AppUserWithoutPassDto {
 
     private Long userId;
 
     @NotBlank
     private String nickname;
-
-    @NotBlank
-    private String password;
 
     private Long employeeId;
 

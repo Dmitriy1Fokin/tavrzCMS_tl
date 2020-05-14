@@ -5,7 +5,7 @@
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/scripts.js"></script>
     <meta charset="UTF-8">
-    <title>Изменить пароль пользователя</title>
+    <title>Сбросить пароль пользователя</title>
     </div>
     <style type="text/css">
         .nav-item{
@@ -32,7 +32,9 @@
     <span th:text="${errorMessage}"></span>
 </div>
 
-<form th:action="@{/user/update/password}" th:method="POST" action="/user/update/password">
+<form th:action="@{/user/reset/password}" th:method="POST" action="/user/reset/password">
+    <input type="hidden", name="userId" th:value="${userId}">
+
     <label for="oldPass">Старый пароль</label>
     <input required id="oldPass" name="oldPassword" type="password" />
     <br>

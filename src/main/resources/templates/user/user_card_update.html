@@ -5,7 +5,7 @@
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/scripts.js"></script>
     <meta charset="UTF-8">
-    <title>Add user</title>
+    <title>Edit user</title>
     </div>
     <style type="text/css">
         .nav-item{
@@ -28,26 +28,14 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<form th:action="@{/user/insert}" th:method="POST" th:object="${appUserWithPassDto}" action="/user/update">
+<form th:action="@{/user/update}" th:method="POST" th:object="${appUserWithoutPassDto}" action="/user/update">
+    <input type="hidden", th:field="*{employeeId}" th:value="${appUserWithoutPassDto.getEmployeeId()}">
+    <input type="hidden", th:field="*{userId}" th:value="${appUserWithoutPassDto.getUserId()}">
 
     <div class="row">
     <label>Username</label>
-    <input required th:field="*{getNickname}" type="text" th:value="${appUserWithPassDto.getNickname()}"/>
-    <div th:if="${#fields.hasErrors('name')}" th:errors="*{getNickname}">Name Error</div>
-    </div>
-    <br>
-    <div class="row">
-        <label>Password</label>
-        <input required th:field="*{password}" type="password" th:value="${appUserWithPassDto.getPassword()}"/>
-        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</div>
-    </div>
-    <br>
-    <div class="row">
-        <label>Password confirm</label>
-        <input required id="passConfirm" name="passwordConfirm" type="password" />
-    </div>
-    <div th:unless="${errorMessage?.isEmpty()}">
-        <span th:text="${errorMessage}"></span>
+    <input required th:field="*{nickname}" type="text" th:value="${appUserWithoutPassDto.getNickname()}"/>
+    <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Name Error</div>
     </div>
     <br>
     <div class="row">
@@ -60,8 +48,10 @@
     </div>
 
     <br>
-    <button type="submit">add user</button>
+    <button type="submit">edit user</button>
 </form>
+<br>
+<a th:href="@{/user/reset/password/card(userId=${appUserWithoutPassDto.getUserId()})}" href="/user/reset/password/card" th:text="'reset password'">0</a>
 
 </body>
 </html>

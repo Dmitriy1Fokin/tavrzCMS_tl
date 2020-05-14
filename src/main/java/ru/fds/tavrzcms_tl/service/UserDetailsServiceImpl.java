@@ -18,6 +18,7 @@ import ru.fds.tavrzcms_tl.repository.AppUserRepository;
 import ru.fds.tavrzcms_tl.domain.Role;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,8 +53,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
-        return passwordEncoder.matches(oldPassword, user.getPassword());
+    public boolean checkIfValidOldPassword(final String newPassword, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, newPassword);
+    }
+
+    public Optional<AppUser> getAppUser(Long userId){
+        return appUserRepository.findById(userId);
     }
 
     @Transactional
@@ -64,16 +69,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
        });
     }
 
-    @Transactional
-    public AppUser insertUser(AppUser appUser){
-        return appUserRepository.save(appUser);
+    public void resetPassword(AppUser appUser, String password){
+        appUser.setPassword(passwordEncoder.encode(password));
+        appUserRepository.save(appUser);
     }
 
     @Transactional
-    public AppUser insertEmployeeUser(AppUser appUser, EmployeeDto employeeDto){
+    public void insertUser(AppUser appUser){
+        appUserRepository.save(appUser);
+    }
+
+    @Transactional
+    public void updateUser(AppUser appUser){
+        insertUser(appUser);
+    }
+
+    @Transactional
+    public void insertEmployeeUser(AppUser appUser, EmployeeDto employeeDto){
         employeeDto = employeeService.insertEmployee(employeeDto);
         appUser.setEmployeeId(employeeDto.getEmployeeId());
-        return appUserRepository.save(appUser);
+        appUserRepository.save(appUser);
     }
 
     public List<AppUser> getAllUsers(){

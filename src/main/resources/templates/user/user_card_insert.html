@@ -28,12 +28,12 @@
     <div th:replace="fragments/nav :: guest_nav_bar"></div>
 </div>
 
-<form th:action="@{/user/insert}" th:method="POST" th:object="${appUserWithPassDto}" action="/user/update">
+<form th:action="@{/user/insert}" th:method="POST" th:object="${appUserWithPassDto}" action="/user/insert">
 
     <div class="row">
     <label>Username</label>
-    <input required th:field="*{getNickname}" type="text" th:value="${appUserWithPassDto.getNickname()}"/>
-    <div th:if="${#fields.hasErrors('name')}" th:errors="*{getNickname}">Name Error</div>
+    <input required th:field="*{nickname}" type="text" th:value="${appUserWithPassDto.getNickname()}"/>
+    <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Name Error</div>
     </div>
     <br>
     <div class="row">

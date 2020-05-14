@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.fds.tavrzcms_tl.converter.AppUserWithPassConverterDto;
+import ru.fds.tavrzcms_tl.converter.AppUserWithoutPassConverterDto;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfClient;
 import ru.fds.tavrzcms_tl.dictionary.TypeOfPledgeAgreement;
+import ru.fds.tavrzcms_tl.domain.AppUser;
 import ru.fds.tavrzcms_tl.dto.AppUserWithPassDto;
+import ru.fds.tavrzcms_tl.dto.AppUserWithoutPassDto;
 import ru.fds.tavrzcms_tl.dto.ClientDto;
 import ru.fds.tavrzcms_tl.dto.EmployeeDto;
+import ru.fds.tavrzcms_tl.exception.NotFoundException;
 import ru.fds.tavrzcms_tl.service.ClientService;
 import ru.fds.tavrzcms_tl.service.EmployeeService;
 import ru.fds.tavrzcms_tl.service.LoanAgreementService;
@@ -41,6 +45,7 @@ public class UserController {
     private final ClientService clientService;
 
     private final AppUserWithPassConverterDto appUserWithPassConverterDto;
+    private final AppUserWithoutPassConverterDto appUserWithoutPassConverterDto;
 
     private static final String ATTR_EMPLOYEE = "employeeDto";
     private static final String ATTR_COUNT_PA = "countOfAllPledgeAgreement";
@@ -57,6 +62,11 @@ public class UserController {
     private static final String ATTR_ERROR_MSG = "errorMessage";
     private static final String ATTR_USER_LIST = "userList";
     private static final String ATTR_USER_WITH_PASS = "appUserWithPassDto";
+    private static final String ATTR_USER_WITHOUT_PASS = "appUserWithoutPassDto";
+    private static final String ATTR_USER_ID = "userId";
+
+    private static final String MSG_WRONG_PASS_MISMATCH = "Password mismatch";
+    private static final String MSG_WRONG_OLD_PASSWORD = "wrong old password";
 
     private static final String PAGE_HOME_EMPLOYEE = "home/home_employee";
     private static final String PAGE_HOME_EMPLOYEE_CHIEF = "home/home_employee_chief";
@@ -65,6 +75,7 @@ public class UserController {
     private static final String PAGE_EMPLOYEE_CARD_INSERT = "user/employee_card_insert";
     private static final String PAGE_EMPLOYEE_CARD_UPDATE = "user/employee_card_update";
     private static final String PAGE_UPDATE_PASSWORD = "user/card_update_pass";
+    private static final String PAGE_RESET_PASSWORD = "user/card_reset_pass";
     private static final String PAGE_USER_INSERT_CARD = "user/user_card_insert";
     private static final String PAGE_USER_UPDATE_CARD = "user/user_card_update";
     private static final String PAGE_ADMIN = "admin";
@@ -74,13 +85,15 @@ public class UserController {
                           LoanAgreementService loanAgreementService,
                           UserDetailsServiceImpl userDetailsService,
                           ClientService clientService,
-                          AppUserWithPassConverterDto appUserWithPassConverterDto) {
+                          AppUserWithPassConverterDto appUserWithPassConverterDto,
+                          AppUserWithoutPassConverterDto appUserWithoutPassConverterDto) {
         this.employeeService = employeeService;
         this.pledgeAgreementService = pledgeAgreementService;
         this.loanAgreementService = loanAgreementService;
         this.userDetailsService = userDetailsService;
         this.clientService = clientService;
         this.appUserWithPassConverterDto = appUserWithPassConverterDto;
+        this.appUserWithoutPassConverterDto = appUserWithoutPassConverterDto;
     }
 
     @GetMapping("/")
@@ -210,13 +223,13 @@ public class UserController {
                                      Model model){
         User user = (User) userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        if(!userDetailsService.checkIfValidOldPassword(user, oldPassword)){
-            model.addAttribute(ATTR_ERROR_MSG, "wrong old password");
+        if(!userDetailsService.checkIfValidOldPassword(user.getPassword(), oldPassword)){
+            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_OLD_PASSWORD);
             return PAGE_UPDATE_PASSWORD;
         }
 
         if(!password.equals(passwordConfirm)){
-            model.addAttribute(ATTR_ERROR_MSG, "Password mismatch");
+            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_PASS_MISMATCH);
             return PAGE_UPDATE_PASSWORD;
         }
 
@@ -259,7 +272,7 @@ public class UserController {
             return PAGE_USER_INSERT_CARD;
         }
         if(!appUserWithPassDto.getPassword().equals(passwordConfirm)){
-            model.addAttribute(ATTR_ERROR_MSG, "Password mismatch");
+            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_PASS_MISMATCH);
             return PAGE_USER_INSERT_CARD;
         }
 
@@ -291,7 +304,7 @@ public class UserController {
             return PAGE_EMPLOYEE_CARD_INSERT;
         }
         if(!appUserWithPassDto.getPassword().equals(passwordConfirm)){
-            model.addAttribute(ATTR_ERROR_MSG, "Password mismatch");
+            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_PASS_MISMATCH);
             return PAGE_EMPLOYEE_CARD_INSERT;
         }
 
@@ -301,6 +314,60 @@ public class UserController {
         return adminPage(model);
     }
 
+    @GetMapping("/user/update/card")
+    public String userUpdateCard(@RequestParam("userId") Long userId,
+                                 Model model){
+        AppUser appUser = userDetailsService.getAppUser(userId).orElseThrow(() -> new NotFoundException("User not found"));
+        AppUserWithoutPassDto appUserWithoutPassDto = appUserWithoutPassConverterDto.toDto(appUser);
+        model.addAttribute(ATTR_USER_WITHOUT_PASS, appUserWithoutPassDto);
 
+        return PAGE_USER_UPDATE_CARD;
+    }
+
+    @PostMapping("/user/update")
+    public String userUpdate(@Valid AppUserWithoutPassDto appUserWithoutPassDto,
+                             BindingResult bindingResult,
+                             Model model){
+        if(bindingResult.hasErrors()){
+            return PAGE_USER_UPDATE_CARD;
+        }
+
+        userDetailsService.updateUser(appUserWithoutPassConverterDto.toEntity(appUserWithoutPassDto));
+
+        return adminPage(model);
+    }
+
+    @GetMapping("/user/reset/password/card")
+    public String userResetPasswordCard(@RequestParam("userId") Long userId,
+                                        Model model){
+        model.addAttribute(ATTR_USER_ID, userId);
+        return PAGE_RESET_PASSWORD;
+    }
+
+    @PostMapping("/user/reset/password")
+    public String userResetPassword(@RequestParam("password") String password,
+                                    @RequestParam("passwordConfirm") String passwordConfirm,
+                                    @RequestParam("oldPassword") String oldPassword,
+                                    @RequestParam("userId") Long userId,
+                                    Model model){
+
+        AppUser appUser = userDetailsService.getAppUser(userId).orElseThrow(() -> new NotFoundException("User not found"));
+
+        if(!userDetailsService.checkIfValidOldPassword(appUser.getPassword(), oldPassword)){
+            model.addAttribute(ATTR_USER_ID, userId);
+            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_OLD_PASSWORD);
+            return PAGE_RESET_PASSWORD;
+        }
+
+        if(!password.equals(passwordConfirm)){
+            model.addAttribute(ATTR_USER_ID, userId);
+            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_PASS_MISMATCH);
+            return PAGE_RESET_PASSWORD;
+        }
+
+        userDetailsService.resetPassword(appUser, password);
+
+        return adminPage(model);
+    }
 
 }

@@ -347,17 +347,10 @@ public class UserController {
     @PostMapping("/user/reset/password")
     public String userResetPassword(@RequestParam("password") String password,
                                     @RequestParam("passwordConfirm") String passwordConfirm,
-                                    @RequestParam("oldPassword") String oldPassword,
                                     @RequestParam("userId") Long userId,
                                     Model model){
 
         AppUser appUser = userDetailsService.getAppUser(userId).orElseThrow(() -> new NotFoundException("User not found"));
-
-        if(!userDetailsService.checkIfValidOldPassword(appUser.getPassword(), oldPassword)){
-            model.addAttribute(ATTR_USER_ID, userId);
-            model.addAttribute(ATTR_ERROR_MSG, MSG_WRONG_OLD_PASSWORD);
-            return PAGE_RESET_PASSWORD;
-        }
 
         if(!password.equals(passwordConfirm)){
             model.addAttribute(ATTR_USER_ID, userId);

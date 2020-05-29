@@ -35,9 +35,6 @@
 <form th:action="@{/user/reset/password}" th:method="POST" action="/user/reset/password">
     <input type="hidden", name="userId" th:value="${userId}">
 
-    <label for="oldPass">Старый пароль</label>
-    <input required id="oldPass" name="oldPassword" type="password" />
-    <br>
     <label for="pass">Новый пароль</label>
     <input required id="pass" name="password" type="password" />
     <br>
